@@ -1,3 +1,13 @@
+#include <HTTPClient.h>
+#include <Wire.h>
+#include <SD.h>
+#include <math.h>
+#include <WiFi.h>
+#include <TinyGSM.h>
+#include <INA.h> // INA Library (by Zanshin)
+
+// ########## -------------------- GPS DATA -------------------- ##########
+
 #define TINY_GSM_MODEM_SIM7000
 #define TINY_GSM_RX_BUFFER 1024 // Set RX buffer to 1Kb
 
@@ -7,10 +17,7 @@
 #define PIN_TX      27
 #define PIN_RX      26
 #define PWR_PIN     4
-
 #define LED_PIN     12
-
-#include <TinyGSM.h>
 
 // Set serial for debug console (to Serial Monitor, default speed 115200)
 #define SerialMon Serial
@@ -19,24 +26,8 @@
 
 TinyGsm modem(SerialAT);
 
-#include <WiFi.h>
-#include <HTTPClient.h>
-#include <Wire.h>
-#include <INA.h> // INA Library (by Zanshin)
-#include <SD.h>
-#include <math.h>
 
-//-----------------------------------Replace with your network credentials----------------------------------------
-// Replace with your network credentials
-const char* ssid     = "SSID";
-const char* password = "PASSWORD";
-
-// REPLACE with your Domain name and URL path or IP address with path
-const char* serverName = "SERVERNAME";
-
-// Keep this API Key value to be compatible with the PHP code provided in the server.
-String apiKeyValue = "APIKEYVALUE";
-//----------------------------------------------------------------------------------------------------------------
+// ########## -------------------- INA226 DATA -------------------- ##########
 
 // Vamos calibrar o divisor de tensão e o sensor de corrente para o INA 226
 // R5 = 20 kΩ
@@ -57,11 +48,27 @@ String apiKeyValue = "APIKEYVALUE";
 #define fatorMili 0.001
 #define fatorMicro 0.000001
 
+INA_Class INA;
+
+
+// ########## -------------------- LM35 DATA -------------------- ##########
 #define ADC_VREF_mV    3300.0  // in millivolt
 #define ADC_RESOLUTION 4096.0
 #define AMPOP_OUT        32    // ESP32 pin connected to LM358P
 #define GAIN              3.89 // AMPOP_OUT = LM35 output * GAIN
 
+
+//-----------------------------------Replace with your network credentials----------------------------------------
+// Replace with your network credentials
+const char* ssid     = "SSID";
+const char* password = "PASSWORD";
+
+// REPLACE with your Domain name and URL path or IP address with path
+const char* serverName = "SERVERNAME";
+
+// Keep this API Key value to be compatible with the PHP code provided in the server.
+String apiKeyValue = "APIKEYVALUE";
+//----------------------------------------------------------------------------------------------------------------
 
 void setup() {
   Serial.begin(115200);
@@ -115,7 +122,7 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.println("WL_NOT_CONNECTED");
-  }//end_while
+  }
   Serial.println("");
   Serial.print("Connected to WiFi network with IP Address: ");
   Serial.println(WiFi.localIP());
@@ -128,7 +135,6 @@ void loop() {
   // |____________________ INA 226  ___________________|
   // |_________________________________________________|
   // Variaveis do sensor
-  INA_Class INA;
   int32_t rawCurrent = -666;
   float current_motor;
   uint16_t rawVoltage = 666;
@@ -223,12 +229,11 @@ void loop() {
       SerialMon.println("Year: " + String(year) + "\tMonth: " + String(month) + "\tDay: " + String(day));
       SerialMon.println("Hour: " + String(hour) + "\tMinute: " + String(minutos) + "\tSecond: " + String(sec));
       SerialMon.println("Reading_time: " + reading_time);
-
       break;
     }
     else {
-      // SerialMon.println("Couldn't get GPS/GNSS/GLONASS location, retrying in 1s.");
-      delay(1000);
+      SerialMon.println("Couldn't get GPS/GNSS/GLONASS location, retrying in 15s.");
+      delay(15000);
     }
   }
 
@@ -242,7 +247,7 @@ void loop() {
   int adcValAmpOp;
   int adcVal;
   float milliVolt;
-  int celcius;
+  int celcius = 30;
   int farenheits;
 
   
@@ -272,8 +277,10 @@ void loop() {
     // Prepare your HTTP POST request data
     String httpRequestData = "api_key=" + apiKeyValue + "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
                               "&celcius=" + String(celcius) + "&farenheits=" + String(farenheits) + 
-                              "&voltage_battery=" + String(voltage_battery, 1) + "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + "&consumption=" + String(consumption, 1) + 
-                              "";
+                              "&voltage_battery=" + String(voltage_battery, 1) + 
+                              "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + 
+                              "&consumption=" + String(consumption, 1) + 
+                              "&reading_time=" + reading_time + "";
 
     Serial.print("httpRequestData: ");
     Serial.println(httpRequestData);
