@@ -31,14 +31,14 @@ TinyGsm modem(SerialAT);
 
 //-----------------------------------Replace with your network credentials----------------------------------------
 // Replace with your network credentials
-const char* ssid     = "SSID";
-const char* password = "PASSWORD";
+const char* ssid     = "";
+const char* password = "";
 
 // REPLACE with your Domain name and URL path or IP address with path
-const char* serverName = "SERVERNAME";
+const char* serverName = "";
 
 // Keep this API Key value to be compatible with the PHP code provided in the server.
-String apiKeyValue = "APIKEYVALUE";
+String apiKeyValue = "";
 //----------------------------------------------------------------------------------------------------------------
 
 // Vamos calibrar o divisor de tensão e o sensor de corrente para o INA 226
@@ -97,7 +97,7 @@ String apiKeyValue = "APIKEYVALUE";
   int   hour     = 0;
   int   minutos  = 0;
   int   sec      = 0;
-  String reading_time = "";
+  String reading_time = "1-1-1900";
 
  // ---------- Temperature data ----------
   int adcValAmpOp;
@@ -356,7 +356,7 @@ void EnvioDeDadosTask(void *pvParameters) {
       String httpRequestData = "api_key=" + apiKeyValue + "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
                              "&celcius=" + String(celcius) + "&farenheits=" + String(farenheits) + 
                              "&voltage_battery=" + String(voltage_battery, 1) + "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + "&consumption=" + String(consumption, 1) + 
-                             "";
+                             "&reading_time=" + reading_time + "";
       xSemaphoreGive(bufferSemaphore);
 
       xSemaphoreTake(displayMutex, portMAX_DELAY);
