@@ -211,7 +211,7 @@ void loop() {
   int   hour     = 0;
   int   minutos  = 0;
   int   sec      = 0;
-  String reading_time = "";
+  String reading_time = "1-1-1900";
 
   // ---------- Collecting GPS Data ----------
     modem.sendAT("+SGPIO=0,4,1,1");
