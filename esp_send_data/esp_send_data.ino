@@ -1,15 +1,15 @@
 #include <HTTPClient.h>
 #include <Wire.h>
-#include <SD.h>
+//#include <SD.h>
 #include <math.h>
 #include <WiFi.h>
-#include <TinyGSM.h>
 #include <INA.h> // INA Library (by Zanshin)
 
 // ########## -------------------- GPS DATA -------------------- ##########
 
 #define TINY_GSM_MODEM_SIM7000
 #define TINY_GSM_RX_BUFFER 1024 // Set RX buffer to 1Kb
+#include <TinyGSM.h>
 
 // LilyGO T-SIM7000G Pinout
 #define UART_BAUD   115200
