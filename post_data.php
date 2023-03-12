@@ -27,18 +27,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die("Connection failed: " . $conn->connect_error);
         } 
         
-        // Inserting into database
-        $sql = "INSERT INTO gps (lat, lng)
-        VALUES ('" . $lat . "', '" . $lng . "');" .
-        "INSERT INTO lm35 (celcius, farenheits)
-        VALUES ('" . $celcius . "', '" . $farenheits . "');" .
-        "INSERT INTO ina226 (voltage_battery, current_motor, power, consumption)
-        VALUES ('" . $voltage_battery . "', '" . $current_motor . "', '" . $power  . $consumption . "');";
+        // Inserting into gps table
+        $sql = "INSERT INTO gps (lat, lng) VALUES ('" . $lat . "', '" . $lng . "')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully in gps table";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+        // Inserting into lm35 table
+        $sql = "INSERT INTO lm35 (celcius, farenheits) VALUES ('" . $celcius . "', '" . $farenheits . "')";
+        
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully in lm35 table";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+        
+        // Inserting into ina226 table
+        $sql = "INSERT INTO ina226 (voltage_battery, current_motor, power, consumption) VALUES ('" . $voltage_battery . "', '" . $current_motor . "', '" . $power  . "', '" . $consumption . "')";
+        if ($conn->query($sql) === TRUE) {
+            echo "New record created successfully in ina226 table";
+        } else {
+            echo "Error: " . $sql . "<br>" . $conn->error;
+        }
+   
         
         if ($conn->query($sql) === TRUE) {
             echo "New record created successfully";
-        } 
-        else {
+        } else {
             echo "Error: " . $sql . "<br>" . $conn->error;
         }
     
