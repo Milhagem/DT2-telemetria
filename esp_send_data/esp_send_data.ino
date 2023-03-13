@@ -54,7 +54,7 @@ INA_Class INA;
 // ########## -------------------- LM35 DATA -------------------- ##########
 #define ADC_VREF_mV    3300.0  // in millivolt
 #define ADC_RESOLUTION 4096.0
-#define AMPOP_OUT        32    // ESP32 pin connected to LM358P
+#define AMPOP_OUT        35    // ESP32 pin connected to LM358P
 #define GAIN              3.89 // AMPOP_OUT = LM35 output * GAIN
 
 
