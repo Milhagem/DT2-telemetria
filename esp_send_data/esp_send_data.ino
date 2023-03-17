@@ -54,7 +54,7 @@ INA_Class INA;
 // ########## -------------------- LM35 DATA -------------------- ##########
 #define ADC_VREF_mV    3300.0  // in millivolt
 #define ADC_RESOLUTION 4096.0
-#define AMPOP_OUT        32    // ESP32 pin connected to LM358P
+#define AMPOP_OUT        35    // ESP32 pin connected to LM358P
 #define GAIN              3.89 // AMPOP_OUT = LM35 output * GAIN
 
 
@@ -150,11 +150,11 @@ void loop() {
   long tempoAnterior = 0;
   long tempoDelta = 0;
 
-  float R5 = 2.2; // Resistência em kΩ
-  float R6 = 2.2; // Resistência em kΩ
+  float R5 = 20; // Resistência em kΩ
+  float R6 = 68; // Resistência em kΩ
   double valorShunt = 0.001;
   double fatorCorrecaoV = 1.01626;
-  double fatorCorrecaoC = 0.482625;
+  double fatorCorrecaoC = 0.97000;
 
   rawVoltage = INA.getBusMilliVolts();
   voltage_battery = (float)rawVoltage * ((R5 + R6) / R6) * fatorCorrecaoV * fatorMili; // Esse valor que está sendo multiplicado pelo valor da tensão tem a função de calibrar o sensor.
