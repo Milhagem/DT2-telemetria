@@ -5,6 +5,7 @@
 #include <WiFi.h>
 #include <INA.h> // INA Library (by Zanshin)
 
+
 // ########## -------------------- GPS DATA -------------------- ##########
 
 #define TINY_GSM_MODEM_SIM7000
@@ -60,14 +61,14 @@ INA_Class INA;
 
 //-----------------------------------Replace with your network credentials----------------------------------------
 // Replace with your network credentials
-const char* ssid     = "SSID";
-const char* password = "PASSWORD";
+const char* ssid     = "";
+const char* password = "";
 
 // REPLACE with your Domain name and URL path or IP address with path
-const char* serverName = "SERVERNAME";
+const char* serverName = "";
 
 // Keep this API Key value to be compatible with the PHP code provided in the server.
-String apiKeyValue = "APIKEYVALUE";
+String apiKeyValue = "";
 //----------------------------------------------------------------------------------------------------------------
 
 void setup() {
@@ -198,8 +199,8 @@ void loop() {
   // |____________________ GPS 226  ___________________|
   // |_________________________________________________|
   // ---------- GPS data ----------
-  float lat      = 0;
-  float lng      = 0;
+  float lat      = 12;
+  float lng      = 13;
   float speed    = 0;
   float alt      = 0;
   int   vsat     = 0;
@@ -211,9 +212,10 @@ void loop() {
   int   hour     = 0;
   int   minutos  = 0;
   int   sec      = 0;
-  String reading_time = "1-1-1900";
+  String reading_time = "200";
 
   // ---------- Collecting GPS Data ----------
+  /*
     modem.sendAT("+SGPIO=0,4,1,1");
   if (modem.waitResponse(10000L) != 1) {
     SerialMon.println(" SGPIO=0,4,1,1 false ");
@@ -236,7 +238,7 @@ void loop() {
       delay(15000);
     }
   }
-
+*/
   // -------------------------------------------------------------------------------------------------
 
 
@@ -249,6 +251,7 @@ void loop() {
   float milliVolt;
   int celcius = 30;
   int farenheits;
+  
 
   
   adcValAmpOp = analogRead(AMPOP_OUT);
