@@ -217,11 +217,11 @@ void INATask(void *pvParameters) {
   while (true) {
     // ______Sensor de Tensão INA__________ /
 
-    float R5 = 2.2; // Resistência em kΩ
-    float R6 = 2.2; // Resistência em kΩ
+    float R5 = 20; // Resistência em kΩ
+    float R6 = 68; // Resistência em kΩ
     double valorShunt = 0.001;
     double fatorCorrecaoV = 1.01626;
-    double fatorCorrecaoC = 0.482625;
+    double fatorCorrecaoC = 0.97000;
     
     xSemaphoreTake(bufferSemaphore, portMAX_DELAY);
     rawVoltage = INA.getBusMilliVolts();
