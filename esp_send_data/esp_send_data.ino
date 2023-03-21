@@ -34,14 +34,14 @@ TinyGsm modem(SerialAT);
 
 //-----------------------------------Replace with your network credentials----------------------------------------
 // Replace with your network credentials
-const char* ssid     = "Galaxy S93292";
-const char* password = "idrq1358";
+const char* ssid     = "";
+const char* password = "";
 
 // REPLACE with your Domain name and URL path or IP address with path
-const char* serverName = "http://telemetria.milhagemufmg.com/post_data.php";
+const char* serverName = "";
 
 // Keep this API Key value to be compatible with the PHP code provided in the server.
-String apiKeyValue = "tPmAT5Ab3j7F9";
+String apiKeyValue = "";
 //----------------------------------------------------------------------------------------------------------------
 
 // Vamos calibrar o divisor de tensão e o sensor de corrente para o INA 226
