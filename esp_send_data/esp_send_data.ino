@@ -31,21 +31,17 @@ TinyGsm modem(SerialAT);
 #include <INA.h> // INA Library (by Zanshin)
 #include <SD.h>
 #include <math.h>
-#include "FS.h"
-#include "SD_MMC.h"
-
-#define ONE_BIT_MODE  true
 
 //-----------------------------------Replace with your network credentials----------------------------------------
 // Replace with your network credentials
-const char* ssid     = "";
-const char* password = "";
+const char* ssid     = "Galaxy S93292";
+const char* password = "idrq1358";
 
 // REPLACE with your Domain name and URL path or IP address with path
-const char* serverName = "";
+const char* serverName = "http://telemetria.milhagemufmg.com/post_data.php";
 
 // Keep this API Key value to be compatible with the PHP code provided in the server.
-String apiKeyValue = "";
+String apiKeyValue = "tPmAT5Ab3j7F9";
 //----------------------------------------------------------------------------------------------------------------
 
 // Vamos calibrar o divisor de tensão e o sensor de corrente para o INA 226
@@ -146,13 +142,6 @@ void setup() {
   INA.setMode(INA_MODE_CONTINUOUS_BOTH); // Bus/shunt measured continuously
 
   SerialMon.println("Place your board outside to catch satelite signal");
- 
-  if(!SD_MMC.begin("/sdcard", ONE_BIT_MODE)){
-   Serial.println("Card Mount Failed");
-   return;
-  }
-    
-  File myFile = SD_MMC.open("/RamChu.txt", FILE_WRITE);
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -209,6 +198,7 @@ void setup() {
   xTaskCreatePinnedToCore(EnvioDeDadosTask, "Envio De Dados Task", 10000, NULL, 4, NULL, PRO_CPU_NUM);
   xTaskCreatePinnedToCore(INATask, "INA Task", 10000, NULL, 4, NULL, APP_CPU_NUM);
   xTaskCreatePinnedToCore(TemperaturaTask, "Temperatura Task", 10000, NULL, 3, NULL, APP_CPU_NUM);
+  xTaskCreatePinnedToCore(
     GPSTask,          // Task function
     "GPS Task",       // Task name
     10000,           // Stack size
@@ -399,37 +389,6 @@ void EnvioDeDadosTask(void *pvParameters) {
     tempoENVIOAnterior = tempoENVIOAtual;
     Serial.print("Tempo Anterior ENVIO :");
     Serial.println(tempoENVIOAnterior);
-   
-    //datalogger
-    File myFile = SD_MMC.open("/RamChu.txt", FILE_APPEND);
-    if (myFile){
-     Serial.println("FILE OK !!!");
-    } else {
-     Serial.println("FILE NOT OK !!!");
-    }
-   
-    xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
-     myFile.print(reading_time);
-     myFile.print(',');
-     myFile.print(lat);
-     myFile.print(',');
-     myFile.print(lng);
-     myFile.print(',');
-     myFile.print(celcius);
-     myFile.print(',');
-     myFile.print(farenheits);
-     myFile.print(',');
-     myFile.print(current_motor);
-     myFile.print(',');
-     myFile.print(power);
-     myFile.print(',');
-     myFile.print(consumption);
-     myFile.print(',');
-     myFile.print(voltage_battery);
-     myFile.print(',');
-     myFile.print('\n';
-    xSemaphoreGive(SemaphoreBuffer);
-
     
     if (WiFi.status() == WL_CONNECTED) {
       WiFiClient client;
