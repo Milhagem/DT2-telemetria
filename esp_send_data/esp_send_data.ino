@@ -60,7 +60,7 @@ INA_Class INA;
 
 
 // ########## -------------------- ENCODER DATA -------------------- ##########
-#define MEASURE_PIN 12
+#define MEASURE_PIN 25
 #define WHEEL_CIRCUMFERANCE 1.596/12
 #define SAMPLES 25
 
