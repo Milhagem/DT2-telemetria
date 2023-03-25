@@ -101,7 +101,44 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
   long tempoENVIOAtual = 0;
   long tempoENVIOAnterior = 0;
   long tempoENVIODelta = 0;
+ 
+ // ---------- Encoder data ----------
+ #define MEASURE_PIN 25
+ #define WHEEL_CIRCUMFERANCE 1.596/12
+ #define SAMPLES 25
 
+ typedef struct {
+   uint16_t ms;
+   uint16_t revolutions;
+ } sample_t;
+
+ volatile uint8_t nextSample = 0;
+ volatile sample_t samples[SAMPLES] = {};
+
+ // temp vars for computing totals
+ volatile sample_t* pSample;
+ uint8_t n;
+ uint8_t totalRevolutions;
+ uint8_t totalSamples;
+ uint16_t minMs;
+ uint16_t maxMs;
+ double rps;
+ double rpm;
+ double wheel_diameter; 
+
+ double tempo_Inicio = 0;
+ double tempo_speedVelho = 0;
+ double tempo_speedAtual = 0;
+ double tempo_dif = 0;
+ double tempo_total = 0;
+ double speed_atual = 0;
+ double speed_velho = 0;
+ double speed_media = 0;
+ double distancia_trecho = 0;
+ double distancia_total = 0;
+ double ms_to_min =0.00001666666;
+ bool andou = 0;
+ 
  // ---------- GPS data ----------
   float lat      = 0;
   float lng      = 0;
@@ -128,12 +165,24 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
 SemaphoreHandle_t SemaphoreBuffer;
 SemaphoreHandle_t displayMutex;       // Lock access to buffer and Serial
 //----------------------------------------------------------------------------------------------------------------
+// interrupt handler is triggered when magnet enters or leaves field
+void magnet_detection_changed() {
+  // check if magnet is nearby
+  if (digitalRead(MEASURE_PIN) == HIGH) {
+    // increase revolutions
+    samples[nextSample].revolutions++;
+  }
+}
+
+//----------------------------------------------------------------------------------------------------------------
 
 void setup() {
   Serial.begin(115200);
 
   // Wait a moment to start (so we don't miss Serial output)
   vTaskDelay(1000 / portTICK_PERIOD_MS);
+ 
+  attachInterrupt(MEASURE_PIN, magnet_detection_changed, CHANGE);
 
   INA.begin(80, 1000, 0x40);             // Begin calibration for an expected 80 Amps maximum current and for a 0.0O1hm resistor
   INA.setAveraging(10);                  // Average each reading n-times
@@ -195,15 +244,15 @@ void setup() {
   xSemaphoreGive(displayMutex);
 
   // Create the tasks
-  xTaskCreatePinnedToCore(EnvioDeDadosTask, "Envio De Dados Task", 10000, NULL, 4, NULL, PRO_CPU_NUM);
-  xTaskCreatePinnedToCore(INATask, "INA Task", 10000, NULL, 4, NULL, APP_CPU_NUM);
-  xTaskCreatePinnedToCore(TemperaturaTask, "Temperatura Task", 10000, NULL, 3, NULL, APP_CPU_NUM);
+  xTaskCreatePinnedToCore(EnvioDeDadosTask, "Envio De Dados Task", 10000, NULL, 1, NULL, PRO_CPU_NUM);
+  xTaskCreatePinnedToCore(INATask, "INA Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
+  xTaskCreatePinnedToCore(TemperaturaTask, "Temperatura Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
   xTaskCreatePinnedToCore(
     GPSTask,          // Task function
     "GPS Task",       // Task name
     10000,           // Stack size
     NULL,            // Task parameters
-    4,               // Priority
+    1,               // Priority
     NULL,            // Task handle
     APP_CPU_NUM               // Core number (0 or 1)
   );
@@ -402,7 +451,8 @@ void EnvioDeDadosTask(void *pvParameters) {
 
       // Prepare your HTTP POST request data
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
-       String httpRequestData = "api_key=" + apiKeyValue + "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
+      String httpRequestData = "api_key=" + apiKeyValue +"&rpm=" + String(rpm) + "&speed=" + String(speed, 1) + "&wheel_diameter=" + String(wheel_diameter, 2) +
+                              "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
                               "&celcius=" + String(celcius) + "&farenheits=" + String(farenheits) + 
                               "&voltage_battery=" + String(voltage_battery, 1) + "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + "&consumption=" + String(consumption, 1) + 
                               "&reading_time=" + reading_time + "";
@@ -463,7 +513,74 @@ void EnvioDeDadosTask(void *pvParameters) {
 
 
 void loop() {
+  // compute total revolutions and revolutions per second
+  totalRevolutions = 0;
+  totalSamples = 0;
+  minMs = 0;
+  maxMs = 0;
+  rps = 0;
+
+  // iterate thru samples
+  for (int i=0;i<SAMPLES;i++) {
+    n = (nextSample+i) % SAMPLES;
+    pSample = &samples[n];
+
+    if (pSample->ms > 0) {
+      // good sample
+      totalSamples++;
+      totalRevolutions += pSample->revolutions;
+
+      minMs = std::min(minMs, (uint16_t)pSample->ms);
+      maxMs = std::max(maxMs, (uint16_t)pSample->ms);
+    }
+  }
+
+  // compute rps
+  if (totalSamples > 0) {
+    rps = totalRevolutions * 1.0 / totalSamples;
+  }
+
+  // prepare for a new sample
+  if (nextSample >= SAMPLES-1) {
+    nextSample = 0;
+  } else {
+    nextSample++;
+  }
+
+  // clear old sample data
+  samples[nextSample].ms = millis();
+  samples[nextSample].revolutions = 0;
+  rpm = rps * 60 * 0.333;
+  speed_atual = rps * 60 * 0.333 * WHEEL_CIRCUMFERANCE; // em metros por minuto
+  Serial.print("speed_atual :");
+  Serial.println(speed_atual);
+  if(speed_atual!=0 && speed_velho==0){
+    Serial.println("Começou a andar");
+    tempo_Inicio = millis();
+    tempo_speedVelho = millis();
+    tempo_speedAtual= millis();
+    speed_velho = speed_atual;
+    andou = 1;
+  }
+  else if(andou == 1){
+    tempo_speedAtual = millis();
+    tempo_total = tempo_speedAtual - tempo_Inicio;
+    tempo_dif = tempo_speedAtual - tempo_speedVelho;
+    distancia_trecho = speed_atual * (tempo_dif * ms_to_min); // em metros
+    distancia_total = (distancia_trecho + distancia_total); // em m
+    speed_media = distancia_total/ ((tempo_total * ms_to_min)/60); //em m/h
+    speed_velho = speed_atual;
+    tempo_speedVelho = tempo_speedAtual;
+  }
+  Serial.print("speed_media :");
+  Serial.println(speed_media);
+  Serial.print("distancia_total :");
+  Serial.println(distancia_total);
+  Serial.print("tempo_total :");
+  Serial.println(tempo_total/1000);
+  wheel_diameter = WHEEL_CIRCUMFERANCE;
 
   // Do nothing but allow yielding to lower-priority tasks
-  vTaskDelay(10000000 / portTICK_PERIOD_MS);
+  delay(500);
+
 }
