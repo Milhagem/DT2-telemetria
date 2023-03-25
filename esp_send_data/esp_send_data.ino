@@ -131,9 +131,9 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
  double tempo_speedAtual = 0;
  double tempo_dif = 0;
  double tempo_total = 0;
- double speed_atual = 0;
- double speed_velho = 0;
  double speed = 0;
+ double speed_velho = 0;
+ double average_speed = 0;
  double distancia_trecho = 0;
  double distancia_total = 0;
  double ms_to_min =0.00001666666;
@@ -451,7 +451,7 @@ void EnvioDeDadosTask(void *pvParameters) {
 
       // Prepare your HTTP POST request data
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
-      String httpRequestData = "api_key=" + apiKeyValue +"&rpm=" + String(rpm,1) + "&speed=" + String(speed, 2) + "&wheel_diameter=" + String(wheel_diameter, 2) +
+      String httpRequestData = "api_key=" + apiKeyValue +"&rpm=" + String(rpm,1) + "&speed=" + String(speed, 2) + "&average_speed=" + String(average_speed, 2) + "&wheel_diameter=" + String(wheel_diameter, 2) +
                               "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
                               "&celcius=" + String(celcius) + "&farenheits=" + String(farenheits) + 
                               "&voltage_battery=" + String(voltage_battery, 1) + "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + "&consumption=" + String(consumption, 1) + 
@@ -551,29 +551,29 @@ void loop() {
   samples[nextSample].ms = millis();
   samples[nextSample].revolutions = 0;
   rpm = rps * 60 * 0.333;
-  speed_atual = rps * 60 * 0.333 * WHEEL_CIRCUMFERANCE; // em metros por minuto
+  speed = rps * 60 * 0.333 * WHEEL_CIRCUMFERANCE; // em metros por minuto
   Serial.print("speed_atual :");
-  Serial.println(speed_atual);
-  if(speed_atual!=0 && speed_velho==0){
+  Serial.println(speed);
+  if(speed!=0 && speed_velho==0){
     Serial.println("Começou a andar");
     tempo_Inicio = millis();
     tempo_speedVelho = millis();
     tempo_speedAtual= millis();
-    speed_velho = speed_atual;
+    speed_velho = speed;
     andou = 1;
   }
   else if(andou == 1){
     tempo_speedAtual = millis();
     tempo_total = tempo_speedAtual - tempo_Inicio;
     tempo_dif = tempo_speedAtual - tempo_speedVelho;
-    distancia_trecho = speed_atual * (tempo_dif * ms_to_min); // em metros
+    distancia_trecho = speed * (tempo_dif * ms_to_min); // em metros
     distancia_total = (distancia_trecho + distancia_total); // em m
-    speed = distancia_total/ ((tempo_total * ms_to_min)/60); //em m/h
-    speed_velho = speed_atual;
+    average_speed = distancia_total/ ((tempo_total * ms_to_min)/60); //em m/h
+    speed_velho = speed;
     tempo_speedVelho = tempo_speedAtual;
   }
-  Serial.print("speed_media :");
-  Serial.println(speed);
+  Serial.print("velocidade media :");
+  Serial.println(average_speed);
   Serial.print("distancia_total :");
   Serial.println(distancia_total);
   Serial.print("tempo_total :");
