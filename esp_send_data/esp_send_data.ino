@@ -133,7 +133,7 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
  double tempo_total = 0;
  double speed_atual = 0;
  double speed_velho = 0;
- double speed_media = 0;
+ double speed = 0;
  double distancia_trecho = 0;
  double distancia_total = 0;
  double ms_to_min =0.00001666666;
@@ -142,7 +142,7 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
  // ---------- GPS data ----------
   float lat      = 0;
   float lng      = 0;
-  float speed    = 0;
+  float velocidade   = 0;
   float alt      = 0;
   int   vsat     = 0;
   int   usat     = 0;
@@ -402,7 +402,7 @@ void GPSTask(void *pvParameters) {
    
      for (int8_t i = 15; i; i--) {
       //SerialMon.println("Requesting current GPS/GNSS/GLONASS location");
-       if (modem.getGPS(&lat, &lng, &speed, &alt, &vsat, &usat, &accuracy,
+       if (modem.getGPS(&lat, &lng, &velocidade, &alt, &vsat, &usat, &accuracy,
                         &year, &month, &day, &hour, &minutos, &sec)) {
          String reading_time = String(year) + "-" + String(month) + "-" + String(day) + " " + String(hour) + ":" + String(minutos) + ":" + String(sec);
          SerialMon.println("Latitude: " + String(lat, 8) + "\tLongitude: " + String(lng, 8));
@@ -451,7 +451,7 @@ void EnvioDeDadosTask(void *pvParameters) {
 
       // Prepare your HTTP POST request data
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
-      String httpRequestData = "api_key=" + apiKeyValue +"&rpm=" + String(rpm) + "&speed=" + String(speed, 1) + "&wheel_diameter=" + String(wheel_diameter, 2) +
+      String httpRequestData = "api_key=" + apiKeyValue +"&rpm=" + String(rpm,1) + "&speed=" + String(speed, 2) + "&wheel_diameter=" + String(wheel_diameter, 2) +
                               "&lat=" + String(lat, 8) + "&lng=" + String(lng, 8) + 
                               "&celcius=" + String(celcius) + "&farenheits=" + String(farenheits) + 
                               "&voltage_battery=" + String(voltage_battery, 1) + "&current_motor=" + String(current_motor, 1) + "&power=" + String(power, 1) + "&consumption=" + String(consumption, 1) + 
@@ -568,12 +568,12 @@ void loop() {
     tempo_dif = tempo_speedAtual - tempo_speedVelho;
     distancia_trecho = speed_atual * (tempo_dif * ms_to_min); // em metros
     distancia_total = (distancia_trecho + distancia_total); // em m
-    speed_media = distancia_total/ ((tempo_total * ms_to_min)/60); //em m/h
+    speed = distancia_total/ ((tempo_total * ms_to_min)/60); //em m/h
     speed_velho = speed_atual;
     tempo_speedVelho = tempo_speedAtual;
   }
   Serial.print("speed_media :");
-  Serial.println(speed_media);
+  Serial.println(speed);
   Serial.print("distancia_total :");
   Serial.println(distancia_total);
   Serial.print("tempo_total :");
