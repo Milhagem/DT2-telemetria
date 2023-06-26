@@ -18,7 +18,7 @@
 #define mili  0.001     // 10^-3 (m)
 #define micro 0.000001  // 10^-6 (µ)
 
-class INA226 {
+class Ina226 {
 private:
     INA_Class INA;
 
@@ -45,6 +45,11 @@ public:
     */
     void imprimir();
 
-}
+    float getCurrent() { return this->current_motor; }
+    float getVoltage() { return this->voltage_battery; }
+    float getPower() { return this->power; }
+    float getConsumption() { return this->consumption; }
+
+};
 
 #endif

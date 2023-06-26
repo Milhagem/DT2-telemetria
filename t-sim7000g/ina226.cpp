@@ -1,6 +1,6 @@
 #include "ina226.hpp"
 
-void INA226::setupINA226() {
+void Ina226::setupINA226() {
   INA.begin(80, 1000, 0x40);             // Begin calibration for an expected 80 Amps maximum current and for a 0.0O1hm resistor
   INA.setAveraging(10);                  // Average each reading n-times
   INA.setBusConversion(10000);           // Maximum conversion time 8.244ms
@@ -12,7 +12,7 @@ void INA226::setupINA226() {
   this->tempoDelta = 0;
 }
 
-void INA226::atualizaINA226() {
+void Ina226::atualizaINA226() {
   // Atualiza tensao
   uint16_t raw_voltage = INA.getBusMilliVolts();;
   this->voltage_battery = (float)raw_voltage * ((R5 + R6) / R6) * fatorCorrecaoV * mili; // Esse valor que esta sendo multiplicado pelo valor da tensao tem a funcao de calibrar o sensor
@@ -33,17 +33,17 @@ void INA226::atualizaINA226() {
   consumption = consumption + consumoParcial;
 }
 
-void INA226::imprimir() {
+void Ina226::imprimir() {
   Serial.print("Tensão Bateria: ");
   Serial.print(this->voltage_battery);
-  Serial.println("V")
+  Serial.println("V");
   Serial.print("Corrente Motor: ");
   Serial.print(this->current_motor);
-  Serial.println("A")
+  Serial.println("A");
   Serial.print("Potencia Instantânea: ");
   Serial.print(this->power);
-  Serial.println("W")
+  Serial.println("W");
   Serial.print("Consumo: ");
   Serial.print(this->consumption);
-  Serial.println("unidades de energia")
+  Serial.println("unidades de energia");
 }
