@@ -20,7 +20,7 @@
 // Set serial for AT commands
 #define SerialAT  Serial1
 
-class gps {
+class GPS {
 private:
     TinyGsm modem(SerialAT);
 

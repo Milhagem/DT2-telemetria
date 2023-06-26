@@ -1,9 +1,9 @@
 #include "encoder.hpp"
 
-void encoder::amostraVoltas() {
+double Encoder::amostraVoltas() {
   typedef struct {
-  uint16_t ms;
-  uint16_t revolutions;
+    uint16_t ms;
+    uint16_t revolutions;
   } sample_t;
 
   volatile uint8_t nextSample = 0;
@@ -50,39 +50,39 @@ void encoder::amostraVoltas() {
   // Clear old sample data
   samples[nextSample].ms = millis();
   samples[nextSample].revolutions = 0;
+
+  return rps;
 }
 
 
-void encoder::calculaVelocidade(double rps, double wheel_diameter) {
+void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
   double distancia_trecho = 0;
   double distancia_total = 0;
 
   double rpm = rps * 60 * 0.333;
   double speed_mpm = rps * 60 * 0.333 * wheel_diameter; // metros por minuto (m/min)
-  this-> speed = (speed_mpm * (60/1000));                 // km/h
+  this->speed = (speed_mpm * (60/1000));                // km/h
 
-  if(speed != 0 && speed_velho == 0){
-    Serial.println("Começou a andar");
-    tempo_Inicio = millis();
-    tempo_speedVelho = millis();
-    tempo_speedAtual= millis();
-    speed_velho = speed_mpm;
-    andou = 1;
-  }
-  else if(andou == 1){
-    tempo_speedAtual = millis();
-    tempo_total = tempo_speedAtual - tempo_Inicio;
-    tempo_dif = tempo_speedAtual - tempo_speedVelho;
-    distancia_trecho = speed_mpm * (tempo_dif * ms_to_min); // metros
-    distancia_total = (distancia_trecho + distancia_total)/1000; // km
-    average_speed = distancia_total/ ((tempo_total * ms_to_min)/60); // km/h
-    speed_velho = speed_mpm;
-    tempo_speedVelho = tempo_speedAtual;
+  if(speed != 0 && this->calc_vel == 0) { // Começou a andar;
+    tempo_inicio = millis();
+    tempo_speed_old = millis();
+    tempo_speed  = millis();
+    speed_old = speed_mpm;
+    this->ja_andou = true;
+  } else if(this->ja_andou == true){  // Ja andou
+    tempo_speed = millis();
+    tempo_total = tempo_speed - tempo_inicio;
+    tempo_delta = tempo_speed_atual - tempo_speed_old;
+    distancia_trecho = speed_mpm * (tempo_delta * ms_TO_min);         // metros (m)
+    distancia_total = (distancia_trecho + distancia_total)/1000;     // km
+    average_speed = distancia_total/ ((tempo_total * ms_TO_min)/60); // km/h
+    speed_old = speed_mpm;
+    tempo_speed_old = tempo_speed;
   }
 }
 
 
-void encoder::imprimir() {
+void Encoder::imprimir() {
   Serial.print("Velocidade: ")
   Serial.print(this->speed);
   Serial.println(" km/ ")

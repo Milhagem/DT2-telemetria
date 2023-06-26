@@ -1,6 +1,6 @@
 #include "gps.hpp"
 
-void gps::setupGPS() {
+void GPS::setupGPS() {
   Serial.println("Place your board outside to catch satelite signal");
 
   // Set LED OFF
@@ -26,7 +26,7 @@ void gps::setupGPS() {
   }
 }
 
-void gps::atualizaGPS {
+void GPS::atualizaGPS {
   // Set SIM7000G GPIO4 HIGH ,turn on GPS power
   // CMD:AT+SGPIO=0,4,1,1
   // Only in version 20200415 is there a function to control GPS power
@@ -50,7 +50,7 @@ void gps::atualizaGPS {
   }  
 }
 
-void gps::imprimir() {
+void GPS::imprimir() {
   Serial.println("Latitude: " + String(this->lat, 8) + "\tLongitude: " + String(this->lon, 8));
   Serial.println("Speed: " + String(speed) + "\tAltitude: " + String(alt));
   Serial.println("Visible Satellites: " + String(this->vsat) + "\tUsed Satellites: " + String(this->usat));

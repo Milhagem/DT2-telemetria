@@ -7,7 +7,7 @@
 #define GAIN           3.89
 #define LM35_SCALE     10
 
-class lm35 {
+class LM35 {
 private:
     float temperatura;
 
