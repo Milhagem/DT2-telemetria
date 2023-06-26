@@ -23,7 +23,7 @@ void setup(){
         Serial.println("Card Mount Failed");
         return;
     } else {
-        Serial.println("Card Mount SUCCEED")
+        Serial.println("Card Mount SUCCEED");
     }
     
     File myFile = SD_MMC.open("/arquivo_teste.txt", FILE_WRITE);
@@ -35,11 +35,10 @@ void loop(){
         Serial.println("FILE OK !!!");
     } else {
         Serial.println("FILE NOT OK !!!");
-        return -1
     }
     for (int i = 0; i < 10; i++) {
         myFile.println("Atencao chegou chatuba hein");
         myFile.println("Vamo esculachar");
     }
-
+    delay(5000);
 }
