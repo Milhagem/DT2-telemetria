@@ -1,7 +1,7 @@
 #include "gps.hpp"
 
-void gps::iniciaGPS() {
-  SerialMon.println("Place your board outside to catch satelite signal");
+void gps::setupGPS() {
+  Serial.println("Place your board outside to catch satelite signal");
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -20,7 +20,7 @@ void gps::iniciaGPS() {
 
   // Restart takes quite some time
   // To skip it, call init() instead of restart()
-  SerialMon.println("Initializing modem...");
+  Serial.println("Initializing modem...");
   if (!modem.init()) {
     Serial.println("Failed to init modem, attempting to continue");
   }
@@ -48,5 +48,14 @@ void gps::atualizaGPS {
       delay(15000L);
     }
   }  
+}
+
+void gps::imprimir() {
+  Serial.println("Latitude: " + String(this->lat, 8) + "\tLongitude: " + String(this->lon, 8));
+  Serial.println("Speed: " + String(speed) + "\tAltitude: " + String(alt));
+  Serial.println("Visible Satellites: " + String(this->vsat) + "\tUsed Satellites: " + String(this->usat));
+  Serial.println("Accuracy: " + String(this->accuracy));
+  Serial.println("Year: " + String(this->year) + "\tMonth: " + String(this->month) + "\tDay: " + String(this->day));
+  Serial.println("Hour: " + String(this->hour) + "\tMinute: " + Stringthis->(min) + "\tSecond: " + String(this->sec));
 }
 

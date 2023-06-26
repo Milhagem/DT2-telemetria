@@ -39,8 +39,12 @@ private:
     int   sec;
 
 public:
-    void iniciaGPS();
+    void setupGPS();
     void atualizaGPS();
+    /**
+     * @brief Esta funcao imprime todos os atributos do GPS (lat, lon, speed, alt...) na saida Serial
+    */
+    void imprimir();
 
     float getlat() { return this->lat; }
     float getlon() { return this->lon; }
