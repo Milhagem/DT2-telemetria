@@ -30,6 +30,10 @@ private:
         
 public:
     /**
+     * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o Encoder
+    */
+    void encoderSetup();
+    /**
      * @brief Calcula voltas totais e voltas por segundo da roda
      * 
      * @return rps

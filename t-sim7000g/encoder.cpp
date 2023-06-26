@@ -1,5 +1,9 @@
 #include "encoder.hpp"
 
+void Encoder::encoderSetup() {
+  
+}
+
 double Encoder::amostraVoltas() {
   typedef struct {
     uint16_t ms;
@@ -83,9 +87,9 @@ void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
 
 
 void Encoder::imprimir() {
-  Serial.print("Velocidade: ")
+  Serial.print("Velocidade: ");
   Serial.print(this->speed);
-  Serial.println(" km/ ")
+  Serial.println(" km/ ");
   Serial.print("Velocidade media :");
   Serial.print(this->average_speed);
   Serial.println(" km/h");
