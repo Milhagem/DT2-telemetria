@@ -21,7 +21,7 @@ public:
      * 
      * @return  Codigo de resposta HTTP
     */
-    String sendData(String httpRequestData);
+    int sendData(String httpRequestData);
 };
 
 #endif

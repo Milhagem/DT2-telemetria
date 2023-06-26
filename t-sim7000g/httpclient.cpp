@@ -21,7 +21,7 @@ void httpclient::wifiSetup(const char* ssid, const char* password) {
 }
 
 
-String httpclient::sendData(String httpRequestData) {
+int httpclient::sendData(String httpRequestData) {
     if (WiFi.status() == WL_CONNECTED) {
         WiFiClient client;
         HTTPClient http;
@@ -36,13 +36,13 @@ String httpclient::sendData(String httpRequestData) {
         int httpResponseCode = http.POST(httpRequestData);
 
         if (httpResponseCode > 0) {
-        Serial.print("HTTP Response code: ");
-        Serial.println(httpResponseCode);
-        return httpResponseCode
+            Serial.print("HTTP Response code: ");
+            Serial.println(httpResponseCode);
+            return httpResponseCode;
         } else {
-        Serial.print("Error code: ");
-        Serial.println(httpResponseCode);
-        return httpResponseCode
+            Serial.print("Error code: ");
+            Serial.println(httpResponseCode);
+            return httpResponseCode;
         }
         // Free resources
         http.end();
