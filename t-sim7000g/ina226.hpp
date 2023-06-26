@@ -1,5 +1,5 @@
 #ifndef INA226_H
-#define INA226_G
+#define INA226_H
 
 #include <INA.h>
 
