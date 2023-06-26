@@ -42,7 +42,7 @@ public:
     void setupGPS();
     void atualizaGPS();
     /**
-     * @brief Esta funcao imprime todos os atributos do GPS (lat, lon, speed, alt...) na saida Serial
+     * @brief Imprime todos os atributos do GPS (lat, lon, speed, alt...) na saida Serial
     */
     void imprimir();
 
