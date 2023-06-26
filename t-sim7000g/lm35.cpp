@@ -8,10 +8,9 @@ float LM35::medeTemperatura(){
     float milliVolt = adcVal * (ADC_VREF_MV/ ADC_RESOLUTION);
     // Convete a temsao para temperatura em ºC
     this->temperatura = milliVolt / LM35_SCALE;
-    
 }
 
-void LM35::imprimeTemperatura(){
+void LM35::imprimir(){
     Serial.print("Temperatura: ");
     Serial.print(this->temperatura);
     Serial.print("°C");
