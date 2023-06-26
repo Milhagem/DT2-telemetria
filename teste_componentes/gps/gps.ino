@@ -20,7 +20,7 @@
 TinyGsm modem(SerialAT);
 
 void setup(){
-  SerialMon.begin(115200);
+  Serial.begin(115200);
   SerialMon.println("Place your board outside to catch satelite signal");
 
   // Set LED OFF
@@ -42,7 +42,7 @@ void setup(){
   // To skip it, call init() instead of restart()
   SerialMon.println("Initializing modem...");
   if (!modem.restart()) {
-    Serial.println("Failed to restart modem, attempting to continue without restarting");
+    SerialMon.println("Failed to restart modem, attempting to continue without restarting");
   }
   
   // Print modem info
@@ -70,7 +70,7 @@ void loop(){
   float lat      = 0;
   float lon      = 0;
   float speed    = 0;
-  float alt     = 0;
+  float alt      = 0;
   int   vsat     = 0;
   int   usat     = 0;
   float accuracy = 0;
