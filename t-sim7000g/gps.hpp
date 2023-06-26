@@ -22,8 +22,6 @@
 
 class GPS {
 private:
-    TinyGsm modem(SerialAT);
-
     float lat;
     float lon;
     float speed;
@@ -49,6 +47,6 @@ public:
     float getlat() { return this->lat; }
     float getlon() { return this->lon; }
 
-}
+};
  
 #endif

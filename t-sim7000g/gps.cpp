@@ -1,7 +1,9 @@
 #include "gps.hpp"
 
+TinyGsm modem(SerialAT);
+
 void GPS::setupGPS() {
-  Serial.println("Place your board outside to catch satelite signal");
+  SerialMon.println("Place your board outside to catch satelite signal");
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -20,13 +22,13 @@ void GPS::setupGPS() {
 
   // Restart takes quite some time
   // To skip it, call init() instead of restart()
-  Serial.println("Initializing modem...");
+  SerialMon.println("Initializing modem...");
   if (!modem.init()) {
-    Serial.println("Failed to init modem, attempting to continue");
+    SerialMon.println("Failed to init modem, attempting to continue");
   }
 }
 
-void GPS::atualizaGPS {
+void GPS::atualizaGPS() {
   // Set SIM7000G GPIO4 HIGH ,turn on GPS power
   // CMD:AT+SGPIO=0,4,1,1
   // Only in version 20200415 is there a function to control GPS power
@@ -35,11 +37,11 @@ void GPS::atualizaGPS {
     SerialMon.println(" SGPIO=0,4,1,1 false ");
   }
 
-  this->modem.enableGPS();
+  modem.enableGPS();
 
   for (int8_t i = 15; i; i--) {
     SerialMon.println("Requesting current GPS/GNSS/GLONASS location");
-    if (this->modem.getGPS(&(this->lat), &(this->lon), &(this->speed), &(this->alt), &(this->vsat), &(this->usat), &(this->accuracy),
+    if (modem.getGPS(&(this->lat), &(this->lon), &(this->speed), &(this->alt), &(this->vsat), &(this->usat), &(this->accuracy),
                      &(this->year), &(this->month), &(this->day), &(this->hour), &(this->min), &(this->sec))) {
       break;
     } 
@@ -51,11 +53,10 @@ void GPS::atualizaGPS {
 }
 
 void GPS::imprimir() {
-  Serial.println("Latitude: " + String(this->lat, 8) + "\tLongitude: " + String(this->lon, 8));
-  Serial.println("Speed: " + String(speed) + "\tAltitude: " + String(alt));
-  Serial.println("Visible Satellites: " + String(this->vsat) + "\tUsed Satellites: " + String(this->usat));
-  Serial.println("Accuracy: " + String(this->accuracy));
-  Serial.println("Year: " + String(this->year) + "\tMonth: " + String(this->month) + "\tDay: " + String(this->day));
-  Serial.println("Hour: " + String(this->hour) + "\tMinute: " + Stringthis->(min) + "\tSecond: " + String(this->sec));
+  SerialMon.println("Latitude: " + String(this->lat, 8) + "\tLongitude: " + String(this->lon, 8));
+  SerialMon.println("Speed: " + String(speed) + "\tAltitude: " + String(alt));
+  SerialMon.println("Visible Satellites: " + String(this->vsat) + "\tUsed Satellites: " + String(this->usat));
+  SerialMon.println("Accuracy: " + String(this->accuracy));
+  SerialMon.println("Year: " + String(this->year) + "\tMonth: " + String(this->month) + "\tDay: " + String(this->day));
+  SerialMon.println("Hour: " + String(this->hour) + "\tMinute: " + String(this->min) + "\tSecond: " + String(this->sec));
 }
-
