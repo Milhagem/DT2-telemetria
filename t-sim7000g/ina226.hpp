@@ -18,7 +18,7 @@
 #define mili  0.001     // 10^-3 (m)
 #define micro 0.000001  // 10^-6 (µ)
 
-class ina226 {
+class INA226 {
 private:
     INA_Class INA;
 

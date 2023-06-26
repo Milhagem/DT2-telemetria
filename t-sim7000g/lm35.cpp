@@ -1,6 +1,6 @@
 #include "lm35.hpp"
 
-float lm35::medeTemperatura(){
+float LM35::medeTemperatura(){
     // Le o valor de na saida do AmpOp e divide pelo ganho
     int adcValAmpOp = analogRead(AMPOP_OUT);
     int adcVal = adcValAmpOp / GAIN;
@@ -11,7 +11,7 @@ float lm35::medeTemperatura(){
     
 }
 
-void lm35::imprimeTemperatura(){
+void LM35::imprimeTemperatura(){
     Serial.print("Temperatura: ");
     Serial.print(this->temperatura);
     Serial.print("°C");
