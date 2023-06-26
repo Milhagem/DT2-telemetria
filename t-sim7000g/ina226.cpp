@@ -14,14 +14,12 @@ void ina226::setupINA226() {
 
 void ina226::atualizaINA226() {
   // Atualiza tensao
-  uint16_t rawVoltage = 666;
-  rawVoltage = INA.getBusMilliVolts();
-  this->voltage_battery = (float)rawVoltage * ((R5 + R6) / R6) * fatorCorrecaoV * mili; // Esse valor que esta sendo multiplicado pelo valor da tensao tem a funcao de calibrar o sensor
+  uint16_t raw_voltage = INA.getBusMilliVolts();;
+  this->voltage_battery = (float)raw_voltage * ((R5 + R6) / R6) * fatorCorrecaoV * mili; // Esse valor que esta sendo multiplicado pelo valor da tensao tem a funcao de calibrar o sensor
 
   // Atualiza corrente
-  int32_t rawCurrent = -666;
-  rawCurrent = INA.getShuntMicroVolts();
-  this->current_motor = (float)rawCurrent * (micro / shunt) * fatorCorrecaoC; // Esse valor que esta sendo multiplicado pelo valor da corrente tem a funcao de calibrar o sensor
+  int32_t raw_current = INA.getShuntMicroVolts();;
+  this->current_motor = (float)raw_current * (micro / shunt) * fatorCorrecaoC; // Esse valor que esta sendo multiplicado pelo valor da corrente tem a funcao de calibrar o sensor
 
   // Atualiza potencia
   this->power = (float)INA.getBusMicroWatts() * micro;
@@ -31,7 +29,7 @@ void ina226::atualizaINA226() {
   tempoAnterior = tempoAtual;
   tempoAtual = millis();
   tempoDelta = tempoAtual - tempoAnterior;
-  float consumoParcial = power * (tempoDelta) * fatorMili;
+  float consumoParcial = power * (tempoDelta) * mili;
   consumption = consumption + consumoParcial;
 }
 
