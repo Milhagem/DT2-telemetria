@@ -5,6 +5,8 @@
 #define SD_CS   13
 #define SD_MOSI 15
 #define SD_SCLK 14
+#define PWR_PIN 4
+#define LED_PIN 12
 
 #define ONE_BIT_MODE  true
 
@@ -14,8 +16,8 @@ void setup(){
     pinMode(SD_MISO, INPUT_PULLUP);
     pinMode(SD_CS, INPUT_PULLUP);
     pinMode(SD_MOSI, INPUT_PULLUP);
-    pinMode(4, INPUT_PULLUP);
-    pinMode(12, INPUT_PULLUP);
+    pinMode(PWR_PIN, INPUT_PULLUP);
+    pinMode(LED_PIN, INPUT_PULLUP);
     
     if(!SD_MMC.begin("/sdcard", ONE_BIT_MODE)){
         Serial.println("Card Mount Failed");
