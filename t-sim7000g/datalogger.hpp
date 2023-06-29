@@ -13,7 +13,7 @@
 
 #define ONE_BIT_MODE  true
 
-class datalogger {
+class Datalogger {
 private:
     File meu_arquivo;
     
@@ -28,7 +28,7 @@ public:
      * @param nome_arquivo nome do arquivo
     */
     void abreArquivo(String nome_arquivo);
-    void concatenaArquivo(const char * path, const char * message);
+    void concatenaArquivo(const char * path, String *message);
 };
 
 #endif 
