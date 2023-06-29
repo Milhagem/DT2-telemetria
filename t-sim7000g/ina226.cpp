@@ -35,15 +35,15 @@ void Ina226::atualizaINA226() {
 
 void Ina226::imprimir() {
   Serial.print("Tensão Bateria: ");
-  Serial.print(this->voltage_battery);
+  Serial.print(this->getVoltage());
   Serial.println("V");
   Serial.print("Corrente Motor: ");
-  Serial.print(this->current_motor);
+  Serial.print(this->getCurrent());
   Serial.println("A");
   Serial.print("Potencia Instantânea: ");
-  Serial.print(this->power);
+  Serial.print(this->getPower());
   Serial.println("W");
   Serial.print("Consumo: ");
-  Serial.print(this->consumption);
+  Serial.print(this->getConsumption());
   Serial.println("unidades de energia");
 }

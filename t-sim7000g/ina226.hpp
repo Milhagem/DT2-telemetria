@@ -27,6 +27,7 @@ private:
     float power;
     float consumption;
 
+    // Variaveis de tempo para calculo de power e consumption
     long tempoAtual;
     long tempoAnterior;
     long tempoDelta;
