@@ -23,12 +23,14 @@ public:
     */
     void dataloggerSetup();
         /**
-     * @brief Abre o arquivo passado como parametro se ele existir. Se nao, cria o arquivo
+     * @brief Abre o arquivo passado no path se ele existir. Se nao, cria o arquivo
      * 
      * @param nome_arquivo nome do arquivo
     */
-    void abreArquivo(String nome_arquivo);
-    void concatenaArquivo(const char * path, String *message);
+    void abreArquivo(String path);
+    void concatenaArquivo(String path, String *message);
+    String lePrimeiraLinha(File file);
+    String leUltimaLinha(File file);
 };
 
 #endif 
