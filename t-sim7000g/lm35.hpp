@@ -14,8 +14,11 @@ private:
     float temperatura;
 
 public:
-    float medeTemperatura();
-     /**
+    /**
+     * @brief Atualiza o valor de temperatura do sensor LM35
+    */
+    float atualizaLM35();
+    /**
      * @brief Imprime a temperatura na saida Serial;
     */
     void imprimir();
