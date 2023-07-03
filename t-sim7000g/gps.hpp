@@ -50,8 +50,8 @@ public:
     */
     void imprimir();
 
-    float getlat() { return this->lat; }
-    float getlon() { return this->lon; }
+    float getLat() { return this->lat; }
+    float getLon() { return this->lon; }
 
 };
  
