@@ -17,35 +17,36 @@ void Datalogger::dataloggerSetup(){
 }
 
 void Datalogger::abreArquivo(String path){
-    this->meu_arquivo = SD_MMC.open("/"+ path + ".txt", FILE_WRITE);
+    File temp_file = SD_MMC.open(path, FILE_READ);
+
+    if(temp_file.size() == 0) {
+      Serial.println("O arquivo não existe. Criando e adicionando cabecalho...");
+      String cabecalho = "timestamp,lat,lon,voltage,current,power,consumption,speed,average_speed,temperatura";
+      this->meu_arquivo = SD_MMC.open(path, FILE_WRITE);
+      this->meu_arquivo.println(cabecalho);
+    } else {
+      this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
+    }
+
     if (this->meu_arquivo){
         Serial.println("FILE OK !!!");
     } else {
         Serial.println("FILE NOT OK !!!");
     }
-
-    // Confere se o arquivo criado possui cabecalho. Se nao tiver, adiciona
-    String cabecalho = "timestamp,lat,lon,voltage,current,power,consumption,speed,average_speed,temperatura\n";
-    String primeira_linha = this->lePrimeiraLinha(this->meu_arquivo);
-    if (primeira_linha.length() == 0) {
-        this->meu_arquivo.print(cabecalho);
-    }
-
     this->meu_arquivo.close();
 }
-
-void Datalogger::concatenaArquivo(String path, String* dados){
-    Serial.printf("Appending to file: %s\n", path);
+void Datalogger::concatenaArquivo(String path, String dados){
+    Serial.print("Appending to file: ");
+    Serial.println(path);
 
     this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
     if(!this->meu_arquivo ) {
         Serial.println("Failed to open file for appending");
         return;
     }
-    if(this->meu_arquivo.print(*dados)) {
+    if(this->meu_arquivo) {
+        this->meu_arquivo.println(dados);
         Serial.println("Message appended:");
-        // Imprime a ultima linha do arquivo
-        Serial.println(this->leUltimaLinha(this->meu_arquivo));
     } else {
         Serial.println("Append failed");
     }
