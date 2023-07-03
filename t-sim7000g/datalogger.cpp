@@ -17,14 +17,16 @@ void Datalogger::dataloggerSetup(){
 }
 
 void Datalogger::abreArquivo(String path){
-    File temp_file = SD_MMC.open(path, FILE_READ);
+    this->meu_arquivo = SD_MMC.open(path, FILE_READ);
 
-    if(temp_file.size() == 0) {
-      Serial.println("O arquivo não existe. Criando e adicionando cabecalho...");
+    if(this->meu_arquivo.size() == 0) {
+      Serial.println(path+" não existe. Criando e adicionando cabecalho...");
+      
       String cabecalho = "timestamp,lat,lon,voltage,current,power,consumption,speed,average_speed,temperatura";
       this->meu_arquivo = SD_MMC.open(path, FILE_WRITE);
       this->meu_arquivo.println(cabecalho);
     } else {
+      Serial.println("Abrindo "+path+ " para concatenacao...")  ;
       this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
     }
 
@@ -46,28 +48,30 @@ void Datalogger::concatenaArquivo(String path, String dados){
     }
     if(this->meu_arquivo) {
         this->meu_arquivo.println(dados);
-        Serial.println("Message appended:");
+        Serial.println("Message appended");
     } else {
         Serial.println("Append failed");
     }
     this->meu_arquivo .close();
 }
 
+// @camposouza Nao sei se essa funcao funciona
 String Datalogger::lePrimeiraLinha(File file) {
     String firstLine = file.readStringUntil('\n');
 
     file.close();
 
     if (firstLine.length() > 0) {
-        Serial.print("A primeira linha do arquivo é: ");
+       //  Serial.print("A primeira linha do arquivo é: ");
         Serial.println(firstLine);
         return firstLine;
     } else {
         Serial.println("O arquivo está vazio");
-        return firstLine;
+        return "";
     }
 }
 
+// @camposouza Nao sei se essa funcao funciona
 String Datalogger::leUltimaLinha(File file) {
     String lastLine;
     String currentLine;
@@ -82,11 +86,11 @@ String Datalogger::leUltimaLinha(File file) {
     file.close();
 
     if (lastLine.length() > 0) {
-        Serial.print("A última linha do arquivo é: ");
+        // Serial.print("A última linha do arquivo é: ");
         Serial.println(lastLine);
         return lastLine;
     } else {
         Serial.println("O arquivo está vazio");
-        return lastLine;
+        return "";
     }
 }
