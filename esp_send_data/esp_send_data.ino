@@ -1,17 +1,17 @@
 #define configUSE_TIME_SLICING 1
-#define configTICK_RATE_HZ 10
+#define configTICK_RATE_HZ    10
 
 #define TINY_GSM_MODEM_SIM7000
 #define TINY_GSM_RX_BUFFER 1024 // Set RX buffer to 1Kb
 
 // LilyGO T-SIM7000G Pinout
 #define UART_BAUD   115200
-#define PIN_DTR     25
-#define PIN_TX      27
-#define PIN_RX      26
-#define PWR_PIN     4
+#define PIN_DTR         25
+#define PIN_TX          27
+#define PIN_RX          26
+#define PWR_PIN          4
 
-#define LED_PIN     12
+#define LED_PIN         12
 
 #include <TinyGSM.h>
 
@@ -44,6 +44,7 @@ const char* serverName = "http://telemetria.milhagemufmg.com/post_data.php";
 String apiKeyValue = "tPmAT5Ab3j7F9";
 //----------------------------------------------------------------------------------------------------------------
 
+/*------------------------------Parte funcional comentada---------------------------------*/
 // Vamos calibrar o divisor de tensão e o sensor de corrente para o INA 226
 // R5 = 20 kΩ
 // R6 = 68 kΩ
@@ -59,12 +60,14 @@ String apiKeyValue = "tPmAT5Ab3j7F9";
 //#define valorShunt 0.001
 //#define fatorCorrecaoV 1.01626
 //#define fatorCorrecaoC 0.482625
+/*-----------------------------------------------------------------------------------------*/
 
-#define fatorMili 0.001
+
+#define fatorMili  0.001
 #define fatorMicro 0.000001
 
-#define ADC_VREF_mV    3300.0  // in millivolt
-#define ADC_RESOLUTION 4096.0
+#define ADC_VREF_mV    3300.00  // in millivolt
+#define ADC_RESOLUTION 4096.00
 #define AMPOP_OUT        35    // ESP32 pin connected to LM358P
 #define GAIN              3.89 // AMPOP_OUT = LM35 output * GAIN
 
@@ -272,7 +275,7 @@ void TemperaturaTask(void *pvParameters) {
     Serial.print("Tempo Anterior LM :");
     Serial.println(tempoLMAnterior);
  
-   xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+    xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
     // read the ADC value from the temperature OpAmp
     adcValAmpOp = analogRead(AMPOP_OUT);
     // converts de ADC value read from the OpAmp into the LM35 original value
