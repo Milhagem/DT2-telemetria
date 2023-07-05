@@ -42,7 +42,7 @@ public:
     */
     void atualizaINA226();
      /**
-     * @brief Imprime todosos atributos na saida Serial;
+     * @brief Imprime todosos atributos do INA226 (current_motor, voltage_battery...) na saida Serial;
     */
     void imprimir();
 
