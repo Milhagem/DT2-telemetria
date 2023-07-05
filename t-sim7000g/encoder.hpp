@@ -12,21 +12,19 @@ private:
     double average_speed;   // km/h
     double distancia_total; // km
     double tempo_total;     // segundos
-    bool ja_andou;
 
     /**
-     * @brief Struct para armazenar variaveis que serao usadas em void calculaVelocidade(double rps, double wheel_diameter)
+     * Variaveis que serao usadas em void calculaVelocidade(double rps, double wheel_diameter)
     */
-    typedef struct {
-        double tempo_inicio;
-        double tempo_speed_old;
-        double tempo_speedAtua;
-        double tempo_delta;
-        double tempo_total;
-        double speed_old;
-        double distancia_trecho;
-        bool ja_andou;
-    } calc_vel;
+    double tempo_inicio;      // segundos
+    double tempo_speed_old;   // segundos
+    double tempo_speed_atual; // segundos
+    double tempo_delta;       // segundos
+    double tempo_total;       // segundos
+    double speed_old;         // m/s
+    double distancia_trecho;  // metros
+    bool ja_andou;
+    
         
 public:
     /**
@@ -43,6 +41,9 @@ public:
      * @brief Calcula a velocidade com base nas rotacoes por segundo e diametro da roda
     */
     void calculaVelocidade(double rps, double wheel_diameter);
+    /**
+     * @brief Imprime os atributos do Encoder (speed, average_speed, distancia_total e tempo_total) na saida Serial
+    */
     void imprimir();
 }; 
 

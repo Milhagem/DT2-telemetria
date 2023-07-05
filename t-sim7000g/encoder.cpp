@@ -1,6 +1,14 @@
 #include "encoder.hpp"
 
 void Encoder::encoderSetup() {
+  this->tempo_inicio     = 0;
+  this->tempo_speed_old  = 0;
+  this->tempo_speed_atual = 0;
+  this->tempo_delta      = 0;
+  this->tempo_total      = 0;
+  this->speed_old        = 0;
+  this->distancia_trecho = 0;
+  this->ja_andou         = false;
   
 }
 
@@ -60,28 +68,29 @@ double Encoder::amostraVoltas() {
 
 
 void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
-  double distancia_trecho = 0;
-  double distancia_total = 0;
+  double distancia_trecho = 0; // metros
+  double distancia_total = 0;  // metros
 
   double rpm = rps * 60 * 0.333;
   double speed_mpm = rps * 60 * 0.333 * wheel_diameter; // metros por minuto (m/min)
   this->speed = (speed_mpm * (60/1000));                // km/h
 
-  if(speed != 0 && this->calc_vel == 0) { // Começou a andar;
+  if(speed != 0 && this->ja_andou == 0) { // Começou a andar;
     tempo_inicio = millis();
     tempo_speed_old = millis();
-    tempo_speed  = millis();
+    tempo_speed_atual = millis();
     speed_old = speed_mpm;
     this->ja_andou = true;
-  } else if(this->ja_andou == true){  // Ja andou
-    tempo_speed = millis();
-    tempo_total = tempo_speed - tempo_inicio;
+
+  } else if(this->ja_andou == true){
+    tempo_speed_atual = millis();
+    tempo_total = tempo_speed_atual - tempo_inicio;
     tempo_delta = tempo_speed_atual - tempo_speed_old;
-    distancia_trecho = speed_mpm * (tempo_delta * ms_TO_min);         // metros (m)
-    distancia_total = (distancia_trecho + distancia_total)/1000;     // km
-    average_speed = distancia_total/ ((tempo_total * ms_TO_min)/60); // km/h
+    distancia_trecho = speed_mpm * (tempo_delta * ms_TO_min);
+    distancia_total = (distancia_trecho + distancia_total)/1000;
+    average_speed = distancia_total/ ((tempo_total * ms_TO_min)/60);
     speed_old = speed_mpm;
-    tempo_speed_old = tempo_speed;
+    tempo_speed_old = tempo_speed_atual;
   }
 }
 
