@@ -1,37 +1,35 @@
 #include <Arduino.h>
-
+#include "datalogger.hpp"
 #include "lm35.hpp"
 #include "ina226.hpp"
-#include "gps.hpp"
-#include "httpclient.hpp"
 
-// Coloque suas credenciais
-const char* ssid = "";
-const char* password = "";
-const char* serverName;
-String apiKeyValue;
-
+Datalogger datalogger;
 LM35 lm35;
 Ina226 ina226;
-GPS gps;
-httpclient envioDeDados(ssid, password, serverName, apiKeyValue);
+
+// Escreva o nome do arquivo que sera gravado
+String nome_arquivo = "teste_20230703.txt";
 
 void setup() {
+  delay(2000);
   Serial.begin(115200);
-
+  
   ina226.setupINA226();
-  gps.setupGPS();
-  envioDeDados.wifiSetup(ssid, password);
+
+  datalogger.dataloggerSetup();
+  datalogger.abreArquivo("/"+nome_arquivo);
 }
 
 void loop() {
-  lm35.medeTemperatura();
+  lm35.atualizaLM35();
   lm35.imprimir();
 
   ina226.atualizaINA226();
   ina226.imprimir();
   
-  gps.atualizaGPS();
-  gps.imprimir();
+  String dados = "Temperatura: " + String(lm35.getTemperatura()) + " Tensao: " + String(ina226.getVoltage()) + " Corrente: " + String(ina226.getCurrent());
+  
+  datalogger.concatenaArquivo("/"+nome_arquivo, dados);
 
+  delay(5000);
 }
