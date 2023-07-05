@@ -45,6 +45,10 @@ public:
      * @brief Imprime os atributos do Encoder (speed, average_speed, distancia_total e tempo_total) na saida Serial
     */
     void imprimir();
+    // km/h
+    double getSpeed() { return this->speed; }
+    // km/h
+    double getAverageSpeed() { return this->average_speed; }
 }; 
 
 #endif
