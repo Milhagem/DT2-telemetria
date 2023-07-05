@@ -1,14 +1,14 @@
 #include "encoder.hpp"
 
 void Encoder::encoderSetup() {
-  this->tempo_inicio     = 0;
-  this->tempo_speed_old  = 0;
+  this->tempo_inicio      = 0;
+  this->tempo_speed_old   = 0;
   this->tempo_speed_atual = 0;
-  this->tempo_delta      = 0;
-  this->tempo_total      = 0;
-  this->speed_old        = 0;
-  this->distancia_trecho = 0;
-  this->ja_andou         = false;
+  this->tempo_delta       = 0;
+  this->tempo_total       = 0;
+  this->speed_old         = 0;
+  this->distancia_trecho  = 0;
+  this->ja_andou          = false;
   
 }
 
@@ -31,8 +31,6 @@ double Encoder::amostraVoltas() {
   double rps = 0;
   
   // Iterate thru samples
-  uint8_t n;
-  volatile uint8_t nextSample = 0;
   for (int i = 0; i < SAMPLES; i++) {
     n = (nextSample + i) % SAMPLES;
     pSample = &samples[n];
@@ -68,29 +66,29 @@ double Encoder::amostraVoltas() {
 
 
 void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
-  double distancia_trecho = 0; // metros
-  double distancia_total = 0;  // metros
+  distancia_trecho = 0; // metros
+  distancia_total = 0;  // metros @camposouza CONFERIR SE FAZ SENTIDO distancia_total estar aqui e ser zerada sempre
 
   double rpm = rps * 60 * 0.333;
-  double speed_mpm = rps * 60 * 0.333 * wheel_diameter; // metros por minuto (m/min)
+  double speed_mpm = rps * 60 * 0.333 * wheel_diameter; // metros por minuto
   this->speed = (speed_mpm * (60/1000));                // km/h
 
   if(speed != 0 && this->ja_andou == 0) { // Começou a andar;
-    tempo_inicio = millis();
-    tempo_speed_old = millis();
-    tempo_speed_atual = millis();
-    speed_old = speed_mpm;
+    this->tempo_inicio = millis();
+    this->tempo_speed_old = millis();
+    this->tempo_speed_atual = millis();
+    this->speed_old = speed_mpm;
     this->ja_andou = true;
 
   } else if(this->ja_andou == true){
-    tempo_speed_atual = millis();
-    tempo_total = tempo_speed_atual - tempo_inicio;
-    tempo_delta = tempo_speed_atual - tempo_speed_old;
-    distancia_trecho = speed_mpm * (tempo_delta * ms_TO_min);
-    distancia_total = (distancia_trecho + distancia_total)/1000;
-    average_speed = distancia_total/ ((tempo_total * ms_TO_min)/60);
-    speed_old = speed_mpm;
-    tempo_speed_old = tempo_speed_atual;
+    this->tempo_speed_atual = millis();
+    this->tempo_total = this->tempo_speed_atual - this->tempo_inicio;
+    this->tempo_delta = this->tempo_speed_atual - this->tempo_speed_old;
+    this->distancia_trecho = speed_mpm * (this->tempo_delta * ms_TO_min);
+    this->distancia_total = (this->distancia_trecho + this->distancia_total)/1000;
+    this->average_speed = this->distancia_total/ ((this->tempo_total * ms_TO_min)/60);
+    this->speed_old = speed_mpm;
+    this->tempo_speed_old = this->tempo_speed_atual;
   }
 }
 

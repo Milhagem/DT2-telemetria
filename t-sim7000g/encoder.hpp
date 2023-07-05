@@ -1,5 +1,7 @@
-#ifndef ENCODER
+#ifndef ENCODER_H
 #define ENCODER_H
+
+#include <Arduino.h>
 
 #define MEASURE_PIN         25
 #define WHEEL_CIRCUMFERANCE 1.596/12
@@ -11,7 +13,6 @@ private:
     double speed;           // km/h
     double average_speed;   // km/h
     double distancia_total; // km
-    double tempo_total;     // segundos
 
     /**
      * Variaveis que serao usadas em void calculaVelocidade(double rps, double wheel_diameter)
@@ -19,7 +20,7 @@ private:
     double tempo_inicio;      // segundos
     double tempo_speed_old;   // segundos
     double tempo_speed_atual; // segundos
-    double tempo_delta;       // segundos
+    double tempo_delta;       // segundos (diferenca de tempo)
     double tempo_total;       // segundos
     double speed_old;         // m/s
     double distancia_trecho;  // metros
