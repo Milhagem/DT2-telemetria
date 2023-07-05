@@ -8,8 +8,6 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 
-TFT_eSPI tft = TFT_eSPI();
-
 
 /**
  * some principal color definitions
@@ -30,20 +28,21 @@ TFT_eSPI tft = TFT_eSPI();
 
 class DisplayTFT {
 private:
+  TFT_eSPI tft = TFT_eSPI();
 
 public:
-   /**
+    /**
      * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o DisplayTFT
     */
     void setupDisplayTFT();
     /**
      * @brief Cria o texto do Consumo Acumulado (referente ao sensor INA226)
     */
-    void mostraConsumo();
+    void mostraConsumo(float consumo);
     /**
      * @brief Cria o texto da Velocidade Media (referente ao Encoder)
     */
-    void mostraVelocidadeMedia();
+    void mostraVelocidadeMedia(double vel_media);
     /**
      * @brief Desenha o medidor na tela do Display
      * 
@@ -62,6 +61,6 @@ public:
      * @brief Retorna um valor no intervalo -1 a +1 para um determinado ângulo de fase em graus
     */
     float sineWave(int phase) { return sin(phase * 0.0174532925); }
-}
+};
 
 #endif

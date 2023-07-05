@@ -1,34 +1,34 @@
 #include "displayTFT.hpp"
 
 void DisplayTFT::setupDisplayTFT() {
-  tft.init();  
-  tft.setRotation(2);       // display in portrait
-  tft.fillScreen(BLACK); 
-  tft.setCursor(165,300); 
-  tft.setTextSize (1);
-  tft.print ("EH O MILHAS"); //ntj
+  this->tft.init();  
+  this->tft.setRotation(2);       // display in portrait
+  this->tft.fillScreen(BLACK); 
+  this->tft.setCursor(165,300); 
+  this->tft.setTextSize (1);
+  this->tft.print ("EH O MILHAS"); //ntj
 }
 
-void DisplayTFT::mostraConsumo() {
+void DisplayTFT::mostraConsumo(float consumo) {
   int xpos = 55, ypos = 25;                            // text position
-  tft.setTextColor (WHITE,BLACK);
-  tft.setCursor (xpos,ypos); tft.setTextSize (2);      // units position relative to scale
-  tft.print ("Gasto: ");
-  tft.setCursor (xpos+72,ypos); tft.setTextSize (2);   // units position relative to scale
-  tft.print (gasto);  
-  tft.setCursor (xpos+115,ypos); tft.setTextSize (2);  // units position relative to scale
-  tft.print ("J");
+  this->tft.setTextColor (WHITE,BLACK);
+  this->tft.setCursor (xpos,ypos); this->tft.setTextSize (2);      // units position relative to scale
+  this->tft.print ("Gasto: ");
+  this->tft.setCursor (xpos+72,ypos); this->tft.setTextSize (2);   // units position relative to scale
+  this->tft.print (consumo);  
+  this->tft.setCursor (xpos+115,ypos); this->tft.setTextSize (2);  // units position relative to scale
+  this->tft.print ("J");
 }
 
-void DisplayTFT::mostraVelocidadeMedia() {
-  xpos = 40, ypos = 265;                               //text position
-  tft.setTextColor (WHITE,BLACK);
-  tft.setCursor (xpos-10,ypos); tft.setTextSize (2);   // units position relative to scale
-  tft.print ("Vel Med: ");
-  tft.setCursor (xpos+85,ypos); tft.setTextSize (2);   // units position relative to scale
-  tft.print (vel_media);  
-  tft.setCursor (xpos+125,ypos); tft.setTextSize (2);  // units position relative to scale
-  tft.print ("KM/H");  
+void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
+  int xpos = 40, ypos = 265;                               //text position
+  this->tft.setTextColor (WHITE,BLACK);
+  this->tft.setCursor (xpos-10,ypos); this->tft.setTextSize (2);   // units position relative to scale
+  this->tft.print ("Vel Med: ");
+  this->tft.setCursor (xpos+85,ypos); this->tft.setTextSize (2);   // units position relative to scale
+  this->tft.print (vel_media);  
+  this->tft.setCursor (xpos+125,ypos); this->tft.setTextSize (2);  // units position relative to scale
+  this->tft.print ("KM/H");  
 }
 
 int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, int r, char *units, byte scheme) {
@@ -65,11 +65,11 @@ int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, 
         case 2: colour = rainbow(map(i, -angle, angle, 70, 0)); break;   // verde para azul (velocidade dt2)
         default: colour = BLUE; break;                                   // fixed color
       }
-      tft.fillTriangle(x0, y0, x1, y1, x2, y2, colour);
-      tft.fillTriangle(x1, y1, x2, y2, x3, y3, colour);
+      this->tft.fillTriangle(x0, y0, x1, y1, x2, y2, colour);
+      this->tft.fillTriangle(x1, y1, x2, y2, x3, y3, colour);
     } else {                                                           // fill in blank segments
-      tft.fillTriangle(x0, y0, x1, y1, x2, y2, SCALE1);                // color of the unoccupied ring scale 
-      tft.fillTriangle(x1, y1, x2, y2, x3, y3, SCALE0);                // color of the unoccupied ring scale
+      this->tft.fillTriangle(x0, y0, x1, y1, x2, y2, SCALE1);                // color of the unoccupied ring scale 
+      this->tft.fillTriangle(x1, y1, x2, y2, x3, y3, SCALE0);                // color of the unoccupied ring scale
     }
   }
 
@@ -78,22 +78,22 @@ int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, 
   dtostrf (value, len, 0, buf);
   buf[len] = ' '; buf[len] = 0;                                               // add blanking space and terminator, helps to centre text too!
 
-  tft.setTextSize (2);
+  this->tft.setTextSize (2);
   if (value>9) {
-    tft.setTextColor (colour,BLACK);
-    tft.setCursor (x-25,y-10);tft.setTextSize (5);
-    tft.print (buf);
+    this->tft.setTextColor (colour,BLACK);
+    this->tft.setCursor (x-25,y-10);this->tft.setTextSize (5);
+    this->tft.print (buf);
   }
 
   if(value<10) {
-    tft.setTextColor (colour,BLACK);
-    tft.setCursor (x-25,y-10);tft.setTextSize (5);
-    tft.print (buf);
+    this->tft.setTextColor (colour,BLACK);
+    this->tft.setCursor (x-25,y-10);this->tft.setTextSize (5);
+    this->tft.print (buf);
   }
 
-  tft.setTextColor (WHITE,BLACK);
-  tft.setCursor (x-23,y+55);tft.setTextSize (2);                              // units position relative to scale
-  tft.print (units);                                                          // units display = celsius                                        
+  this->tft.setTextColor (WHITE,BLACK);
+  this->tft.setCursor (x-23,y+55);this->tft.setTextSize (2);                              // units position relative to scale
+  this->tft.print (units);                                                          // units display = celsius                                        
   return x + r;                                                               // calculate and return right hand side x coordinate
 }
 
