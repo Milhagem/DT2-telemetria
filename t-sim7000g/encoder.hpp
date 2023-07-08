@@ -3,9 +3,9 @@
 
 #include <Arduino.h>
 
-#define MEASURE_PIN         25
-#define WHEEL_CIRCUMFERANCE 1.596/12
-#define SAMPLES             25
+#define MEASURE_PIN         25            // pino D0 encoder
+#define WHEEL_CIRCUMFERANCE 0.151         // m     
+#define SAMPLES             16            // numero de pontos medidos no disco de freio
 #define ms_TO_min           0.00001666666 // milisegundos para minutos
 
 class Encoder {
@@ -25,17 +25,16 @@ private:
     double speed_old;         // m/s
     double distancia_trecho;  // metros
     bool ja_andou;
-    
         
 public:
     /**
      * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o Encoder
     */
-    void encoderSetup();
+    void setupEncoder();
     /**
-     * @brief Calcula voltas totais e voltas por segundo da roda
+     * @brief Calcula voltas totais e voltas por MINUTO da roda
      * 
-     * @return rps
+     * @return rpm
     */
     double amostraVoltas();
      /**

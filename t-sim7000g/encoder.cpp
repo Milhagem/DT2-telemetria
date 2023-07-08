@@ -1,6 +1,13 @@
 #include "encoder.hpp"
 
-void Encoder::encoderSetup() {
+volatile byte pulsos;
+void contador() {
+  pulsos++;
+}
+
+void Encoder::setupEncoder() {
+  attachInterrupt(digitalPinToInterrupt(MEASURE_PIN), contador, FALLING);
+
   this->tempo_inicio      = 0;
   this->tempo_speed_old   = 0;
   this->tempo_speed_atual = 0;
@@ -9,59 +16,28 @@ void Encoder::encoderSetup() {
   this->speed_old         = 0;
   this->distancia_trecho  = 0;
   this->ja_andou          = false;
-  
 }
 
+unsigned long timeold = 0;
 double Encoder::amostraVoltas() {
-  typedef struct {
-    uint16_t ms;
-    uint16_t revolutions;
-  } sample_t;
+  int rpm = 0;
 
-  volatile uint8_t nextSample = 0;
-  volatile sample_t samples[SAMPLES] = {};
+  // Atualiza contador a cada segundo
+  if (millis() - timeold >= 1000) {
+    
+    // Desabilita interrupcao durante o calculo
+    detachInterrupt(0);
+    rpm = (60 * 1000 / SAMPLES ) / (millis() - timeold) * pulsos;
+    timeold = millis();
+    pulsos = 0;
 
-  // Temp vars for computing totals
-  volatile sample_t* pSample;
-  uint8_t n;
-  uint8_t totalRevolutions = 0;
-  uint8_t totalSamples = 0;
-  uint16_t minMs = 0;
-  uint16_t maxMs = 0;
-  double rps = 0;
-  
-  // Iterate thru samples
-  for (int i = 0; i < SAMPLES; i++) {
-    n = (nextSample + i) % SAMPLES;
-    pSample = &samples[n];
-
-    if (pSample->ms > 0) {
-      // Good sample
-      totalSamples++;
-      totalRevolutions += pSample->revolutions;
-
-      minMs = std::min(minMs, (uint16_t)pSample->ms);
-      maxMs = std::max(maxMs, (uint16_t)pSample->ms);
-    }
+    Serial.print("RPM = ");
+    Serial.println(rpm, DEC);
+    
+    //Habilita interrupcao
+    attachInterrupt(0, contador, FALLING);
   }
-
-  // Compute rps
-  if (totalSamples > 0) {
-    rps = totalRevolutions * 1.0 / totalSamples;
-  }
-
-  // Prepare for a new sample
-  if (nextSample >= SAMPLES-1) {
-    nextSample = 0;
-  } else {
-    nextSample++;
-  }
-
-  // Clear old sample data
-  samples[nextSample].ms = millis();
-  samples[nextSample].revolutions = 0;
-
-  return rps;
+  return rpm;
 }
 
 
