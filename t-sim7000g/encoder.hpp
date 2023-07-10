@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 #define MEASURE_PIN         25            // pino D0 encoder
-#define WHEEL_CIRCUMFERANCE 0.151         // m     
+#define WHEEL_CIRCUMFERANCE 0.15236       // m     
 #define SAMPLES             16            // numero de pontos medidos no disco de freio
 #define ms_TO_min           0.00001666666 // milisegundos para minutos
 
@@ -38,9 +38,11 @@ public:
     */
     double amostraVoltas();
      /**
-     * @brief Calcula a velocidade com base nas rotacoes por segundo e diametro da roda
+     * @brief Calcula a velocidade com base nas rotacoes por segundo e WHEEL_CIRCUMFERANCE
+     * 
+     * @param rpm Rotacoes por minuto
     */
-    void calculaVelocidade(double rps, double wheel_diameter);
+    void calculaVelocidade(double rpm);
     /**
      * @brief Imprime os atributos do Encoder (speed, average_speed, distancia_total e tempo_total) na saida Serial
     */

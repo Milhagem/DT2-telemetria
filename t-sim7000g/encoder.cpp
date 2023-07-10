@@ -8,6 +8,10 @@ void contador() {
 void Encoder::setupEncoder() {
   attachInterrupt(digitalPinToInterrupt(MEASURE_PIN), contador, FALLING);
 
+  double speed            = 0;
+  double average_speed    = 0;
+  double distancia_total  = 0;
+
   this->tempo_inicio      = 0;
   this->tempo_speed_old   = 0;
   this->tempo_speed_atual = 0;
@@ -27,36 +31,37 @@ double Encoder::amostraVoltas() {
     
     // Desabilita interrupcao durante o calculo
     detachInterrupt(0);
-    rpm = (60 * 1000 / SAMPLES ) / (millis() - timeold) * pulsos;
+    rpm = (60 * 1000 / SAMPLES ) / (millis() - timeold) * pulsos; 
+
     timeold = millis();
     pulsos = 0;
 
     Serial.print("RPM = ");
     Serial.println(rpm, DEC);
     
-    //Habilita interrupcao
+    // Habilita interrupcao
     attachInterrupt(0, contador, FALLING);
   }
   return rpm;
 }
 
 
-void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
-  distancia_trecho = 0; // metros
-  distancia_total = 0;  // metros @camposouza CONFERIR SE FAZ SENTIDO distancia_total estar aqui e ser zerada sempre
+void Encoder::calculaVelocidade(double rpm) {
+  distancia_trecho = 0;  // metros
+  
+  double speed_mpm = rpm * WHEEL_CIRCUMFERANCE; // metros por minuto
+  this->speed = (speed_mpm * (60.0/1000.0));        // km/h
 
-  double rpm = rps * 60 * 0.333;
-  double speed_mpm = rps * 60 * 0.333 * wheel_diameter; // metros por minuto
-  this->speed = (speed_mpm * (60/1000));                // km/h
-
-  if(speed != 0 && this->ja_andou == 0) { // Começou a andar;
+  if(speed != 0 && this->ja_andou == false) {  // Começou a andar;
+    Serial.println("Entrou no COMEÇOU a andar");
     this->tempo_inicio = millis();
     this->tempo_speed_old = millis();
     this->tempo_speed_atual = millis();
     this->speed_old = speed_mpm;
     this->ja_andou = true;
 
-  } else if(this->ja_andou == true){
+  } else if (this->ja_andou == true){
+    Serial.println("Entrou no JA ANDOU a andar");
     this->tempo_speed_atual = millis();
     this->tempo_total = this->tempo_speed_atual - this->tempo_inicio;
     this->tempo_delta = this->tempo_speed_atual - this->tempo_speed_old;
@@ -72,7 +77,7 @@ void Encoder::calculaVelocidade(double rps, double wheel_diameter) {
 void Encoder::imprimir() {
   Serial.print("Velocidade: ");
   Serial.print(this->speed);
-  Serial.println(" km/ ");
+  Serial.println(" km/h ");
   Serial.print("Velocidade media :");
   Serial.print(this->average_speed);
   Serial.println(" km/h");
