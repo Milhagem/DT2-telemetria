@@ -66,8 +66,8 @@ void Encoder::calculaVelocidade(double rpm) {
     this->tempo_total = this->tempo_speed_atual - this->tempo_inicio;
     this->tempo_delta = this->tempo_speed_atual - this->tempo_speed_old;
     this->distancia_trecho = speed_mpm * (this->tempo_delta * ms_TO_min);
-    this->distancia_total = (this->distancia_trecho + this->distancia_total)/1000;
-    this->average_speed = this->distancia_total/ ((this->tempo_total * ms_TO_min)/60);
+    this->distancia_total = (this->distancia_trecho + this->distancia_total)/1000.0;
+    this->average_speed = this->distancia_total/ ((this->tempo_total * ms_TO_min)/60.0);
     this->speed_old = speed_mpm;
     this->tempo_speed_old = this->tempo_speed_atual;
   }
