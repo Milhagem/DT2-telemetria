@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 #define MEASURE_PIN         25            // pino D0 encoder
-#define WHEEL_CIRCUMFERANCE 0.15236       // m     
+#define WHEEL_CIRCUMFERANCE 1.50          // m     
 #define SAMPLES             16            // numero de pontos medidos no disco de freio
 #define ms_TO_min           0.00001666666 // milisegundos para minutos
 
