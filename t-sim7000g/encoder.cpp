@@ -53,7 +53,6 @@ void Encoder::calculaVelocidade(double rpm) {
   this->speed = (speed_mpm * (60.0/1000.0));        // km/h
 
   if(speed != 0 && this->ja_andou == false) {  // Começou a andar;
-    Serial.println("Entrou no COMEÇOU a andar");
     this->tempo_inicio = millis();
     this->tempo_speed_old = millis();
     this->tempo_speed_atual = millis();
@@ -61,13 +60,12 @@ void Encoder::calculaVelocidade(double rpm) {
     this->ja_andou = true;
 
   } else if (this->ja_andou == true){
-    Serial.println("Entrou no JA ANDOU a andar");
     this->tempo_speed_atual = millis();
     this->tempo_total = this->tempo_speed_atual - this->tempo_inicio;
     this->tempo_delta = this->tempo_speed_atual - this->tempo_speed_old;
     this->distancia_trecho = speed_mpm * (this->tempo_delta * ms_TO_min);
-    this->distancia_total = (this->distancia_trecho + this->distancia_total)/1000.0;
-    this->average_speed = this->distancia_total/ ((this->tempo_total * ms_TO_min)/60.0);
+    this->distancia_total = this->distancia_total + this->distancia_trecho/1000.0;
+    this->average_speed = this->distancia_total / ((this->tempo_total * ms_TO_min)/60.0);
     this->speed_old = speed_mpm;
     this->tempo_speed_old = this->tempo_speed_atual;
   }
@@ -85,5 +83,5 @@ void Encoder::imprimir() {
   Serial.print(this->distancia_total);
   Serial.println(" km");
   Serial.print("Tempo total :");
-  Serial.println(this->tempo_total/1000);
+  Serial.println(this->tempo_total/1000.0);
 }
