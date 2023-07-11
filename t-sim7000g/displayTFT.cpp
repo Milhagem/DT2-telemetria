@@ -20,13 +20,49 @@ void DisplayTFT::mostraConsumo(float consumo) {
   this->tft.print ("J");
 }
 
-void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
+
+unsigned int DisplayTFT::rainbow(byte value) {
+  byte red = 0;                                                               // red is the top 5 bits of a 16 bit colour value
+  byte green = 0;                                                             // green is the middle 6 bits
+  byte blue = 0;                                                              // blue is the bottom 5 bits
+  byte quadrant = value / 32;
+
+  if (quadrant == 0) {
+    blue = 31;
+    green = 2 * (value % 32);
+    red = 0;
+  }
+  
+  if (quadrant == 1) {
+    blue = 31 - (value % 32);
+    green = 63;
+    red = 0;
+  }
+
+  if (quadrant == 2) {
+    blue = 0;
+    green = 63;
+    red = value % 32;
+  }
+
+  if (quadrant == 3) {
+    blue = 0;
+    green = 63 - 2 * (value % 32);
+    red = 31;
+  }
+  
+  return (red << 11) + (green << 5) + blue;
+
+}
+
+
+void DisplayTFT::mostraVelocidade(double velocidade) {
   int xpos = 40, ypos = 265;                               //text position
   this->tft.setTextColor (WHITE,BLACK);
   this->tft.setCursor (xpos-10,ypos); this->tft.setTextSize (2);   // units position relative to scale
-  this->tft.print ("Vel Med: ");
+  this->tft.print ("Vel: ");
   this->tft.setCursor (xpos+85,ypos); this->tft.setTextSize (2);   // units position relative to scale
-  this->tft.print (vel_media);  
+  this->tft.print (velocidade);  
   this->tft.setCursor (xpos+125,ypos); this->tft.setTextSize (2);  // units position relative to scale
   this->tft.print ("KM/H");  
 }
@@ -96,38 +132,3 @@ int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, 
   this->tft.print (units);                                                          // units display = celsius                                        
   return x + r;                                                               // calculate and return right hand side x coordinate
 }
-
-unsigned int DisplayTFT::rainbow(byte value) {
-  byte red = 0;                                                               // red is the top 5 bits of a 16 bit colour value
-  byte green = 0;                                                             // green is the middle 6 bits
-  byte blue = 0;                                                              // blue is the bottom 5 bits
-  byte quadrant = value / 32;
-
-  if (quadrant == 0) {
-    blue = 31;
-    green = 2 * (value % 32);
-    red = 0;
-  }
-  
-  if (quadrant == 1) {
-    blue = 31 - (value % 32);
-    green = 63;
-    red = 0;
-  }
-
-  if (quadrant == 2) {
-    blue = 0;
-    green = 63;
-    red = value % 32;
-  }
-
-  if (quadrant == 3) {
-    blue = 0;
-    green = 63 - 2 * (value % 32);
-    red = 31;
-  }
-  
-  return (red << 11) + (green << 5) + blue;
-
-}
-
