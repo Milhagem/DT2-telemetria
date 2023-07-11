@@ -14,11 +14,11 @@ void Ina226::setupINA226() {
 
 void Ina226::atualizaINA226() {
   // Atualiza tensao
-  uint16_t raw_voltage = INA.getBusMilliVolts();;
+  uint16_t raw_voltage = INA.getBusMilliVolts();
   this->voltage_battery = (float)raw_voltage * ((R5 + R6) / R6) * fatorCorrecaoV * mili; // Esse valor que esta sendo multiplicado pelo valor da tensao tem a funcao de calibrar o sensor
 
   // Atualiza corrente
-  int32_t raw_current = INA.getShuntMicroVolts();;
+  int32_t raw_current = INA.getShuntMicroVolts();
   this->current_motor = (float)raw_current * (micro / shunt) * fatorCorrecaoC; // Esse valor que esta sendo multiplicado pelo valor da corrente tem a funcao de calibrar o sensor
 
   // Atualiza potencia

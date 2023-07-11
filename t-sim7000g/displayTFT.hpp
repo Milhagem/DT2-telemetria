@@ -24,31 +24,15 @@
 #define SCALE1      0x5DEE  // accent color for unused scale segments     
 
 #define BLUE2RED   1  // circular scale color scheme  
-#define GREEN2BLUE 2  // circular scale color scheme  
+#define GREEN2BLUE 2  // circular scale color scheme
+
+int gaugeposition_x = 20;  // these two variables govern the position
+int gaugeposition_y = 20;  // of the square + gauge on the display
 
 class DisplayTFT {
 private:
   TFT_eSPI tft = TFT_eSPI();
 
-public:
-    /**
-     * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o DisplayTFT
-    */
-    void setupDisplayTFT();
-    /**
-     * @brief Cria o texto do Consumo Acumulado (referente ao sensor INA226)
-    */
-    void mostraConsumo(float consumo);
-    /**
-     * @brief Cria o texto da Velocidade Media (referente ao Encoder)
-    */
-    void mostraVelocidadeMedia(double vel_media);
-    /**
-     * @brief Desenha o medidor na tela do Display
-     * 
-     * @return Coordenada x do lado direito
-    */
-    int ringMeter(double value, double vmin, double vmax, int x, int y, int r, char *units, byte scheme);
     /**
      * @brief Converte o parametro valor para um espectro de cores de 0 = azul até 127 = vermelho, retornando uma cor de arco iris de 16 bits
      * 
@@ -61,6 +45,28 @@ public:
      * @brief Retorna um valor no intervalo -1 a +1 para um determinado ângulo de fase em graus
     */
     float sineWave(int phase) { return sin(phase * 0.0174532925); }
+
+public:
+    /**
+     * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o DisplayTFT
+    */
+    void setupDisplayTFT();
+    /**
+     * @brief Cria o texto do Consumo Acumulado (referente ao sensor INA226)
+    */
+    void mostraConsumo(float consumo);
+    /**
+     * @brief Cria o texto da Velocidade (referente ao Encoder)
+     * 
+     * @param velocidade velocidade em km/h
+    */
+    void mostraVelocidade(double velocidade);
+    /**
+     * @brief Desenha o medidor na tela do Display
+     * 
+     * @return Coordenada x do lado direito
+    */
+    int ringMeter(double value, double vmin, double vmax, int x, int y, int r, char *units, byte scheme);
 };
 
 #endif
