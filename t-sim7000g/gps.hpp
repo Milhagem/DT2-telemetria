@@ -52,6 +52,12 @@ public:
 
     float getLat() { return this->lat; }
     float getLon() { return this->lon; }
+    /**
+     * @brief Retorna um timestamp com base nas informacoes do modem GPS
+     * 
+     * @return yyyy-mm-dd HH:mm:ss
+    */
+    String getTimestamp();
 
 };
  
