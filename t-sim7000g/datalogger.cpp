@@ -1,6 +1,6 @@
 #include "datalogger.hpp"
 
-void Datalogger::dataloggerSetup(){
+void Datalogger::setupDatalogger(){
 
     pinMode(SD_MISO, INPUT_PULLUP);
     pinMode(SD_CS, INPUT_PULLUP);
