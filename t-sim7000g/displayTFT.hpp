@@ -8,7 +8,6 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 
-
 /**
  * some principal color definitions
  * RGB 565 color picker at https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
@@ -52,11 +51,11 @@ public:
     */
     void setupDisplayTFT();
     /**
-     * @brief Cria o texto do Consumo Acumulado (referente ao sensor INA226)
+     * @brief Cria o texto do Consumo Acumulado
     */
     void mostraConsumo(float consumo);
     /**
-     * @brief Cria o texto da Velocidade (referente ao Encoder)
+     * @brief Cria o texto da Velocidade
      * 
      * @param velocidade velocidade em km/h
     */
