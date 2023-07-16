@@ -1,3 +1,11 @@
+/**
+ * @file t-sim7000g.ino
+ * @author Milhagem UFMG (contatomilhagem@ufmg.com)
+ * @brief Versao base para ser aplicada o RTOS.
+ * @version 0.0.1
+ * @date 2023-07-15
+ */
+
 #include <Arduino.h>
 
 #include "datalogger.hpp"
