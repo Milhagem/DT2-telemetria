@@ -1,35 +1,60 @@
 #include <Arduino.h>
+
 #include "datalogger.hpp"
 #include "lm35.hpp"
+#include "gps.hpp"
 #include "ina226.hpp"
+#include "encoder.hpp"
+#include "displayTFT.hpp"
 
 Datalogger datalogger;
 LM35 lm35;
+GPS gps;
+Encoder encoder;
+DisplayTFT display;
 Ina226 ina226;
 
-// Escreva o nome do arquivo que sera gravado
-String nome_arquivo = "teste_20230703.txt";
+// Insira abaixo o nome do arquivo que sera gerado
+String nome_arquivo = "teste_20230715_21:00";
 
 void setup() {
-  delay(2000);
   Serial.begin(115200);
   
+  datalogger.setupDatalogger();
+  datalogger.abreArquivo("/"+nome_arquivo);
+
+  gps.setupGPS();
+  encoder.setupEncoder();
+  /* Testes sendo realizados sem o DisplayTFT e Ina226. */
+  display.setupDisplayTFT();
   ina226.setupINA226();
 
-  datalogger.dataloggerSetup();
-  datalogger.abreArquivo("/"+nome_arquivo);
 }
 
 void loop() {
   lm35.atualizaLM35();
   lm35.imprimir();
 
+  gps.atualizaGPS();
+  gps.imprimir();
+
+  int rpm = encoder.amostraVoltas();
+  encoder.calculaVelocidade(rpm);
+  encoder.imprimir();
+
+  /**
+   * Codigo do DisplayTFT 
+   * [...]
+   */
+
   ina226.atualizaINA226();
   ina226.imprimir();
-  
-  String dados = "Temperatura: " + String(lm35.getTemperatura()) + " Tensao: " + String(ina226.getVoltage()) + " Corrente: " + String(ina226.getCurrent());
-  
-  datalogger.concatenaArquivo("/"+nome_arquivo, dados);
 
-  delay(5000);
+  String new_data = gps.getTimestamp()+","+gps.getLat()+","+gps.getLon()+","+
+                    ina226.getVoltage()+","+ina226.getCurrent()+","+ina226.getPower()+","+ina226.getConsumption()+","+
+                    encoder.getSpeed()+","+encoder.getAverageSpeed()+","+
+                    lm35.getTemperatura();
+
+  datalogger.concatenaArquivo("/"+nome_arquivo, new_data);
+
 }
