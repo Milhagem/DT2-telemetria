@@ -38,7 +38,7 @@ public:
     */
     double amostraVoltas();
      /**
-     * @brief Calcula a velocidade com base nas rotacoes por segundo e WHEEL_CIRCUMFERANCE
+     * @brief Calcula a velocidade com base nas rotacoes por minuto e WHEEL_CIRCUMFERANCE
      * 
      * @param rpm Rotacoes por minuto
     */
