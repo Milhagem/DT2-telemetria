@@ -63,8 +63,9 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
-    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(lm35Task, "LM35_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
+    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
+    xTaskCreatePinnedToCore(lm35Task, "LM35_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
     xTaskCreatePinnedToCore(
                 gpsTask,        // Task function
                 "GPS_Task",     // Task name
@@ -72,13 +73,31 @@ void setup() {
                 NULL,           // Parameters
                 1,              // Priority
                 NULL,           // Task Handle
-                1);   // Core number (1 or 0)
+                APP_CPU_NUM);   // Core number (1 or 0)
 
 
     // notifying all tasks have been created 
     Serial.println("All tasks created");
   
 }// end setup
+
+
+// --------------------------------------------------------------------------------------------------- TO BE TESTED
+void encoderTask(void *parameter) {
+
+    while(1) {
+
+        xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+
+        // Calcula a velocidade baseado no RPM retornado pelas amostras das voltas
+        encoder.calculaVelocidade(encoder.amostraVoltas());
+
+        xSemaphoreGive(SemaphoreBuffer);
+
+        encoder.imprimir();
+
+    }// end while
+}// end task
 
 
 // --------------------------------------------------------------------------------------------------- TO BE TESTED
