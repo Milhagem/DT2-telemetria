@@ -34,7 +34,7 @@ public:
      * @param path caminho para o arquivo. Ex: /nome_arquivo.txt
      * @param message mensagem a ser adicionada
     */
-    void concatenaArquivo(String path, String consumo, String temperatura, String Velocidade, String latitude, String longitude);
+    void concatenaArquivo(String path, String timestamp, String voltage, String current, String power, String consumo, String temperatura, String Velocidade, String avg_speed, String latitude, String longitude);
 
     String lePrimeiraLinha(File file);
     String leUltimaLinha(File file);

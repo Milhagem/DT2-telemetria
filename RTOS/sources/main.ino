@@ -9,6 +9,7 @@ Funcionalidades:
     GPS funcional
     Datalogger funcional
 */
+#include <Arduino.h>
 
 #include <math.h>
 
@@ -147,9 +148,14 @@ void loop() {
 
   // Armazenamento em string no cartão SD
   datalogger.concatenaArquivo(path,
-    String(lm35.getTemperatura()),
+    gps.getTimestamp(),
+    String(ina.getVoltage()),
+    String(ina.getCurrent()),
+    String(ina.getPower()),
     String(ina.getConsumption()),
+    String(lm35.getTemperatura()),
     String(encoder.getSpeed()),
+    String(encoder.getAverageSpeed()),
     String(gps.getLat()),
     String(gps.getLon())
     );

@@ -58,33 +58,35 @@ void Datalogger::abreArquivo(String path){
 //     this->meu_arquivo.close();
 // }
 
-void Datalogger::concatenaArquivo(String path, String consumo, String temperatura, String Velocidade, String latitude, String longitude) {
+void Datalogger::concatenaArquivo(String path, String timestamp, String voltage, String current, String power, String consumo, String temperatura, String Velocidade, String avg_speed, String latitude, String longitude) {
     Serial.print("Appending to file: ");
     Serial.println(path);
 
+    String data = timestamp + ',' 
+                + latitude + ',' 
+                + longitude + ',' 
+                + voltage + ',' 
+                + current + ',' 
+                + power ',' 
+                + consumo + ',' 
+                + velocidde + ',' 
+                + avg_speed + ',' 
+                + temperatura;
+
     this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
+
     if(!this->meu_arquivo ) {
         Serial.println("Failed to open file for appending");
         return;
     }
+
     if(this->meu_arquivo) {
-        this->meu_arquivo.print("Temperatura: "));
-        this->meu_arquivo.print(temperatura);
-        this->meu_arquivo.print(", "); // Separação por vírgula
-        this->meu_arquivo.print("Consumo: "));
-        this->meu_arquivo.print(consumo);
-        this->meu_arquivo.print(", "); // Separação por vírgula
-        this->meu_arquivo.print("Velocidade: "));
-        this->meu_arquivo.println(velocidade); // Separação por \n
-        this->meu_arquivo.print("Latitude: "));
-        this->meu_arquivo.print(latitude);
-        this->meu_arquivo.print(", "); // Separação por vírgula
-        this->meu_arquivo.print("Longitude: "));
-        this->meu_arquivo.println(longitude); // Separação por \n
+        this->meu_arquivo.println(data);
         Serial.println("Message appended");
     } else {
         Serial.println("Append failed");
     }
+
     this->meu_arquivo.close();
 }
 
@@ -103,6 +105,8 @@ String Datalogger::lePrimeiraLinha(File file) {
         return "";
     }
 }
+
+
 
 // @camposouza Nao sei se essa funcao funciona
 String Datalogger::leUltimaLinha(File file) {

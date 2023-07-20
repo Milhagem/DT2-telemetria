@@ -67,3 +67,9 @@ void GPS::imprimir() {
   SerialMon.println("Year: " + String(this->year) + "\tMonth: " + String(this->month) + "\tDay: " + String(this->day));
   SerialMon.println("Hour: " + String(this->hour) + "\tMinute: " + String(this->min) + "\tSecond: " + String(this->sec));
 }
+
+String GPS::getTimestamp() {
+  String timestamp = String(this->year) + "-" + String(this->month) + "-" + String(this->day) + " " +
+                     String(this->hour) + ":" + String(this->min) + String(this->sec);
+  return timestamp;
+}

@@ -57,6 +57,7 @@ public:
     float getLat() { return this->lat; }
     float getLon() { return this->lon; }
 
+    String getTimestamp();
 };
  
 #endif
