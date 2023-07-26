@@ -28,7 +28,7 @@ Encoder encoder;
 GPS gps;
 
 Datalogger datalogger;
-const String path = "/teste_RTOS.txt";
+const String path = "/teste_20230726.txt";
 
 LM35 lm35;
 
@@ -162,18 +162,18 @@ void gpsTask(void *parameter) {
 void loop() {
 
   // Armazenamento em string no cartão SD
-  datalogger.concatenaArquivo(path,
-    gps.getTimestamp(),
-    String(ina.getVoltage()),
-    String(ina.getCurrent()),
-    String(ina.getPower()),
-    String(ina.getConsumption()),
-    String(lm35.getTemperatura()),
-    String(encoder.getSpeed()),
-    String(encoder.getAverageSpeed()),
-    String(gps.getLat()),
-    String(gps.getLon())
-    ); 
+  String data = gps.getTimestamp() + ',' 
+                + String(gps.getLat()) + ',' 
+                + String(gps.getLon()) + ',' 
+                + String(ina.getVoltage()) + ',' 
+                + String(ina.getCurrent()) + ',' 
+                + String(ina.getPower()) + ',' 
+                + String(ina.getConsumption()) + ',' 
+                + String(encoder.getSpeed()) + ',' 
+                + String(encoder.getAverageSpeed()) + ',' 
+                + String(lm35.getTemperatura());
+
+  datalogger.concatenaArquivo(path, data); 
 
   vTaskDelay(1 / portTICK_PERIOD_MS);
 

@@ -58,20 +58,9 @@ void Datalogger::abreArquivo(String path){
 //     this->meu_arquivo.close();
 // }
 
-void Datalogger::concatenaArquivo(String path, String timestamp, String voltage, String current, String power, String consumo, String temperatura, String Velocidade, String avg_speed, String latitude, String longitude) {
+void Datalogger::concatenaArquivo(String path, String data) {
     Serial.print("Appending to file: ");
     Serial.println(path);
-
-    String data = timestamp + ',' 
-                + latitude + ',' 
-                + longitude + ',' 
-                + voltage + ',' 
-                + current + ',' 
-                + power + ',' 
-                + consumo + ',' 
-                + Velocidade + ',' 
-                + avg_speed + ',' 
-                + temperatura;
 
     this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
 
