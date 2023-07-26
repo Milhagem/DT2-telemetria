@@ -22,8 +22,8 @@ void setup() {
 }
 
 void loop() {
-  //Atualiza contador a cada segundo
-  if (millis() - timeold >= 1000) {
+  //Atualiza contador a cada intervalo de tempo
+  if (millis() - timeold >= 500) {
     //Desabilita interrupcao durante o calculo
     detachInterrupt(0);
     rpm = (60 * 1000 / pulsos_por_volta ) / (millis() - timeold) * pulsos;
