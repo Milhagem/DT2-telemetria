@@ -21,7 +21,7 @@ credentials.php
 ########################################################################
 *.cfg
 *.svd
-*/debug_custom.json
+*debug_custom.json
 
 
 
