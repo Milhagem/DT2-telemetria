@@ -58,6 +58,7 @@ public:
     float getLon() { return this->lon; }
 
     String getTimestamp();
+
 };
  
 #endif

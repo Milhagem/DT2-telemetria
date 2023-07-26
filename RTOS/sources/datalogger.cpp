@@ -67,9 +67,9 @@ void Datalogger::concatenaArquivo(String path, String timestamp, String voltage,
                 + longitude + ',' 
                 + voltage + ',' 
                 + current + ',' 
-                + power ',' 
+                + power + ',' 
                 + consumo + ',' 
-                + velocidde + ',' 
+                + Velocidade + ',' 
                 + avg_speed + ',' 
                 + temperatura;
 
@@ -105,8 +105,6 @@ String Datalogger::lePrimeiraLinha(File file) {
         return "";
     }
 }
-
-
 
 // @camposouza Nao sei se essa funcao funciona
 String Datalogger::leUltimaLinha(File file) {

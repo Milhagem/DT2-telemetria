@@ -9,7 +9,6 @@ Funcionalidades:
     GPS funcional
     Datalogger funcional
 */
-#include <Arduino.h>
 
 #include <math.h>
 
@@ -63,9 +62,9 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
-    xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
-    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
-    xTaskCreatePinnedToCore(lm35Task, "LM35_Task", 10000, NULL, 1, NULL, APP_CPU_NUM);
+    xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(lm35Task, "LM35_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(
                 gpsTask,        // Task function
                 "GPS_Task",     // Task name
@@ -73,7 +72,7 @@ void setup() {
                 NULL,           // Parameters
                 1,              // Priority
                 NULL,           // Task Handle
-                APP_CPU_NUM);   // Core number (1 or 0)
+                1);   // Core number (1 or 0)
 
 
     // notifying all tasks have been created 
@@ -81,26 +80,23 @@ void setup() {
   
 }// end setup
 
-
-// --------------------------------------------------------------------------------------------------- TO BE TESTED
+// --------------------------------------------------------------------------------------------------- READY TO GO
 void encoderTask(void *parameter) {
 
-    while(1) {
+  while (1) {
 
-        xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+    xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-        // Calcula a velocidade baseado no RPM retornado pelas amostras das voltas
-        encoder.calculaVelocidade(encoder.amostraVoltas());
+    encoder.calculaVelocidade(encoder.amostraVoltas());
 
-        xSemaphoreGive(SemaphoreBuffer);
+    xSemaphoreGive(SemaphoreBuffer);
 
-        encoder.imprimir();
+    encoder.imprimir();
+  }
 
-    }// end while
-}// end task
+}
 
-
-// --------------------------------------------------------------------------------------------------- TO BE TESTED
+// --------------------------------------------------------------------------------------------------- READY TO GO
 void inaTask(void *parameter) {
 
     while (1) {
@@ -177,7 +173,7 @@ void loop() {
     String(encoder.getAverageSpeed()),
     String(gps.getLat()),
     String(gps.getLon())
-    );
+    ); 
 
   vTaskDelay(1 / portTICK_PERIOD_MS);
 
