@@ -10,8 +10,6 @@ Funcionalidades:
     Datalogger funcional
 */
 
-#include <math.h>
-
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -36,6 +34,12 @@ Ina226 ina;
 
 //DisplayTFT display; /*display TFT desabilitado temporariamente*/
 
+// Declaração das Tasks-------------------------------------------------------------------------------
+void SDTask(void *parameter);
+void encoderTask(void *parameter);
+void inaTask(void *parameter);
+void lm35Task(void *parameter);
+void gpsTask(void *parameter);
 
 // ---------------------------------------------------------------------------------------------------
 SemaphoreHandle_t SemaphoreBuffer;
@@ -62,6 +66,7 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
+    xTaskCreatePinnedToCore(SDTask, "SD_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(lm35Task, "LM35_Task", 10000, NULL, 1, NULL, 1);
@@ -80,6 +85,35 @@ void setup() {
   
 }// end setup
 
+// --------------------------------------------------------------------------------------------------- TO BE TESTED
+void SDTask(void *parameter) {
+
+  while(1) {
+
+     xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+
+    // Armazenamento em string no cartão SD
+    datalogger.concatenaArquivo(path,
+      gps.getTimestamp(),
+      String(ina.getVoltage()),
+      String(ina.getCurrent()),
+      String(ina.getPower()),
+      String(ina.getConsumption()),
+      String(lm35.getTemperatura()),
+      String(encoder.getSpeed()),
+      String(encoder.getAverageSpeed()),
+      String(gps.getLat()),
+      String(gps.getLon())
+    ); 
+
+    xSemaphoreGive(SemaphoreBuffer);
+
+  vTaskDelay(1 / portTICK_PERIOD_MS);
+
+  }// end while
+
+}// end task
+
 // --------------------------------------------------------------------------------------------------- READY TO GO
 void encoderTask(void *parameter) {
 
@@ -92,9 +126,10 @@ void encoderTask(void *parameter) {
     xSemaphoreGive(SemaphoreBuffer);
 
     encoder.imprimir();
-  }
 
-}
+  }// end while
+
+}// end task
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
 void inaTask(void *parameter) {
@@ -161,20 +196,6 @@ void gpsTask(void *parameter) {
 // ---------------------------------------------------------------------------------------------------
 void loop() {
 
-  // Armazenamento em string no cartão SD
-  datalogger.concatenaArquivo(path,
-    gps.getTimestamp(),
-    String(ina.getVoltage()),
-    String(ina.getCurrent()),
-    String(ina.getPower()),
-    String(ina.getConsumption()),
-    String(lm35.getTemperatura()),
-    String(encoder.getSpeed()),
-    String(encoder.getAverageSpeed()),
-    String(gps.getLat()),
-    String(gps.getLon())
-    ); 
-
-  vTaskDelay(1 / portTICK_PERIOD_MS);
+  
 
 }
