@@ -39,25 +39,6 @@ void Datalogger::abreArquivo(String path){
 }
 
 
-// void Datalogger::concatenaArquivo(String path, String type, String dados){
-//     Serial.print("Appending to file: ");
-//     Serial.println(path);
-
-//     this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
-//     if(!this->meu_arquivo ) {
-//         Serial.println("Failed to open file for appending");
-//         return;
-//     }
-//     if(this->meu_arquivo) {
-//         this->meu_arquivo.print(type);
-//         this->meu_arquivo.println(dados);
-//         Serial.println("Message appended");
-//     } else {
-//         Serial.println("Append failed");
-//     }
-//     this->meu_arquivo.close();
-// }
-
 void Datalogger::concatenaArquivo(String path, String data) {
     Serial.print("Appending to file: ");
     Serial.println(path);
@@ -80,7 +61,7 @@ void Datalogger::concatenaArquivo(String path, String data) {
 }
 
 // @camposouza Nao sei se essa funcao funciona
-String Datalogger::lePrimeiraLinha(File file) {
+/* String Datalogger::lePrimeiraLinha(File file) {
     String firstLine = file.readStringUntil('\n');
 
     file.close();
@@ -93,10 +74,10 @@ String Datalogger::lePrimeiraLinha(File file) {
         Serial.println("O arquivo está vazio");
         return "";
     }
-}
+} */
 
 // @camposouza Nao sei se essa funcao funciona
-String Datalogger::leUltimaLinha(File file) {
+/* String Datalogger::leUltimaLinha(File file) {
     String lastLine;
     String currentLine;
 
@@ -117,4 +98,4 @@ String Datalogger::leUltimaLinha(File file) {
         Serial.println("O arquivo está vazio");
         return "";
     }
-}
+} */
