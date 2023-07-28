@@ -21,7 +21,7 @@ public:
     /**
      * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar o Datalogger
     */
-    void dataloggerSetup();
+    void setupDatalogger();
     /**
      * @brief Abre o arquivo passado no path se ele existir. Se nao, cria o arquivo e adiciona o cabecalho
      * 
@@ -36,8 +36,9 @@ public:
     */
     void concatenaArquivo(String path, String data);
 
-    String lePrimeiraLinha(File file);
-    String leUltimaLinha(File file);
+    /* Implementar estas funcoes... */
+    // String lePrimeiraLinha(File file);
+    // String leUltimaLinha(File file);
 };
 
 #endif 
