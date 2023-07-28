@@ -19,22 +19,23 @@ Datalogger datalogger;
 LM35 lm35;
 GPS gps;
 Encoder encoder;
-DisplayTFT display;
+/* Testes sem o DisplayTFT */
+// DisplayTFT display;
 Ina226 ina226;
 
 // Insira abaixo o nome do arquivo que sera gerado
-String nome_arquivo = "teste_20230715_21:00";
+String path = "/teste_20230827_23:47.txt";
 
 void setup() {
   Serial.begin(115200);
   
   datalogger.setupDatalogger();
-  datalogger.abreArquivo("/"+nome_arquivo);
+  datalogger.abreArquivo(path);
 
   gps.setupGPS();
   encoder.setupEncoder();
-  /* Testes sendo realizados sem o DisplayTFT e Ina226. */
-  display.setupDisplayTFT();
+  /* Testes sem o DisplayTFT. */
+  //display.setupDisplayTFT();
   ina226.setupINA226();
 
 }
@@ -63,6 +64,6 @@ void loop() {
                     encoder.getSpeed()+","+encoder.getAverageSpeed()+","+
                     lm35.getTemperatura();
 
-  datalogger.concatenaArquivo("/"+nome_arquivo, new_data);
+  datalogger.concatenaArquivo(path, new_data);
 
 }
