@@ -6,6 +6,7 @@
 #define MEASURE_PIN         25            // pino D0 encoder
 #define WHEEL_CIRCUMFERANCE 1.50          // m     
 #define SAMPLES             16            // numero de pontos medidos no disco de freio
+#define MINIMAL_SPEED       2.77          // m/s (velocidade minima para trocar metodo de amostraVoltas())
 #define ms_TO_min           0.00001666666 // milisegundos para minutos
 
 class Encoder {
@@ -36,6 +37,7 @@ public:
      * 
      * @return rpm
     */
+    double amostraVoltasNew();
     double amostraVoltas();
      /**
      * @brief Calcula a velocidade com base nas rotacoes por segundo e WHEEL_CIRCUMFERANCE
