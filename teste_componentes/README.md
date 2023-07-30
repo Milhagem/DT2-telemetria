@@ -1,6 +1,6 @@
 ## Código para teste dos modulos
 
-Essa pasta contém códigos validados de fácil acesso para testar individualmente as features da placa da telemetria e da placa T-sim700g.
+Essa pasta contém códigos validados de fácil acesso para testar individualmente as features da placa da telemetria e da placa T-sim7000g.
 
 Use-os para saber se um sensor não está queimado, ou para testar a placa da telemetria, por exemplo.
 
