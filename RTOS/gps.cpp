@@ -70,6 +70,6 @@ void GPS::imprimir() {
 
 String GPS::getTimestamp() {
   String timestamp = String(this->year) + "-" + String(this->month) + "-" + String(this->day) + " " +
-                     String(this->hour) + ":" + String(this->min) + String(this->sec);
+                     String(this->hour) + ":" + String(this->min) + ":" + String(this->sec);
   return timestamp;
 }

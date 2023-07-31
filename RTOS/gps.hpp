@@ -54,8 +54,8 @@ public:
     */
     void imprimir();
 
-    float getLat() { return this->lat; }
-    float getLon() { return this->lon; }
+    String getLat() { return String(this->lat, 8); }
+    String getLon() { return String(this->lon, 8); }
 
     String getTimestamp();
 
