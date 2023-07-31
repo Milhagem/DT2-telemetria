@@ -40,5 +40,9 @@ void loop(){
         myFile.println("Atencao chegou chatuba hein");
         myFile.println("Vamo esculachar");
     }
-    delay(5000);
+<<<<<<< HEAD
 }
+=======
+
+}
+>>>>>>> t-sim7000g
