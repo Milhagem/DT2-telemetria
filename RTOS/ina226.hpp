@@ -46,10 +46,10 @@ public:
     */
     void imprimir();
 
-    float getCurrent() { return this->current_motor; }
-    float getVoltage() { return this->voltage_battery; }
-    float getPower() { return this->power; }
-    float getConsumption() { return this->consumption; }
+    String getCurrent() { return String(this->current_motor); }
+    String getVoltage() { return String(this->voltage_battery); }
+    String getPower() { return String(this->power); }
+    String getConsumption() { return String(this->consumption); }
 
 };
 

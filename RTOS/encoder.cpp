@@ -27,7 +27,7 @@ double Encoder::amostraVoltas() {
   int rpm = 0;
 
   // Atualiza contador a cada segundo
-  if (millis() - timeold >= 1000) {
+  if (millis() - timeold >= 100) {
     
     // Desabilita interrupcao durante o calculo
     detachInterrupt(0);
@@ -36,8 +36,8 @@ double Encoder::amostraVoltas() {
     timeold = millis();
     pulsos = 0;
 
-    Serial.print("RPM = ");
-    Serial.println(rpm, DEC);
+    //Serial.print("RPM = ");
+    //Serial.println(rpm, DEC);
     
     // Habilita interrupcao
     attachInterrupt(0, contador, FALLING);
