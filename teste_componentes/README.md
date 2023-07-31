@@ -4,4 +4,4 @@ Essa pasta contém códigos validados de fácil acesso para testar individualmen
 
 Use-os para saber se um sensor não está queimado, ou para testar a placa da telemetria, por exemplo.
 
-**Os código contidos aqui não necessariamente são iguais ao t-sim 7000g.ino**
+**Os código contidos aqui não necessariamente são iguais ao main**
