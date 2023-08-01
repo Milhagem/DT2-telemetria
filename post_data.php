@@ -1,6 +1,6 @@
 <?php
 
-require "cred.php";
+require "credendials.php";
 
 $api_key = ""; 
 $lat = $lng = "";
