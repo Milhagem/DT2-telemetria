@@ -10,6 +10,10 @@ Funcionalidades:
     Datalogger
     Encoder
     INA226
+Observação:
+  Quando realizar testes com esse código
+  lembre de descomentar os métodos deimpressão
+  de dados no monitor serial
 */
 
 #include "freertos/FreeRTOS.h"
@@ -33,6 +37,12 @@ SemaphoreHandle_t SemaphoreBuffer;
 const String path = "/teste_RTOS.txt";
 
 // ---------------------------------------------------------------------------------------------------
+void gpsTask(void *);
+void encoderTask(void *);
+void dataloggerTask(void *);
+void inaTask(void *);
+
+// ---------------------------------------------------------------------------------------------------
 void setup() {
 
     Serial.begin(115200);
@@ -41,9 +51,9 @@ void setup() {
     vTaskDelay(1000 / portTICK_PERIOD_MS);
 
     // Setups
-    gps.setupGPS();
     datalogger.setupDatalogger();
     datalogger.abreArquivo(path);
+    gps.setupGPS();
     ina.setupINA226();
     encoder.setupEncoder();
 
@@ -90,6 +100,7 @@ void dataloggerTask(void *param) {
 
     xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
+    Serial.println("concatenando");
     datalogger.concatenaArquivo(path, data);
 
     xSemaphoreGive(SemaphoreBuffer);
@@ -102,7 +113,7 @@ void dataloggerTask(void *param) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
-void encoderTask(void *parameter) {
+void encoderTask(void *param) {
 
   while (1) {
 
@@ -122,7 +133,7 @@ void encoderTask(void *parameter) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
-void inaTask(void *parameter) {
+void inaTask(void *param) {
 
     while (1) {
 
@@ -142,7 +153,7 @@ void inaTask(void *parameter) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
-void gpsTask(void *parameter) {
+void gpsTask(void *param) {
 
     while (1) {
     
