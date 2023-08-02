@@ -14,17 +14,8 @@ const char gprsUser[] = "vivo";
 const char gprsPass[] = "vivo";
 
 #include <TinyGsmClient.h>
-#include <SPI.h>
-#include <SD.h>
-#include <Ticker.h>
 
-#ifdef DUMP_AT_COMMANDS
-  #include <StreamDebugger.h>
-  StreamDebugger debugger(SerialAT, SerialMon);
-  TinyGsm modem(debugger);
-#else
   TinyGsm modem(SerialAT);
-#endif
 
 // LilyGO T-SIM7000G Pinout
 #define UART_BAUD           115200
