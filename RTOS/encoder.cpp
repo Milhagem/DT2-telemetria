@@ -29,34 +29,8 @@ double Encoder::amostraVoltasNew() {
   int rpm = 0;
 
   if (this->speed >= MINIMAL_SPEED) {
-
-  // Calcula o intervalo de tempo desde o último pulso
-  unsigned long intervalo_tempo = millis() - last_pulse_time;
-
-  // Atualiza a RPM somente se houver pelo 16 pulsos recebido
-  if (pulsos > SAMPLES) {
-
-    // Desabilita interrupcao durante o calculo
-    detachInterrupt(0);
-    rpm = (60 * 1000 / SAMPLES) / intervalo_tempo * pulsos;
-
-    pulsos = 0; // Zera o contador de pulsos após calcular a RPM
-
-    Serial.print("RPM = ");
-    Serial.println(rpm, DEC);
-
-    attachInterrupt(0, contador, FALLING);
-  }
-}
-  return rpm;
-}
-
-
-//unsigned long timeold = 0;
-//double Encoder::amostraVoltas() {
-//  int rpm = 0;
-
-  // Atualiza contador a cada segundo
+    
+    // Atualiza contador a cada segundo
 //  if (millis() - timeold >= 1000) {
     
     // Desabilita interrupcao durante o calculo
@@ -72,6 +46,34 @@ double Encoder::amostraVoltasNew() {
     // Habilita interrupcao
 //    attachInterrupt(0, contador, FALLING);
 //  }
+
+      // Calcula o intervalo de tempo desde o último pulso
+      unsigned long intervalo_tempo = millis() - last_pulse_time;
+
+      // Atualiza a RPM somente se houver pelo 16 pulsos recebido
+      if (pulsos > SAMPLES) {
+
+        // Desabilita interrupcao durante o calculo
+        detachInterrupt(0);
+        rpm = (60 * 1000 / SAMPLES) / intervalo_tempo * pulsos;
+
+        pulsos = 0; // Zera o contador de pulsos após calcular a RPM
+
+        Serial.print("RPM = ");
+        Serial.println(rpm, DEC);
+
+        attachInterrupt(0, contador, FALLING);
+}
+}
+  return rpm;
+}
+
+
+//unsigned long timeold = 0;
+//double Encoder::amostraVoltas() {
+//  int rpm = 0;
+
+  
 //  return rpm;
 //}
 
