@@ -10,16 +10,13 @@ Funcionalidades:
     Datalogger
     Encoder
     INA226
-Observação:
-  Quando realizar testes com esse código
-  lembre de descomentar os métodos deimpressão
-  de dados no monitor serial
 */
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
+#include "lte_communication.hpp"
 #include "datalogger.hpp"
 #include "encoder.hpp"
 #include "gps.hpp"
@@ -27,6 +24,7 @@ Observação:
 
 
 // ---------------------------------------------------------------------------------------------------
+LTE_Communication modem;
 Encoder encoder;
 GPS gps;
 Datalogger datalogger;
@@ -41,6 +39,7 @@ void gpsTask(void *);
 void encoderTask(void *);
 void dataloggerTask(void *);
 void inaTask(void *);
+void sendDataTask(void *);
 
 // ---------------------------------------------------------------------------------------------------
 void setup() {
@@ -64,6 +63,7 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
+    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(dataloggerTask, "Dtatalogger_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
@@ -81,6 +81,18 @@ void setup() {
     Serial.println("All tasks created");
   
 }// end setup
+
+// --------------------------------------------------------------------------------------------------- TO BE TESTED
+void sendDataTask(void *param) {
+
+  while (1) {
+
+      Serial.println("oi");
+
+  }// end while
+
+}// end task
+
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
 void dataloggerTask(void *param) {
@@ -125,7 +137,7 @@ void encoderTask(void *param) {
 
     vTaskDelay(100 / portTICK_PERIOD_MS);
 
-    //encoder.imprimir();
+    encoder.imprimir();
 
   }// end while
 
@@ -145,7 +157,7 @@ void inaTask(void *param) {
 
         vTaskDelay(10 / portTICK_PERIOD_MS);
 
-        //ina.imprimir();
+        ina.imprimir();
 
     }// end while
 
