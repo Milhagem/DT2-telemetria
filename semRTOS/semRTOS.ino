@@ -47,7 +47,7 @@ void loop() {
   gps.atualizaGPS();
   gps.imprimir();
 
-  int rpm = encoder.amostraVoltas();
+  int rpm = encoder.amostraVoltasTimeInverval();
   encoder.calculaVelocidade(rpm);
   encoder.imprimir();
 

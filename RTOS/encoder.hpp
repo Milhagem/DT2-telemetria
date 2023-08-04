@@ -6,6 +6,8 @@
 #define MEASURE_PIN         25            // pino D0 encoder
 #define WHEEL_CIRCUMFERANCE 1.50          // m     
 #define SAMPLES             16            // numero de pontos medidos no disco de freio
+#define TIME_INTERVAL       500           // ms (intervalo de tempo para amostragem de pulsos)
+#define MINIMAL_SPEED       2.77          // m/s (velocidade minima para trocar metodo de amostraVoltas())
 #define ms_TO_min           0.00001666666 // milisegundos para minutos
 
 class Encoder {
@@ -33,10 +35,18 @@ public:
     void setupEncoder();
     /**
      * @brief Calcula voltas totais e voltas por MINUTO da roda
+     * @details A cada TIME_INTERVAL, calcula do conta o numero de pulsos e calcula a velocidade
      * 
      * @return rpm
     */
-    double amostraVoltas();
+    double amostraVoltasTimeInverval();
+    /**
+     * @brief Calcula voltas totais e voltas por MINUTO da roda
+     * @details A cada numero de SAMPLES, ve o intervalo de tempo gasto e calcula a velocidade
+     * 
+     * @return rpm
+    */
+    double amostraVoltasSamples();
      /**
      * @brief Calcula a velocidade com base nas rotacoes por segundo e WHEEL_CIRCUMFERANCE
      * 
