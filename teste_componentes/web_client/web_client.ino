@@ -16,8 +16,8 @@ const char gprsPass[] = "vivo";
 #include <TinyGsmClient.h>
 
 // Server details
-const char server[]   = "vsh.pp.ua";
-const char resource[] = "/TinyGSM/logo.txt";
+const char server[]   = "www.telemetria.milhagemufmg.com";
+const char resource[] = "/post_data.php";
 
 TinyGsm modem(SerialAT);
 
@@ -195,13 +195,35 @@ void loop(){
   }
   SerialMon.println(" success");
 
+  /*
   // Make a HTTP GET request:
   SerialMon.println("Performing HTTP GET request...");
   client.print(String("GET ") + resource + " HTTP/1.1\r\n");
   client.print(String("Host: ") + server + "\r\n");
   client.print("Connection: close\r\n\r\n");
   client.println();
+  */
 
+  
+  // Make a HTTP GET request:
+  SerialMon.println("Performing HTTP POST request...");
+
+  String postData = "api_key=" + String("tPmAT5Ab3j7F9") +"&rpm=" + String(70) + "&speed=" + String(2) + "&average_speed=" + String(22.00) + "&wheel_diameter=" + String(151.50) +
+                              "&lat=" + String(-19.98765432) + "&lng=" + String(-45.09876543) + 
+                              "&celcius=" + String(74) + "&farenheits=" + String(30) + 
+                              "&voltage_battery=" + String(7.0) + "&current_motor=" + String(9.0) + "&power=" + String(504.0) + "&consumption=" + String(312.0) + 
+                              "&reading_time=" + String("20230802 19:43") + "";
+  
+  client.print(String("POST ") + resource + " HTTP/1.1\r\n");
+  client.print(String("Host: ") + server + "\r\n");
+  client.print(String("Content-Type: application/x-www-form-urlencoded\r\n"));
+  client.print(String("Content-Length: ") + String(postData.length()) + "\r\n\r\n");
+  client.print(postData);
+  client.print(String("Connection: close\r\n\r\n"));
+  client.println();
+  
+
+  // Wait for the server's response
   uint32_t timeout = millis();
   while (client.connected() && millis() - timeout < 10000L) {
     // Print available data
@@ -212,9 +234,9 @@ void loop(){
     }
   }
   SerialMon.println();
+ 
 
   // Shutdown
-
   client.stop();
   SerialMon.println(F("Server disconnected"));
 
