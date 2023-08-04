@@ -31,13 +31,6 @@ const int      port = 80;
 #define PIN_RX              26
 #define PWR_PIN             4
 
-#define SD_MISO             2
-#define SD_MOSI             15
-#define SD_SCLK             14
-#define SD_CS               13
-#define LED_PIN             12
-
-
 void modemPowerOn(){
   pinMode(PWR_PIN, OUTPUT);
   digitalWrite(PWR_PIN, LOW);
