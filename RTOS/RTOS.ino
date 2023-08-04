@@ -64,7 +64,7 @@ void setup() {
 
     // Creating tasks
     xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(dataloggerTask, "Dtatalogger_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(
@@ -131,7 +131,7 @@ void encoderTask(void *param) {
 
     xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-    encoder.calculaVelocidade(encoder.amostraVoltas());
+    encoder.calculaVelocidade(encoder.amostraVoltasSamples());
 
     xSemaphoreGive(SemaphoreBuffer);
 
