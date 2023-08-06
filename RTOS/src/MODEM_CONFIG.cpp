@@ -2,4 +2,4 @@
 
 TinyGsm modem(SerialAT);
 
-TinyGsmClient  client(modem);
+TinyGsmClient client(modem);

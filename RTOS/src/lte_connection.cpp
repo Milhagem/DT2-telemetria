@@ -144,3 +144,55 @@ void LTE_Connection::setupLTE() {
     }
   }
 }
+
+
+void LTE_Connection::connectGRPS(const char* apn, const char* gprsUser, const char* gprsPass) {
+  // GPRS connection parameters are usually set after network registration
+  SerialMon.print(F("Connecting to "));
+  SerialMon.print(apn);
+  if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
+    SerialMon.println(" fail");
+    delay(10000);
+    return;
+  }
+  SerialMon.println(" success");
+
+  if (modem.isGprsConnected()) { SerialMon.println("GPRS connected"); }
+  else { SerialMon.print("GPRS not connected"); }
+}
+
+
+void LTE_Connection::connectServer(const char* server, const char* resource, const int  port) {
+  SerialMon.print("Connecting to ");
+  SerialMon.println(server);
+  if (!client.connect(server, port)) {
+    SerialMon.println(" fail");
+    delay(10000);
+    return;
+  }
+  SerialMon.println(" success");
+}
+
+void LTE_Connection::postRequest(const char* server, const char* resource, const int  port, String postData) {
+  SerialMon.println("Performing HTTP POST request...");
+  
+  client.print(String("POST ") + resource + " HTTP/1.1\r\n");
+  client.print(String("Host: ") + server + "\r\n");
+  client.print(String("Content-Type: application/x-www-form-urlencoded\r\n"));
+  client.print(String("Content-Length: ") + String(postData.length()) + "\r\n\r\n");
+  client.print(postData);
+  client.print(String("Connection: close\r\n\r\n"));
+  client.println();
+  
+  // Wait for the server's response
+  uint32_t timeout = millis();
+  while (client.connected() && millis() - timeout < 10000L) {
+    // Print available data
+    while (client.available()) {
+      char c = client.read();
+      SerialMon.print(c);
+      timeout = millis();
+    }
+  }
+  SerialMon.println();
+}

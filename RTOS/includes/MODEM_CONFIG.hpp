@@ -4,8 +4,10 @@
  * Este arquivo deve ser incluido onde eh necessario usar o Modem, como por exemplo no GPS na 
  * comunicacao LTE. Isso possibilita a modularizacao pois evita Multiple Definition
  * 
- * Aqui eh setado qual o modem da placa - TINY_GSM_MODEM_SIM7000 -, a pinagem dela, comandos
- * SerialAT e eh criado o o objeto TinyGsm modem.
+ * Aqui eh setado qual o modem da placa, ou seja, TINY_GSM_MODEM_SIM7000; a pinagem dela; comandos
+ * SerialAT
+ * 
+ * Em MODEM_CONFIG apenas sao criados os objetos TinyGsm modem e TinyGsm client
 */
 
 #ifndef MODEM_CONFIG_H
