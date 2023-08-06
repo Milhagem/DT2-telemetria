@@ -16,15 +16,15 @@ Funcionalidades:
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
-#include "lte_communication.hpp"
-#include "datalogger.hpp"
-#include "encoder.hpp"
-#include "gps.hpp"
-#include "ina226.hpp"
+#include "includes/lte_connection.hpp"
+#include "includes/datalogger.hpp"
+#include "includes/encoder.hpp"
+#include "includes/gps.hpp"
+#include "includes/ina226.hpp"
 
 
 // ---------------------------------------------------------------------------------------------------
-LTE_Communication modem;
+LTE_Connection connection;
 Encoder encoder;
 GPS gps;
 Datalogger datalogger;
