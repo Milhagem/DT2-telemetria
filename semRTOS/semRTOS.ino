@@ -8,12 +8,12 @@
 
 #include <Arduino.h>
 
-#include "datalogger.hpp"
-#include "lm35.hpp"
-#include "gps.hpp"
-#include "ina226.hpp"
-#include "encoder.hpp"
-#include "displayTFT.hpp"
+#include "../RTOS/includes/datalogger.hpp"
+#include "../RTOS/includes/lm35.hpp"
+#include "../RTOS/includes/gps.hpp"
+#include "../RTOS/includes/ina226.hpp"
+#include "../RTOS/includes/encoder.hpp"
+#include "../RTOS/includes/displayTFT.hpp"
 
 Datalogger datalogger;
 LM35 lm35;
