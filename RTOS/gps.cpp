@@ -1,6 +1,4 @@
-#include "gps.hpp"
-
-TinyGsm modem(SerialAT);
+#include "../includes/gps.hpp"
 
 void GPS::setupGPS() {
   SerialMon.println("Place your board outside to catch satelite signal");

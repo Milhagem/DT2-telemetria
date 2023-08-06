@@ -1,4 +1,4 @@
-#include "displayTFT.hpp"
+#include "../includes/displayTFT.hpp"
 
 void DisplayTFT::setupDisplayTFT() {
   this->tft.init();  

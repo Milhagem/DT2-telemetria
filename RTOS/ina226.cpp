@@ -1,4 +1,4 @@
-#include "ina226.hpp"
+#include "../includes/ina226.hpp"
 
 void Ina226::setupINA226() {
   INA.begin(80, 1000, 0x40);             // Begin calibration for an expected 80 Amps maximum current and for a 0.0O1hm resistor

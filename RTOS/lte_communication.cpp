@@ -1,29 +1,27 @@
-#include "lte_communication.hpp"
+#include "../includes/lte_connection.hpp"
 
-TinyGsm modem(SerialAT);
-
-void LTE_Communication::modemPowerOn(){
+void LTE_Connection::modemPowerOn(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
     delay(1000);
     digitalWrite(PWR_PIN, HIGH);
 }
 
-void LTE_Communication::modemPowerOff(){
+void LTE_Connection::modemPowerOff(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
     delay(1500);
     digitalWrite(PWR_PIN, HIGH);
 }
 
-void LTE_Communication::modemRestart(){
+void LTE_Connection::modemRestart(){
     modemPowerOff();
     delay(1000);
     modemPowerOn();
 }
 
 
-void LTE_Communication::setupLTE() {
+void LTE_Connection::setupLTE() {
   // Set console baud rate
   SerialMon.begin(115200);
 
