@@ -44,7 +44,7 @@ void sendDataTask(void *);
 // ---------------------------------------------------------------------------------------------------
 void setup() {
 
-    Serial.begin(115200);
+    SerialMon.begin(115200);
 
     // Wait a moment to start 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -78,7 +78,7 @@ void setup() {
 
 
     // notifying all tasks have been created 
-    Serial.println("All tasks created");
+    SerialMon.println("All tasks created");
   
 }// end setup
 
@@ -89,7 +89,7 @@ void sendDataTask(void *param) {
 
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-      
+
 
       xSemaphoreGive(SemaphoreBuffer);
 
