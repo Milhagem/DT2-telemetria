@@ -22,10 +22,6 @@ void LTE_Connection::modemRestart(){
 
 
 void LTE_Connection::setupLTE() {
-  // Set console baud rate
-  //SerialMon.begin(115200);
-
-  //delay(10);
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -134,15 +130,6 @@ void LTE_Connection::setupLTE() {
   Serial.println("After the network test is complete, please enter the  ");
   Serial.println("AT command in the serial terminal.");
   Serial.println("/**********************************************************/\n\n");
-
-  while (1) {
-    while (SerialAT.available()) {
-      SerialMon.write(SerialAT.read());
-    }
-    while (SerialMon.available()) {
-      SerialAT.write(SerialMon.read());
-    }
-  }
 }
 
 
