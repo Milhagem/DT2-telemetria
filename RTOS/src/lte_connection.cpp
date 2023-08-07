@@ -102,7 +102,7 @@ void LTE_Connection::setupLTE() {
     };
     Serial.printf("Try %d method\n", network[i]);
     modem.setNetworkMode(network[i]);
-    delay(3000);
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
     bool isConnected = false;
     int tryCount = 60;
     while (tryCount--) {
@@ -116,7 +116,7 @@ void LTE_Connection::setupLTE() {
       if (isConnected) {
         break;
       }
-      delay(1000);
+      vTaskDelay(1000 / portTICK_PERIOD_MS);
       digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     }
     if (isConnected) {
