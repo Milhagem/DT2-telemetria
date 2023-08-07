@@ -41,6 +41,9 @@ public:
     String getLat() { return String(this->lat, 8); }
     String getLon() { return String(this->lon, 8); }
 
+    /**
+     * @return Timestamp no formato YYYYMMDD hh:mm:ss
+    */
     String getTimestamp();
 
 };
