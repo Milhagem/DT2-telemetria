@@ -23,9 +23,9 @@ void LTE_Connection::modemRestart(){
 
 void LTE_Connection::setupLTE() {
   // Set console baud rate
-  SerialMon.begin(115200);
+  //SerialMon.begin(115200);
 
-  delay(10);
+  //delay(10);
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -41,7 +41,7 @@ void LTE_Connection::setupLTE() {
   Serial.println("antenna has been connected to the SIM interface on the board.");
   Serial.println("/**********************************************************/\n\n");
 
-  delay(10000);
+  vTaskDelay(10000 / portTICK_PERIOD_MS);
 
   String res;
 
@@ -102,7 +102,7 @@ void LTE_Connection::setupLTE() {
     };
     Serial.printf("Try %d method\n", network[i]);
     modem.setNetworkMode(network[i]);
-    delay(3000);
+    vTaskDelay(3000 / portTICK_PERIOD_MS);
     bool isConnected = false;
     int tryCount = 60;
     while (tryCount--) {
@@ -116,7 +116,7 @@ void LTE_Connection::setupLTE() {
       if (isConnected) {
         break;
       }
-      delay(1000);
+      vTaskDelay(1000 / portTICK_PERIOD_MS);
       digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     }
     if (isConnected) {

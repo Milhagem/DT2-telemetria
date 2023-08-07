@@ -1,7 +1,7 @@
 #ifndef LTECONNECTION_H
 #define LTECONNECTION_H
 
-#include "MODEM_CONFIG.hpp";
+#include "../includes/MODEM_CONFIG.hpp"
 extern TinyGsm modem;
 extern TinyGsmClient client;
 

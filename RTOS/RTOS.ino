@@ -44,7 +44,7 @@ void sendDataTask(void *);
 // ---------------------------------------------------------------------------------------------------
 void setup() {
 
-    Serial.begin(115200);
+    SerialMon.begin(115200);
 
     // Wait a moment to start 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
@@ -63,7 +63,7 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
-    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
@@ -78,7 +78,7 @@ void setup() {
 
 
     // notifying all tasks have been created 
-    Serial.println("All tasks created");
+    SerialMon.println("All tasks created");
   
 }// end setup
 
@@ -87,7 +87,11 @@ void sendDataTask(void *param) {
 
   while (1) {
 
-      Serial.println("oi");
+      xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+
+
+
+      xSemaphoreGive(SemaphoreBuffer);
 
   }// end while
 
