@@ -63,7 +63,7 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
-    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 0);
     xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
@@ -87,7 +87,11 @@ void sendDataTask(void *param) {
 
   while (1) {
 
-      Serial.println("oi");
+      xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+
+      
+
+      xSemaphoreGive(SemaphoreBuffer);
 
   }// end while
 

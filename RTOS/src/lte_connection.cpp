@@ -23,9 +23,9 @@ void LTE_Connection::modemRestart(){
 
 void LTE_Connection::setupLTE() {
   // Set console baud rate
-  SerialMon.begin(115200);
+  //SerialMon.begin(115200);
 
-  delay(10);
+  //delay(10);
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -41,7 +41,7 @@ void LTE_Connection::setupLTE() {
   Serial.println("antenna has been connected to the SIM interface on the board.");
   Serial.println("/**********************************************************/\n\n");
 
-  delay(10000);
+  vTaskDelay(10000 / portTICK_PERIOD_MS);
 
   String res;
 
