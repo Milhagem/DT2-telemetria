@@ -33,9 +33,10 @@ Ina226 ina;
 // ---------------------------------------------------------------------------------------------------
 SemaphoreHandle_t SemaphoreBuffer;
 const String path = "/teste_RTOS.txt";
+String data;
 
 // ---------------------------------------------------------------------------------------------------
-void gpsTask(void *);
+//void gpsTask(void *);
 void encoderTask(void *);
 void dataloggerTask(void *);
 void inaTask(void *);
@@ -50,9 +51,13 @@ void setup() {
     vTaskDelay(1000 / portTICK_PERIOD_MS);
 
     // Setups
+    connection.setupLTE();
+    connection.connectGRPS();
+    connection.connectServer();
+
     datalogger.setupDatalogger();
     datalogger.abreArquivo(path);
-    gps.setupGPS();
+    //gps.setupGPS();
     ina.setupINA226();
     encoder.setupEncoder();
 
@@ -67,14 +72,14 @@ void setup() {
     xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
     xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
-    xTaskCreatePinnedToCore(
+    /*xTaskCreatePinnedToCore(
                 gpsTask,        // Task function
                 "GPS_Task",     // Task name
                 10000,          // Stack size
                 NULL,           // Parameters
                 1,              // Priority
                 NULL,           // Task Handle
-                1);   // Core number (1 or 0)
+                1);             // Core number (1 or 0)*/
 
 
     // notifying all tasks have been created 
@@ -87,9 +92,20 @@ void sendDataTask(void *param) {
 
   while (1) {
 
+    data = gps.getTimestamp() + ','
+         + gps.getLat() + ','
+         + gps.getLon() + ','
+         + ina.getVoltage() + ','
+         + ina.getCurrent() + ','
+         + ina.getPower() + ','
+         + ina.getConsumption() + ','
+         + encoder.getSpeed() + ','
+         + encoder.getAverageSpeed() + ','
+         + '0';
+
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-
+      connection.postRequest(data);
 
       xSemaphoreGive(SemaphoreBuffer);
 
@@ -103,16 +119,16 @@ void dataloggerTask(void *param) {
 
   while(1) {
 
-    String data = gps.getTimestamp() + ','
-                + gps.getLat() + ','
-                + gps.getLon() + ','
-                + ina.getVoltage() + ','
-                + ina.getCurrent() + ','
-                + ina.getPower() + ','
-                + ina.getConsumption() + ','
-                + encoder.getSpeed() + ','
-                + encoder.getAverageSpeed() + ','
-                + '0';
+    data = gps.getTimestamp() + ','
+         + gps.getLat() + ','
+         + gps.getLon() + ','
+         + ina.getVoltage() + ','
+         + ina.getCurrent() + ','
+         + ina.getPower() + ','
+         + ina.getConsumption() + ','
+         + encoder.getSpeed() + ','
+         + encoder.getAverageSpeed() + ','
+         + '0';
 
     xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
@@ -169,7 +185,7 @@ void inaTask(void *param) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
-void gpsTask(void *param) {
+/*void gpsTask(void *param) {
 
     while (1) {
     
@@ -186,7 +202,7 @@ void gpsTask(void *param) {
     }//end while
 
 }// end GPS Task
-
+*/
 
 // ---------------------------------------------------------------------------------------------------
 void loop() {
