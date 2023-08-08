@@ -1,16 +1,13 @@
 /**
-Versão mais recente do código de telemetria do DT2
---------------------
-Autores:
-    
-
---------------------
-Funcionalidades:
-    GPS
-    Datalogger
-    Encoder
-    INA226
-*/
+ * @file RTOS.ino
+ * @author Felipe Facury
+ * @author Thiago (Putão)
+ * @brief Código em sistema operacional em tempo real para a telemetria do DT2
+ * @date 2023-08-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
@@ -36,7 +33,7 @@ const String path = "/teste_RTOS.txt";
 String data;
 
 // ---------------------------------------------------------------------------------------------------
-//void gpsTask(void *);
+void gpsTask(void *);
 void encoderTask(void *);
 void dataloggerTask(void *);
 void inaTask(void *);
@@ -57,9 +54,11 @@ void setup() {
 
     datalogger.setupDatalogger();
     datalogger.abreArquivo(path);
-    //gps.setupGPS();
+    gps.setupGPS();
+    gps.liberaGPS();
     ina.setupINA226();
     encoder.setupEncoder();
+
 
     // Create the semaphore
     SemaphoreBuffer = xSemaphoreCreateBinary();
@@ -68,18 +67,18 @@ void setup() {
     xSemaphoreGive(SemaphoreBuffer);
 
     // Creating tasks
-    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, pro_cpu);
-    xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, app_cpu);
-    xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, app_cpu);
-    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, app_cpu);
-    /*xTaskCreatePinnedToCore(
+    xTaskCreatePinnedToCore(sendDataTask, "Send_Data_Task", 10000, NULL, 1, NULL, 0);
+    xTaskCreatePinnedToCore(dataloggerTask, "Datalogger_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(encoderTask, "Encoder_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(inaTask, "INA226_Task", 10000, NULL, 1, NULL, 1);
+    xTaskCreatePinnedToCore(
                 gpsTask,        // Task function
                 "GPS_Task",     // Task name
                 10000,          // Stack size
                 NULL,           // Parameters
                 1,              // Priority
                 NULL,           // Task Handle
-                1);             // Core number (1 or 0)*/
+                1);             // Core number (1 or 0)
 
 
     // notifying all tasks have been created 
@@ -109,6 +108,8 @@ void sendDataTask(void *param) {
 
       xSemaphoreGive(SemaphoreBuffer);
 
+      vTaskDelay(2 / portTICK_PERIOD_MS);
+
   }// end while
 
 }// end task
@@ -137,7 +138,7 @@ void dataloggerTask(void *param) {
 
     xSemaphoreGive(SemaphoreBuffer);
 
-    vTaskDelay(1 / portTICK_PERIOD_MS);
+    vTaskDelay(2 / portTICK_PERIOD_MS);
 
   }// end while
 
@@ -159,6 +160,8 @@ void encoderTask(void *param) {
 
     encoder.imprimir();
 
+    vTaskDelay(2 / portTICK_PERIOD_MS);
+
   }// end while
 
 }// end task
@@ -175,7 +178,7 @@ void inaTask(void *param) {
 
         xSemaphoreGive(SemaphoreBuffer);
 
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(2 / portTICK_PERIOD_MS);
 
         ina.imprimir();
 
@@ -185,11 +188,9 @@ void inaTask(void *param) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
-/*void gpsTask(void *param) {
+void gpsTask(void *param) {
 
     while (1) {
-    
-        gps.liberaGPS();
 
         xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
         
@@ -197,14 +198,18 @@ void inaTask(void *param) {
 
         xSemaphoreGive(SemaphoreBuffer);
 
-        //gps.imprimir();
+        vTaskDelay(2 / portTICK_PERIOD_MS);
+
+        gps.imprimir();
 
     }//end while
 
 }// end GPS Task
-*/
+
+
 
 // ---------------------------------------------------------------------------------------------------
 void loop() {
 
 }
+
