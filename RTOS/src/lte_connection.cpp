@@ -125,20 +125,6 @@ void LTE_Connection::setupLTE() {
   Serial.println("Device is connected .");
   Serial.println();
 
-
-  Serial.println("/**********************************************************/");
-  Serial.println("After the network test is complete, please enter the  ");
-  Serial.println("AT command in the serial terminal.");
-  Serial.println("/**********************************************************/\n\n");
-
-  while (1) {
-    while (SerialAT.available()) {
-      SerialMon.write(SerialAT.read());
-    }
-    while (SerialMon.available()) {
-      SerialAT.write(SerialMon.read());
-    }
-  }
 }
 
 // ---------------------------------------------------------------------------------------------------
