@@ -1,23 +1,5 @@
-/**
- * @file displayTFT.cpp
- * @author your name (you@domain.com)
- * @brief 
- * @details description
- * @version 0.1
- * @date 2023-08-08
- * 
- * @copyright Copyright (c) 2023
- * 
- */
-
 #include "../includes/displayTFT.hpp"
 
-
-/**
- * @brief 
- * @details
- * 
- */
 void DisplayTFT::setupDisplayTFT() {
   this->tft.init();  
   this->tft.setRotation(2);       // display in portrait
@@ -39,11 +21,6 @@ void DisplayTFT::mostraConsumo(float consumo) {
 }
 
 void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
-  
-  /**
-   * @brief 
-   * 
-   */
   int xpos = 40, ypos = 265;                               //text position
   this->tft.setTextColor (WHITE,BLACK);
   this->tft.setCursor (xpos-10,ypos); this->tft.setTextSize (2);   // units position relative to scale

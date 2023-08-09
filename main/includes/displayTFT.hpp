@@ -1,9 +1,19 @@
 
-/* 
-*  @file displayTFT.hpp
+/** 
+ * @file displayTFT.hpp
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
- * @brief Codigo displyTFT da placa de telemetria do DT2
- * @date 08-08-2923
+ * @brief Codigo displayTFT da placa de telemetria do DT2. 
+ * Esse Display exibe os dados de velocidade para o piloto
+ * 
+ * @details
+ * ####################
+ * ##    ATENCAO     ##
+ * ####################
+ * 
+ * !! Antes de usar esse codigo, eh necessario configurar o arquivo <User_Setup.h> em seu PC. !!
+ * !! Veja o arquivo README.md contido em ../../teste_componentes/displayTFT                  !!
+ * 
+ * @date 09-08-2023
  * @copyright MIT License (c) 2023
  * 
  * 
