@@ -26,12 +26,8 @@
 #include <TFT_eSPI.h>
 #include <SPI.h>
 
-
-/**
- * @brief some principal color definitions
- * RGB 565 color picker at https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-*/
-
+// Some principal color definitions
+// RGB 565 color picker at https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
 #define WHITE       0xFFFF
 #define BLACK       0x0000
 #define BLUE        0x001F
@@ -67,7 +63,6 @@ public:
      *          drawing the text first is an option.
      *          we will need half the sweep angle of the meter (300 degrees)
      *          map the value to an angle v
-     *
      * 
      * @param value variable to save "value" text color from scheme and set default
      * @param units 
