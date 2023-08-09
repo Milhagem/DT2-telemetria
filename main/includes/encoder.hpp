@@ -58,9 +58,9 @@ public:
     */
     void imprimir();
     // km/h
-    String getSpeed() { return String(this->speed); }
+    double getSpeed() { return this->speed; }
     // km/h
-    String getAverageSpeed() { return String(this->average_speed); }
+    double getAverageSpeed() { return this->average_speed; }
 }; 
 
 #endif
