@@ -10,11 +10,13 @@
  * 
  * O LM35 tem um output de tensao linear com a temperatura em graus celcius: sao 10mV para cada
  * grau celcius, ou seja, em temperaturada ambiente (25 graus celcius) o LM35 teria um output
- * de 250mV. Todavia, a porta ADC do ESP32 tem uma leitura especialmente ruim de 0 a 100mV, e 
- * por isso colocamos o AmpOp com um ganho calculado para tira-lo dessa faixa de operacao.
+ * de 250mV. Todavia, a porta ADC do ESP32 tem uma leitura especialmente ruim de 0 a 100mV e não 
+ * se comporta lienarmente. Por isso colocamos o AmpOp com um ganho calculado para tira-lo dessa 
+ * faixa de operacao.
  * 
  * Veja https://randomnerdtutorials.com/esp32-adc-analog-read-arduino-ide/ para saber mais
- *  
+ * Há também uma discussão sobre isso no github https://github.com/espressif/arduino-esp32/issues/92
+ * @date 08-08-20
  * @version 1.0
  * @date 2023-08-07
  * 
