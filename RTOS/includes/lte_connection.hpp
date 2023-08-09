@@ -23,7 +23,7 @@ private:
 
 public:
     /**
-     * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar a conexao LTE
+     * @brief Esta funcao deve ser chamada no setup() do t-sim7000g para iniciar a conexao do Modem LTE
      * 
      */
     void setupLTE();
