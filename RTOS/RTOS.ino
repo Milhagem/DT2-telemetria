@@ -49,8 +49,8 @@ void setup() {
 
     // Setups
     connection.setupLTE();
-    connection.connectGRPS();
-    connection.connectServer();
+    connection.connectGRPS(apn, gprsUser, gprsPass);
+    connection.connectServer(server, resource, port);
 
     datalogger.setupDatalogger();
     datalogger.abreArquivo(path);
@@ -91,20 +91,16 @@ void sendDataTask(void *param) {
 
   while (1) {
 
-    data = gps.getTimestamp() + ','
-         + gps.getLat() + ','
-         + gps.getLon() + ','
-         + ina.getVoltage() + ','
-         + ina.getCurrent() + ','
-         + ina.getPower() + ','
-         + ina.getConsumption() + ','
-         + encoder.getSpeed() + ','
-         + encoder.getAverageSpeed() + ','
-         + '0';
+      String data = "api_key=" + String("api_key_value") + 
+                    "&rpm=" + String(50) + "&speed=" +  String(50) + "&average_speed=" + String(50) + "&wheel_diameter=" + String(50) +
+                    "&lat=" + String(50) + "&lng=" + String(50) + 
+                    "&celcius=" + String(50) + "&farenheits=" + String(50) + 
+                    "&voltage_battery=" + String(50) + "&current_motor=" + String(50) + "&power=" + String(50) + "&consumption=" + String(50) + 
+                    "&reading_time=" + String(50) + "";
 
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-      connection.postRequest(data);
+      connection.postRequest(server, resource, data);
 
       xSemaphoreGive(SemaphoreBuffer);
 
