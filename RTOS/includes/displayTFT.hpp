@@ -4,7 +4,7 @@
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
  * @brief Codigo displyTFT da placa de telemetria do DT2
  * @date 08-08-2923
- * @details 
+ * @copyright MIT License (c) 2023
  * 
  * 
  * 
