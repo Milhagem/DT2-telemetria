@@ -1,4 +1,3 @@
-
 /** 
  * @file displayTFT.hpp
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
@@ -37,8 +36,12 @@
 #define SCALE0      0xC655  // accent color for unused scale segments                                                     
 #define SCALE1      0x5DEE  // accent color for unused scale segments     
 
-#define BLUE2RED   1  // circular scale color scheme  
-#define GREEN2BLUE 2  // circular scale color scheme  
+#define BLUE2RED   1  // circular scale color scheme
+#define GREEN2BLUE 2  // circular scale color scheme
+
+#define GAUGEPOSITION_X  20  // govern the position of the square + gauge on the display
+#define GAUGEPOSITION_Y  20  // govern the position of the square + gauge on the display
+#define RADIUS           80  // upper ring radius
 
 class DisplayTFT {
 private:
