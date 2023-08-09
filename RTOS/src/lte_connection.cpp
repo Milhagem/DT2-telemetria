@@ -3,20 +3,17 @@
 void LTE_Connection::modemPowerOn(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
     digitalWrite(PWR_PIN, HIGH);
 }
 
 void LTE_Connection::modemPowerOff(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
-    vTaskDelay(1500 / portTICK_PERIOD_MS);
     digitalWrite(PWR_PIN, HIGH);
 }
 
 void LTE_Connection::modemRestart(){
     modemPowerOff();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
     modemPowerOn();
 }
 
@@ -37,15 +34,12 @@ void LTE_Connection::setupLTE() {
   Serial.println("antenna has been connected to the SIM interface on the board.");
   Serial.println("/**********************************************************/\n\n");
 
-  vTaskDelay(10000 / portTICK_PERIOD_MS);
-
   String res;
 
   Serial.println("========INIT========");
 
   if (!modem.init()) {
     modemRestart();
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
     Serial.println("Failed to restart modem, attempting to continue without restarting");
     return;
   }
@@ -98,7 +92,6 @@ void LTE_Connection::setupLTE() {
     };
     Serial.printf("Try %d method\n", network[i]);
     modem.setNetworkMode(network[i]);
-    vTaskDelay(3000 / portTICK_PERIOD_MS);
     bool isConnected = false;
     int tryCount = 60;
     while (tryCount--) {
@@ -112,7 +105,6 @@ void LTE_Connection::setupLTE() {
       if (isConnected) {
         break;
       }
-      vTaskDelay(1000 / portTICK_PERIOD_MS);
       digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     }
     if (isConnected) {
@@ -128,7 +120,7 @@ void LTE_Connection::setupLTE() {
 }
 
 // ---------------------------------------------------------------------------------------------------
-void LTE_Connection::connectGRPS() {
+void LTE_Connection::connectGRPS(const char* apn, const char* gprsUser, const char* gprsPass) {
   // GPRS connection parameters are usually set after network registration
   SerialMon.print(F("Connecting to "));
   SerialMon.print(apn);
@@ -144,7 +136,7 @@ void LTE_Connection::connectGRPS() {
 }
 
 // ---------------------------------------------------------------------------------------------------
-void LTE_Connection::connectServer() {
+void LTE_Connection::connectServer(const char* server, const char* resource, const int port) {
   SerialMon.print("Connecting to ");
   SerialMon.println(server);
   if (!client.connect(server, port)) {
@@ -156,7 +148,7 @@ void LTE_Connection::connectServer() {
 }
 
 // ---------------------------------------------------------------------------------------------------
-void LTE_Connection::postRequest(String postData) {
+void LTE_Connection::postRequest(const char* server, const char* resource, String postData) {
   SerialMon.println("Performing HTTP POST request...");
   
   client.print(String("POST ") + resource + " HTTP/1.1\r\n");

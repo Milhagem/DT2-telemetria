@@ -1,7 +1,7 @@
 #ifndef LTECONNECTION_H
 #define LTECONNECTION_H
 
-#include "../includes/MODEM_CONFIG.hpp"
+#include "MODEM_CONFIG.hpp"
 extern TinyGsm modem;
 extern TinyGsmClient client;
 
@@ -31,12 +31,12 @@ public:
      * @brief Esta funcao deve ser chamada no setup() do t-sim7000g APOS a funcao setupLTE() para que seja estabelecida a conexao GPRS
      *
      */
-    void connectGRPS(/*const char* apn, const char* gprsUser, const char* gprsPass*/);
+    void connectGRPS(const char* apn, const char* gprsUser, const char* gprsPass);
     /**
      * @brief Esta funcao deve ser chamada no setup() do t-sim7000g APOS a funcao connectGRPS() para que seja estabelecida a conexao com o servidor desejado
      * 
      */
-    void connectServer();
+    void connectServer(const char* server, const char* resource, const int port);
 
     /**
      * @brief Executa uma requisicao HTTP Post e imprime na tela o codigo de resposta
@@ -48,7 +48,7 @@ public:
      * @param postData Dados a serem inseridos no banco, no formato x-www-form-urlencoded
      * 
      */
-    void postRequest(String postData);
+    void postRequest(const char* server, const char* resource, String postData);
 
     void modemPowerOn();
     void modemPowerOff();
