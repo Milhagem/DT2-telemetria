@@ -1,15 +1,20 @@
 /**
- * Arquivo de configuracao do TINY_GSM_MODEM_SIM7000
+ * @file MODEM_CONFIG.hpp
+ * @author Milhageu UFMG (contatomilhagem@gmail.com)
+ * @brief Arquivo de configuracao do TINY_GSM_MODEM_SIM7000
  * 
- * Este arquivo deve ser incluido onde eh necessario usar o Modem, como por exemplo no GPS na 
- * comunicacao LTE. Isso possibilita a modularizacao pois evita Multiple Definition
+ * @details 
+ * Este arquivo deve ser incluido onde eh necessario usar o Modem, como por exemplo 
+ * no GPS na comunicacao LTE. Isso possibilita a modularizacao pois evita Multiple Definition
+ * Aqui eh setado qual o modem da placa, ou seja, TINY_GSM_MODEM_SIM7000; a pinagem dela; 
+ * comandos SerialAT
  * 
- * Aqui eh setado qual o modem da placa, ou seja, TINY_GSM_MODEM_SIM7000; a pinagem dela; comandos
- * SerialAT
+ * Em MODEM_CONFIG.cpp apenas sao criados os objetos TinyGsm modem e TinyGsm client
  * 
- * Em MODEM_CONFIG apenas sao criados os objetos TinyGsm modem e TinyGsm client
-*/
-
+ * @version 0.1
+ * @date 2023-08-09
+ * 
+ */
 #ifndef MODEM_CONFIG_H
 #define MODEM_CONFIG_H
 

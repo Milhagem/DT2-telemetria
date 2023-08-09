@@ -20,8 +20,6 @@
  * @version 1.0
  * @date 2023-08-07
  * 
- * @copyright MIT License (c) 2023
- * 
  */
 
 #ifndef LM35_H

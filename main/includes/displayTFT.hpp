@@ -13,14 +13,8 @@
  * !! Antes de usar esse codigo, eh necessario configurar o arquivo <User_Setup.h> em seu PC. !!
  * !! Veja o arquivo README.md contido em ../../teste_componentes/displayTFT                  !!
  * 
- * @date 09-08-2023
- * @copyright MIT License (c) 2023
- * 
- * 
- * 
- * 
+ * @date 2023-09-09
 */
-
 
 #ifndef DISPLAYTFT_H
 #define DISPLAYTFT_H
