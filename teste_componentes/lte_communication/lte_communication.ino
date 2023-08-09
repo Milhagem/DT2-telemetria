@@ -23,6 +23,7 @@ const char gprsPass[] = "vivo";
 #define PIN_TX              27
 #define PIN_RX              26
 #define PWR_PIN             4
+#define LED_PIN             12
 
 
 void modemPowerOn(){

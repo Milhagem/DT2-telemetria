@@ -1,33 +1,24 @@
-#include "lte_communication.hpp"
+#include "../includes/lte_connection.hpp"
 
-TinyGsm modem(SerialAT);
-
-void LTE_Communication::modemPowerOn(){
+void LTE_Connection::modemPowerOn(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
-    delay(1000);
     digitalWrite(PWR_PIN, HIGH);
 }
 
-void LTE_Communication::modemPowerOff(){
+void LTE_Connection::modemPowerOff(){
     pinMode(PWR_PIN, OUTPUT);
     digitalWrite(PWR_PIN, LOW);
-    delay(1500);
     digitalWrite(PWR_PIN, HIGH);
 }
 
-void LTE_Communication::modemRestart(){
+void LTE_Connection::modemRestart(){
     modemPowerOff();
-    delay(1000);
     modemPowerOn();
 }
 
-
-void LTE_Communication::setupLTE() {
-  // Set console baud rate
-  SerialMon.begin(115200);
-
-  delay(10);
+// ---------------------------------------------------------------------------------------------------
+void LTE_Connection::setupLTE() {
 
   // Set LED OFF
   pinMode(LED_PIN, OUTPUT);
@@ -43,15 +34,12 @@ void LTE_Communication::setupLTE() {
   Serial.println("antenna has been connected to the SIM interface on the board.");
   Serial.println("/**********************************************************/\n\n");
 
-  delay(10000);
-
   String res;
 
   Serial.println("========INIT========");
 
   if (!modem.init()) {
     modemRestart();
-    delay(2000);
     Serial.println("Failed to restart modem, attempting to continue without restarting");
     return;
   }
@@ -104,7 +92,6 @@ void LTE_Communication::setupLTE() {
     };
     Serial.printf("Try %d method\n", network[i]);
     modem.setNetworkMode(network[i]);
-    delay(3000);
     bool isConnected = false;
     int tryCount = 60;
     while (tryCount--) {
@@ -118,7 +105,6 @@ void LTE_Communication::setupLTE() {
       if (isConnected) {
         break;
       }
-      delay(1000);
       digitalWrite(LED_PIN, !digitalRead(LED_PIN));
     }
     if (isConnected) {
@@ -131,18 +117,57 @@ void LTE_Communication::setupLTE() {
   Serial.println("Device is connected .");
   Serial.println();
 
+}
 
-  Serial.println("/**********************************************************/");
-  Serial.println("After the network test is complete, please enter the  ");
-  Serial.println("AT command in the serial terminal.");
-  Serial.println("/**********************************************************/\n\n");
+// ---------------------------------------------------------------------------------------------------
+void LTE_Connection::connectGRPS(const char* apn, const char* gprsUser, const char* gprsPass) {
+  // GPRS connection parameters are usually set after network registration
+  SerialMon.print(F("Connecting to "));
+  SerialMon.print(apn);
+  if (!modem.gprsConnect(apn, gprsUser, gprsPass)) {
+    SerialMon.println(" fail");
+    delay(10000);
+    return;
+  }
+  SerialMon.println(" success");
 
-  while (1) {
-    while (SerialAT.available()) {
-      SerialMon.write(SerialAT.read());
-    }
-    while (SerialMon.available()) {
-      SerialAT.write(SerialMon.read());
+  if (modem.isGprsConnected()) { SerialMon.println("GPRS connected"); }
+  else { SerialMon.print("GPRS not connected"); }
+}
+
+// ---------------------------------------------------------------------------------------------------
+void LTE_Connection::connectServer(const char* server, const char* resource, const int port) {
+  SerialMon.print("Connecting to ");
+  SerialMon.println(server);
+  if (!client.connect(server, port)) {
+    SerialMon.println(" fail");
+    delay(10000);
+    return;
+  }
+  SerialMon.println(" success");
+}
+
+// ---------------------------------------------------------------------------------------------------
+void LTE_Connection::postRequest(const char* server, const char* resource, String postData) {
+  SerialMon.println("Performing HTTP POST request...");
+  
+  client.print(String("POST ") + resource + " HTTP/1.1\r\n");
+  client.print(String("Host: ") + server + "\r\n");
+  client.print(String("Content-Type: application/x-www-form-urlencoded\r\n"));
+  client.print(String("Content-Length: ") + String(postData.length()) + "\r\n\r\n");
+  client.print(postData);
+  client.print(String("Connection: close\r\n\r\n"));
+  client.println();
+  
+  // Wait for the server's response
+  uint32_t timeout = millis();
+  while (client.connected() && millis() - timeout < 10000L) {
+    // Print available data
+    while (client.available()) {
+      char c = client.read();
+      SerialMon.print(c);
+      timeout = millis();
     }
   }
+  SerialMon.println();
 }

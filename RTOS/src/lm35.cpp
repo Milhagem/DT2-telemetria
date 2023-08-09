@@ -1,4 +1,4 @@
-#include "lm35.hpp"
+#include "../includes/lm35.hpp"
 
 void LM35::atualizaLM35(){
     // Le o valor de na saida do AmpOp e divide pelo ganho

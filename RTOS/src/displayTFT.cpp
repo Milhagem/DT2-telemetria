@@ -1,5 +1,23 @@
-#include "displayTFT.hpp"
+/**
+ * @file displayTFT.cpp
+ * @author your name (you@domain.com)
+ * @brief 
+ * @details description
+ * @version 0.1
+ * @date 2023-08-08
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
+#include "../includes/displayTFT.hpp"
+
+
+/**
+ * @brief 
+ * @details
+ * 
+ */
 void DisplayTFT::setupDisplayTFT() {
   this->tft.init();  
   this->tft.setRotation(2);       // display in portrait
@@ -21,6 +39,11 @@ void DisplayTFT::mostraConsumo(float consumo) {
 }
 
 void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
+  
+  /**
+   * @brief 
+   * 
+   */
   int xpos = 40, ypos = 265;                               //text position
   this->tft.setTextColor (WHITE,BLACK);
   this->tft.setCursor (xpos-10,ypos); this->tft.setTextSize (2);   // units position relative to scale
@@ -31,17 +54,18 @@ void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
   this->tft.print ("KM/H");  
 }
 
-int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, int r, char *units, byte scheme) {
-  // Minimum value of r is about 52 before value text intrudes on ring
-  // drawing the text first is an option
 
-  x += r; y += r;                                                             // calculate coordinates of center of ring
-  int w = r / 3;                                                              // width of outer ring is 1/4 of radius
-  int angle = 150;                                                            // half the sweep angle of the meter (300 degrees)
-  int v = map(value, vmin, vmax, -angle, angle);                              // map the value to an angle v
+
+int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, int r, char *units, byte scheme) {
+ 
+
+  x += r; y += r;                                                             //calculate coordinates of center of ring                                                          
+  int w = r / 3;                                                              
+  int angle = 150;                                                            
+  int v = map(value, vmin, vmax, -angle, angle);                              
   byte seg = 3;                                                               // segments are 3 degrees wide = 100 segments for 300 degrees
   byte inc = 6;                                                               // draw segments every 3 degrees, increase to 6 for segmented ring
-  int colour = BLUE;                                                          // variable to save "value" text color from scheme and set default
+  int colour = BLUE;                                                          
 
 
   for (int i = -angle+inc/2; i < angle-inc/2; i += inc) {                    // draw color blocks every increment degrees        
@@ -59,10 +83,17 @@ int DisplayTFT::ringMeter(double value, double vmin, double vmax, int x, int y, 
     int x3 = sx2 * r + x;
     int y3 = sy2 * r + y;
 
-    if (i < v) {                                                          // fill in coloured segments with 2 triangles
+    if (i < v) {  
+      
+      /*
+      * @brief fill in coloured segments with 2 triangles
+      * full spectrum blue to red
+      * verde para azul (velocidade dt2)
+      * 
+      */                                                       
       switch (scheme){
-        case 1: colour = rainbow(map(i, -angle, angle, 0, 127)); break;  // full spectrum blue to red
-        case 2: colour = rainbow(map(i, -angle, angle, 70, 0)); break;   // verde para azul (velocidade dt2)
+        case 1: colour = rainbow(map(i, -angle, angle, 0, 127)); break;  
+        case 2: colour = rainbow(map(i, -angle, angle, 70, 0)); break;    
         default: colour = BLUE; break;                                   // fixed color
       }
       this->tft.fillTriangle(x0, y0, x1, y1, x2, y2, colour);

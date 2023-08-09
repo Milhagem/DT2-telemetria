@@ -25,11 +25,13 @@ TinyGsmClient  client(modem);
 const int      port = 80;
 
 // LilyGO T-SIM7000G Pinout
-#define UART_BAUD           115200
-#define PIN_DTR             25
-#define PIN_TX              27
-#define PIN_RX              26
-#define PWR_PIN             4
+#define UART_BAUD   115200
+#define PIN_DTR     25
+#define PIN_TX      27
+#define PIN_RX      26
+#define PWR_PIN     4
+
+#define LED_PIN     12          
 
 void modemPowerOn(){
   pinMode(PWR_PIN, OUTPUT);
@@ -198,7 +200,7 @@ void loop(){
   */
 
   
-  // Make a HTTP GET request:
+  // Make a HTTP POST request:
   SerialMon.println("Performing HTTP POST request...");
 
   String postData = "api_key=" + String("tPmAT5Ab3j7F9") +"&rpm=" + String(70) + "&speed=" + String(2) + "&average_speed=" + String(22.00) + "&wheel_diameter=" + String(151.50) +

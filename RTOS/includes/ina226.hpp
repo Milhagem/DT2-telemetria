@@ -1,3 +1,28 @@
+/**
+ * @file ina226.hpp
+ * @author Milhagem UFMG (contatomilhagem@ufmg.com)
+ * @brief Subclasse sensor de tensao e corrente, tensao da bateria e corrente no motor
+ * @details
+ * INA226
+
+
+ *  SOBRE TENSAO:
+ *  INA RECEBE NO MAXIMO DE 36V, ENTRETANTO A BATERIA É DE 42V, POR ISSO PRECISAMOS DO DIVISOR DE TENSAO COM R5 E R6
+
+ *  SOBRE CORRENTE:
+ *  O SHUNT EH UM RESISTOR DE RESISTENCIA MUITO BAIXA E O INA CALCULA A CORRENTE QUE PASSA POR ELE (QUE EH 
+ *  A CORRENTE DO MOTOR) COM BASE NA 
+ *  QUEDA NA LEI DE OHM E NA QUEDA DE TENSAO DO SHUNT
+
+ *  SOBRE FATOR DE CORRECAO:
+ *  O INA NAO EH MUITO PRECISO. OS FATORES DE fatorCorrecaoV E fatorCorrecaoC SERVEM APENAS PARA CALIBRA-LO
+
+ * @version 0.1
+ * @date 2023-08-07
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #ifndef INA226_H
 #define INA226_H
 
@@ -22,6 +47,7 @@ class Ina226 {
 private:
     INA_Class INA;
 
+    
     float current_motor;
     float voltage_battery;
     float power;

@@ -1,4 +1,4 @@
-#include "encoder.hpp"
+#include "../includes/encoder.hpp"
 
 volatile byte pulsos;
 void contador() {
@@ -8,10 +8,12 @@ void contador() {
 void Encoder::setupEncoder() {
   attachInterrupt(digitalPinToInterrupt(MEASURE_PIN), contador, FALLING);
 
+  // Variavels para calculo de velocidade e distancia
   double speed            = 0;
   double average_speed    = 0;
   double distancia_total  = 0;
 
+  // Inicalizacao de variaveis de controle
   this->tempo_inicio      = 0;
   this->tempo_speed_old   = 0;
   this->tempo_speed_atual = 0;
