@@ -3,27 +3,26 @@
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
  * @brief Versao base para ser aplicada o RTOS.
  * @version 0.0.1
- * @date 2023-07-15
+ * @date 2023-08-09
  */
 
 #include <Arduino.h>
 
-#include "../RTOS/includes/MODEM_CONFIG.hpp"
-#include "../RTOS/includes/lte_connection.hpp"
-#include "../RTOS/includes/datalogger.hpp"
-#include "../RTOS/includes/lm35.hpp"
-#include "../RTOS/includes/gps.hpp"
-#include "../RTOS/includes/ina226.hpp"
-#include "../RTOS/includes/encoder.hpp"
-#include "../RTOS/includes/displayTFT.hpp"
+#include "includes/MODEM_CONFIG.hpp"
+#include "includes/lte_connection.hpp"
+#include "includes/datalogger.hpp"
+#include "includes/lm35.hpp"
+#include "includes/gps.hpp"
+#include "includes/ina226.hpp"
+#include "includes/encoder.hpp"
+#include "includes/displayTFT.hpp"
 
 Datalogger datalogger;
 LTE_Connection conexao;
 LM35 lm35;
 GPS gps;
 Encoder encoder;
-/* Testes sem o DisplayTFT */
-// DisplayTFT display;
+DisplayTFT display;
 Ina226 ina226;
 
 // Insira abaixo o nome do arquivo que sera gerado
@@ -50,8 +49,7 @@ void setup() {
   encoder.setupEncoder();
 
   // Setup displayTFT
-  /* Testes sem o DisplayTFT. */
-  //display.setupDisplayTFT();
+  display.setupDisplayTFT();
 
   // Setup sensor de tensao e corrente (INA226)
   ina226.setupINA226();
@@ -72,10 +70,10 @@ void loop() {
   encoder.calculaVelocidade(rpm);
   encoder.imprimir();
 
-  /**
-   * Codigo do DisplayTFT 
-   * [...]
-   */
+  // DisplayTFT
+  display.ringMeter(encoder.getSpeed(), 0, 60, (GAUGEPOSITION_X+20), (GAUGEPOSITION_Y+57), RADIUS, "Km/h", GREEN2BLUE);
+  display.mostraVelocidadeMedia(encoder.getAverageSpeed());
+  display.mostraConsumo(ina226.getConsumption());
 
   // Sensor de tensao e corrente INA226
   ina226.atualizaINA226();
@@ -95,5 +93,5 @@ void loop() {
                      "&voltage_battery=" + ina226.getVoltage() + "&current_motor=" + ina226.getCurrent() + "&power=" + ina226.getPower() + "&consumption=" + ina226.getConsumption() + 
                      "&reading_time=" + gps.getTimestamp() + "";
 
-  conexao.postRequest(server, resource, port, post_data);
+  conexao.postRequest(server, resource, post_data);
 }
