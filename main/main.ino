@@ -92,11 +92,11 @@ void sendDataTask(void *param) {
   while (1) {
 
       String data = "api_key=" + String("api_key_value") + 
-                    "&rpm=" + String(50) + "&speed=" +  String(50) + "&average_speed=" + String(50) + "&wheel_diameter=" + String(50) +
-                    "&lat=" + String(50) + "&lng=" + String(50) + 
-                    "&celcius=" + String(50) + "&farenheits=" + String(50) + 
-                    "&voltage_battery=" + String(50) + "&current_motor=" + String(50) + "&power=" + String(50) + "&consumption=" + String(50) + 
-                    "&reading_time=" + String(50) + "";
+                    "&rpm=" + String(50) + "&speed=" +  String(encoder.getSpeed()) + "&average_speed=" + String(encoder.getAverageSpeed()) + "&wheel_diameter=" + String(WHEEL_CIRCUMFERANCE) +
+                    "&lat=" + String(gps.getLat()) + "&lng=" + String(gps.getLon()) + 
+                    "&celcius=" + String(0) + "&farenheits=" + String(0) + 
+                    "&voltage_battery=" + String(ina.getVoltage()) + "&current_motor=" + String(ina.getCurrent()) + "&power=" + String(ina.getCurrent()) + "&consumption=" + String(ina.getConsumption()) + 
+                    "&reading_time=" + String(gps.getTimestamp()) + "";
 
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
