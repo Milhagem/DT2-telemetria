@@ -41,17 +41,13 @@ public:
     */
     void mostraVelocidadeMedia(double vel_media);
     /**
-     * @brief  Desenha o medidor na tela do Display
-     * @details Minimum value of r is about 52 before value text intrudes on ring
-     *          drawing the text first is an option.
-     *          we will need half the sweep angle of the meter (300 degrees)
-     *          map the value to an angle v
+     * @brief  
+     * @details
+     *          
      *
      * 
-     * @param value variable to save "value" text color from scheme and set default
-     * @param units 
-     * @param scheme 
-     * @return Coordenada x do lado direito 
+     * @param value 
+     *
      */
     
 };
