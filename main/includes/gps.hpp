@@ -1,3 +1,17 @@
+/**
+ * @file gps.hpp
+ * @author Milhagem UFMG (contatomilhagem@ufmg.com)
+ * @brief Codigo gps da placa de telemetria do DT2.
+ * @version 1.1
+ * @date 2023-08-16
+ * @details O código inclui o arquivo "MODEM_CONFIG.hpp" que são configurações relacionadas ao 
+ *          modem GSM que são usadas neste código
+ *          
+ *          
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #ifndef GPS_H
 #define GPS_H
 
@@ -36,6 +50,7 @@ public:
     /**
      * @brief Imprime todos os atributos do GPS (lat, lon, speed, alt...) na saida Serial
     */
+   
     void imprimir();
 
     String getLat() { return String(this->lat, 8); }
