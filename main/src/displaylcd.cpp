@@ -19,35 +19,34 @@
  * 
  */
 void DisplayLCD::setupDisplayLCD() {
-  this->lcd.init();  
+  this->lcd.init();
+  this->lcd.backlight();  
   this->lcd.clear ();
 }
 
 void DisplayLCD::mostraConsumo(float consumo) {
                        // text position
-  
+  this->lcd.clear();
   this->lcd.setCursor (0,0);      // units position relative to scale
   this->lcd.print ("Gasto: ");
   this->lcd.setCursor (0,1);   // units position relative to scale
   this->lcd.print (consumo);  
   this->lcd.setCursor (0,3);  // units position relative to scale
   this->lcd.print ("J");
+  this->lcd.delay(2000);
 }
 
 void DisplayLCD::mostraVelocidadeMedia(double vel_media) {
   
-  /**
-   * @brief 
-   * 
-   */
-                              //text position
- 
+                       //text position
+  this->lcd.clear();
   this->lcd.setCursor (1,0);   // units position relative to scale
   this->lcd.print ("Vel Med: ");
   this->lcd.setCursor (1,2);   // units position relative to scale
   this->lcd.print (vel_media);  
   this->lcd.setCursor (1,3);  // units position relative to scale
   this->lcd.print ("KM/H");  
+  this->lcd.delay(2000);
 }
 
 
