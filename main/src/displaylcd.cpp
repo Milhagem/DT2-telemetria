@@ -20,11 +20,7 @@
  */
 void DisplayLCD::setupDisplayLCD() {
   this->lcd.init();  
-  this->lcd.setRotation(2);       // display in portrait
-  this->lcd.fillScreen(BLACK); 
-  this->lcd.setCursor(165,300); 
-  this->lcd.setTextSize (1);
-  this->lcd.print ("EH O MILHAS"); //ntj
+  this->lcd.clear ();
 }
 
 void DisplayLCD::mostraConsumo(float consumo) {
