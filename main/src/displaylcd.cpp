@@ -1,5 +1,5 @@
 /**
- * @file displayTFT.cpp
+ * @file displaylcd.cpp
  * @author your name (you@domain.com)
  * @brief 
  * @details description
@@ -32,10 +32,10 @@ void DisplayLCD::mostraConsumo(float consumo) {
   
   this->lcd.setCursor (0,0);      // units position relative to scale
   this->lcd.print ("Gasto: ");
-  this->tft.setCursor (0,1);   // units position relative to scale
-  this->tft.print (consumo);  
-  this->tft.setCursor (0,3);  // units position relative to scale
-  this->tft.print ("J");
+  this->lcd.setCursor (0,1);   // units position relative to scale
+  this->lcd.print (consumo);  
+  this->lcd.setCursor (0,3);  // units position relative to scale
+  this->lcd.print ("J");
 }
 
 void DisplayLCD::mostraVelocidadeMedia(double vel_media) {
