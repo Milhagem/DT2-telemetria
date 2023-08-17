@@ -1,3 +1,17 @@
+/**
+ * @file encoder.hpp
+ * @author Milhagem UFMG (contatomilhagem@ufmg.com)
+ * @brief 
+ * @version 1.1
+ * @date 2023-08-09
+ * @details 
+ * definimos samples como numero de pontos medidos no disco de freio, time_interval para
+ * intervalo de tempo amostra de pulsos, e avelocade minima para trocar o metodo de amotraVoltas
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
+
 #ifndef ENCODER_H
 #define ENCODER_H
 
