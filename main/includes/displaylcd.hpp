@@ -18,7 +18,7 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-#define  LiquidCrystal_I2C lcd(0x27, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 
 
