@@ -1,5 +1,5 @@
 
-/* 
+/** 
 *  @file displayTFT.hpp
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
  * @brief Codigo displyTFT da placa de telemetria do DT2
