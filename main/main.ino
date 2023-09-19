@@ -1,7 +1,6 @@
 /**
  * @file RTOS.ino
- * @author Felipe Facury
- * @author Thiago (Putão)
+ * @authors Felipe Facury, Thiago (Putão)
  * @brief Código em sistema operacional em tempo real para a telemetria do DT2
  * @date 2023-08-08
  * 
