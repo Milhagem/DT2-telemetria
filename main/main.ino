@@ -128,7 +128,7 @@ void dataloggerTask(void *param) {
 
     xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-    Serial.println("concatenando");
+    //Serial.println("concatenando");
     datalogger.concatenaArquivo(path, data);
 
     xSemaphoreGive(SemaphoreBuffer);
