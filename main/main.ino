@@ -183,6 +183,9 @@ void inaTask(void *param) {
 
 
 // --------------------------------------------------------------------------------------------------- READY TO GO
+/**
+ * @brief Tempo de espera de 1s pois o sensor deomra esse tempo para atualizar
+ */
 void gpsTask(void *param) {
 
     while (1) {
