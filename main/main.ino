@@ -193,7 +193,7 @@ void gpsTask(void *param) {
 
         xSemaphoreGive(SemaphoreBuffer);
 
-        vTaskDelay(2 / portTICK_PERIOD_MS);
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
 
         gps.imprimir();
 
