@@ -153,11 +153,12 @@ void LTE_Connection::postRequest(const char* server, const char* resource, Strin
   
   client.print(String("POST ") + resource + " HTTP/1.1\r\n");
   client.print(String("Host: ") + server + "\r\n");
-  client.print(String("Content-Type: application/x-www-form-urlencoded\r\n"));
-  client.print(String("Content-Length: ") + String(postData.length()) + "\r\n\r\n");
-  client.print(postData);
-  client.print(String("Connection: close\r\n\r\n"));
+  client.print("Connection: close");
+  client.print("Content-Type: application/x-www-form-urlencoded");
+  client.print("Content-Length: ");
+  client.println(postData.length());
   client.println();
+  client.print(postData);
   
   // Wait for the server's response
   uint32_t timeout = millis();
