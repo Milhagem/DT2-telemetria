@@ -17,6 +17,7 @@
 #include "includes/encoder.hpp"
 #include "includes/gps.hpp"
 #include "includes/ina226.hpp"
+#include "includes/velocidade_motor.hpp"
 
 
 // ---------------------------------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Encoder encoder;
 GPS gps;
 Datalogger datalogger;
 Ina226 ina;
+Velocidade_Motor velocidade_motor;
 
 // ---------------------------------------------------------------------------------------------------
 SemaphoreHandle_t SemaphoreBuffer;
@@ -37,6 +39,7 @@ void encoderTask(void *);
 void dataloggerTask(void *);
 void inaTask(void *);
 void sendDataTask(void *);
+void velocidade_motorTask (void *);
 
 // ---------------------------------------------------------------------------------------------------
 void setup() {
@@ -57,6 +60,7 @@ void setup() {
     gps.liberaGPS();
     ina.setupINA226();
     encoder.setupEncoder();
+    velocidade_motor.motorsetup();
 
 
     // Create the semaphore
@@ -81,6 +85,7 @@ void setup() {
 
 
     // notifying all tasks have been created 
+    xTaskCreatePinnedToCore( velocidade_motorTask, "Velocidade_Motor_Task", 10000, NULL, 1, NULL, 0);
     SerialMon.println("All tasks created");
   
 }// end setup
@@ -207,7 +212,24 @@ void gpsTask(void *param) {
 
 }// end GPS Task
 
+// --------------------------------------------------------------------------------------------------- READY TO GO
+void void velocidade_motorTask (void *param) {
 
+  while (1) {
+
+      xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
+
+      velocidade_motor.calculo_velocidade();
+
+      xSemaphoreGive (SemaphoreBuffer);
+
+      vTaskDelay(100 / portTICK_PERIOD_MS);
+
+      velocidade_motor.imprimir();
+
+      vTaskDelay(2 / portTICK_PERIOD_MS);
+  }// end while
+}// end Velocidade Motor Task
 
 // ---------------------------------------------------------------------------------------------------
 void loop() {

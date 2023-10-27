@@ -9,7 +9,6 @@
  * 
  */
 
-#progama once
 #ifndef VELOCIDADE_MOTOR_H
 #define VELOCIDADE_MOTOR_H
 
@@ -18,43 +17,50 @@
 
 #include <Arduino.h>
 
-#define hall_motor 4 //define o pino que saira as informacoes do hall
-#define circunferencia_do_motor 0.3267 // esse dado tem que ser validado
-#define imas_motor 4 //define a quantidades de halls que o motor tem
+#define hall_motor 5                    // Define o pino que saira as informacoes do hall
+#define circunferencia_do_motor 0.1634  // Circunferencia do motor em m
+#define imas_motor 4                   // Define a quantidades de imas que o motor tem
 
 /// @brief 
 class Velocidade_Motor {
 private:
-    int hall_motor;
-    float circunferencia_do_motor;
-    int imas_motor;
     
-    long hall_valor_motor; //estado logico do sensor
-    long contagem_motor; //conta o numero de voltas na roda/ numero de imas que passam pelo sensor
+    long contagem_motor; // Serve para contar se houve uma sequencia efetiva de, por exemplo, 1 0 1
 
-    float velocidade_instantanea_motor; //velocidade do motor em RPM
-    volatile float diferenca_pulsos_motor; //diferenca entre os pulsos atual e o anterior =~ periodo
-    int estado_ant_motor; //conta o estado logico anterior do sensor hall
+    float velocidade_instantanea_motor;      // Armazena o valor de velocidade em km/h
+    volatile float diferenca_pulsos_motor;  // 1/4 do Periodo ou o delta t
+    int estado_ant_motor;                  // Inicia o estado do motor com 0
 
-    unsigned long tempo_atual; //tempo em milissegundos medido no loop atual
-    volatile unsigned long tempo_anterior1_motor; // (momento anterior ao pulso anterior)
-    volatile unsigned long tempo_anterior_motor; //atualiza toda vez que um pulso eh detectado (momento anterior ao pulso atual)
-    volatile int conta_motor; //controla quando o calculo da velocidade eh realizado
+    unsigned long tempo_atual;                     // Tempo em milissegundos medido no operador da velocidade
+    volatile unsigned long tempo_anterior1_motor; // (Momento anterior ao pulso anterior)
+    volatile unsigned long tempo_anterior_motor; // Atualiza toda vez que um pulso eh detectado (momento anterior ao pulso atual)
+    volatile int conta_motor;                   // Controla quando o calculo da velocidade eh realizado
 
 public:
     /**
-     * @brief Essa funcao calcula o valor da velocidade do motor
+     * @brief Essa funcao calcula o valor da velocidade do motor em km/h
     */
    void calculo_velocidade ();
    /**
     * @brief Essa funcao calcula o intervalo de tempo da diferenca dos pulsos do hall
-    * Ela serve para o calculo da velocidade
+    * Ela serve para permitir o calculo da velocidade
    */
   void calculo_intervalo_hall();
     /**
      * @brief Essa funcao faz as configuracoes iniciais
     */
    void motor_setup ();
+   /**
+    * @brief Imprime o valor da velocidade na saida do serial
+   */
+  void imprimir ();
+   /**
+    * @brief Essa funcao e variavel foram criadas para que seja possivel a utilizacao do metodo AttachInterrupt
+   */
+  static void calculo_intervalo_hall_static();
+    
+    // Variável estática para armazenar a instância atual
+    static Velocidade_Motor* instance;
 };
 
 #endif
