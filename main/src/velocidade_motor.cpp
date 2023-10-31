@@ -1,5 +1,6 @@
 #include "C:\Users\thiag\OneDrive\Documentos\Arduino\velocidade_motor.cpp\velocidade_motor.cpp.ino"
 
+Velocidade_Motor* Velocidade_Motor::instance = nullptr;
 
 void Velocidade_Motor :: calculo_velocidade (){
     tempo_atual = micros();
@@ -17,12 +18,11 @@ void Velocidade_Motor :: calculo_velocidade (){
     }
 }
 
-static void calculo_intervalo_hall_static() {
-      static Velocidade_Motor* instance;
-      if (instance) {
-          instance->calculo_intervalo_hall();
-      }
-  }
+void Velocidade_Motor::hallInterruptHandler() {
+    if (instance) {
+        instance->calculo_intervalo_hall();
+    }
+}
 
 void Velocidade_Motor :: calculo_intervalo_hall (){
     // Se o codigo entrou aqui, eh porque o estado do hall mudou, entao aumentamos em 1 a contagem do motor
@@ -70,12 +70,12 @@ void Velocidade_Motor :: motor_setup(){
     instance = this;
 
     // Funcao que fica vigiando a mudanca de estado do hall para a entrada na função do calculo do intervalo
-    attachInterrupt(digitalPinToInterrupt(hall_motor), calculo_intervalo_hall_static, FALLING);
+    attachInterrupt(digitalPinToInterrupt(hall_motor), hallInterruptHandler, CHANGE);
 }
 
 void Velocidade_Motor :: imprimir (){
     Serial.print ("Velocidade:  ");
-    Serial.print (this->calculo_velocidade);
+    Serial.print (this->calculo_velocidade_instantanea_motor);
     Serial.print (" km/h ");
 }
 
