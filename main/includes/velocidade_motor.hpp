@@ -12,7 +12,6 @@
 #ifndef VELOCIDADE_MOTOR_H
 #define VELOCIDADE_MOTOR_H
 
-#include <SD.h>
 #include <math.h>
 
 #include <Arduino.h>
@@ -41,26 +40,28 @@ public:
      * @brief Essa funcao calcula o valor da velocidade do motor em km/h
     */
    void calculo_velocidade ();
+   
    /**
     * @brief Essa funcao calcula o intervalo de tempo da diferenca dos pulsos do hall
     * Ela serve para permitir o calculo da velocidade
    */
   void calculo_intervalo_hall();
+
     /**
      * @brief Essa funcao faz as configuracoes iniciais
     */
    void motor_setup ();
+
    /**
     * @brief Imprime o valor da velocidade na saida do serial
    */
   void imprimir ();
+
    /**
     * @brief Essa funcao e variavel foram criadas para que seja possivel a utilizacao do metodo AttachInterrupt
    */
-  static void calculo_intervalo_hall_static();
-    
-    // Variável estática para armazenar a instância atual
-    static Velocidade_Motor* instance;
+  static void hallInterruptHandler();
+  static Velocidade_Motor* instance;
 };
 
 #endif
