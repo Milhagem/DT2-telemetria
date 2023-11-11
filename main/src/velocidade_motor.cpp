@@ -1,4 +1,4 @@
-#include "C:\Users\thiag\OneDrive\Documentos\Arduino\velocidade_motor.cpp\velocidade_motor.cpp.ino"
+#include "velocidade_motor.hpp"
 
 Velocidade_Motor* Velocidade_Motor::instance = nullptr;
 
@@ -76,6 +76,8 @@ void Velocidade_Motor :: motor_setup(){
 void Velocidade_Motor :: imprimir (){
     Serial.print ("Velocidade:  ");
     Serial.print (this->calculo_velocidade_instantanea_motor);
-    Serial.print (" km/h ");
+    Serial.println (" km/h ");
+    Serial.print ("Estado logico: ");
+    Serial.println (digitalRead(hall_motor));
 }
 
