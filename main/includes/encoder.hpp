@@ -22,7 +22,7 @@
 #define SAMPLES             16            // numero de pontos medidos no disco de freio
 #define TIME_INTERVAL       500           // ms (intervalo de tempo para amostragem de pulsos)
 #define MINIMAL_SPEED       2.77          // m/s (velocidade minima para trocar metodo de amostraVoltas())
-#define ms_TO_min           0.00001666666 // milisegundos para minutos
+#define ms_TO_min           0.001666666 // milisegundos para minutos
 
 class Encoder {
 private:

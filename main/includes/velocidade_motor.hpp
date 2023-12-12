@@ -21,6 +21,18 @@ private:
 
 public:
     /**
+     * @brief 
+     */
+    void calculo_velocidade ();
+    /**
+     * @brief handler da interrupção
+     */
+    void hallInterruptHandler();
+    /**
+     * @brief 
+     */
+    void calculo_intervalo_hall ();
+    /**
      * @brief Essa funcao faz as configuracoes iniciais
     */
    void motor_setup ();
