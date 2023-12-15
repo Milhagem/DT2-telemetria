@@ -21,7 +21,7 @@
  * dos sinais do hall do motor e no calculo do intervalo de tempo desses sinais
  * Essa classe nao segue o mesmo padrão das outras, como a do Encoder, pois a função que ambas 
  * utilizam para perceber a variação de sinais, AttachInterrupt é tratada de forma diferente, 
- * onde, nesse código,a função só funciona se estiver associada a funções do escorpo/globais
+ * onde, nesse código,a função só funciona se estiver associada a funções do escopo/globais
  * Em vista disso, esse arquivo .hpp acabou sendo responsável apenas por gerar a impressao dos 
  * dados e inicializar o calculo
  * Caso exista alguma outra estratégia de código para contornar isso, o autor do código está aberto

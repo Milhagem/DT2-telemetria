@@ -53,7 +53,7 @@ int indiceAtual = 0;
 void contador() {
    pulsos++;
    if (conta){
-      temp1 = micros ();
+      temp1 = micros();
       deltaT = temp1 - temp2;
       conta = false;
    } else {
@@ -101,7 +101,7 @@ void adicionarValorAoBuffer(float valor) {
 }
 
 void Velocidade_Motor::motor_setup() {
-    Serial.begin(115200);
+    //Serial.begin(115200);
     // Le o estado logico do pino do hall
     pinMode(hall_motor, INPUT_PULLUP);
 

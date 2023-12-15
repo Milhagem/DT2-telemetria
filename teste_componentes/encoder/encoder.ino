@@ -4,7 +4,7 @@ int rpm;
 volatile byte pulsos;
 unsigned long timeold;
 
-unsigned int pulsos_por_volta = 16;
+const unsigned int pulsos_por_volta = 16;
 
 void contador() {
   pulsos++;

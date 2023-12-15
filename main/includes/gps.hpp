@@ -15,7 +15,7 @@
 #ifndef GPS_H
 #define GPS_H
 
-#include "MODEM_CONFIG.hpp";
+#include "MODEM_CONFIG.hpp"
 extern TinyGsm modem;
 
 class GPS {

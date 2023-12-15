@@ -12,6 +12,7 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
+#include "includes/MODEM_CONFIG.hpp"
 #include "includes/lte_connection.hpp"
 #include "includes/datalogger.hpp"
 #include "includes/encoder.hpp"
@@ -56,10 +57,14 @@ void setup() {
 
     datalogger.setupDatalogger();
     datalogger.abreArquivo(path);
+
     gps.setupGPS();
     gps.liberaGPS();
+
     ina.setupINA226();
+
     encoder.setupEncoder();
+
     velocidade_motor.motorsetup();
 
 
@@ -219,15 +224,12 @@ void void velocidade_motorTask (void *param) {
 
       xSemaphoreTake(SemaphoreBuffer, portMAX_DELAY);
 
-      velocidade_motor.calculo_velocidade();
+      velocidade_motor.imprimir();
 
       xSemaphoreGive (SemaphoreBuffer);
 
       vTaskDelay(100 / portTICK_PERIOD_MS);
 
-      velocidade_motor.imprimir();
-
-      vTaskDelay(2 / portTICK_PERIOD_MS);
   }// end while
 }// end Velocidade Motor Task
 
