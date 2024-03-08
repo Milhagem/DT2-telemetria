@@ -1,4 +1,4 @@
-#include "../includes/datalogger.hpp"
+#include "datalogger.hpp"
 
 void Datalogger::setupDatalogger(){
 
@@ -40,8 +40,8 @@ void Datalogger::abreArquivo(String path){
 
 
 void Datalogger::concatenaArquivo(String path, String data) {
-    Serial.print("Appending to file: ");
-    Serial.println(path);
+    //Serial.print("Appending to file: ");
+    //Serial.println(path);
 
     this->meu_arquivo = SD_MMC.open(path, FILE_APPEND);
 

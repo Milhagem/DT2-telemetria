@@ -2,7 +2,6 @@
  * @file encoder.hpp
  * @author Milhagem UFMG (contatomilhagem@ufmg.com)
  * @brief 
- * @version 1.1
  * @date 2023-08-09
  * @details 
  * definimos samples como numero de pontos medidos no disco de freio, time_interval para
@@ -16,13 +15,7 @@
 #define ENCODER_H
 
 #include <Arduino.h>
-
-#define MEASURE_PIN         25            // pino D0 encoder
-#define WHEEL_CIRCUMFERANCE 1.50          // m     
-#define SAMPLES             16            // numero de pontos medidos no disco de freio
-#define TIME_INTERVAL       500           // ms (intervalo de tempo para amostragem de pulsos)
-#define MINIMAL_SPEED       2.77          // m/s (velocidade minima para trocar metodo de amostraVoltas())
-#define ms_TO_min           0.001666666 // milisegundos para minutos
+#include "setup_esp.hpp"
 
 class Encoder {
 private:
@@ -53,7 +46,7 @@ public:
      * 
      * @return rpm
     */
-    double amostraVoltasTimeInverval();
+    double amostraVoltasTimeInterval();
     /**
      * @brief Calcula voltas totais e voltas por MINUTO da roda
      * @details A cada numero de SAMPLES, ve o intervalo de tempo gasto e calcula a velocidade
@@ -72,9 +65,9 @@ public:
     */
     void imprimir();
     // km/h
-    double getSpeed() { return this->speed; }
+    String getSpeed() { return String(this->speed); }
     // km/h
-    double getAverageSpeed() { return this->average_speed; }
+    String getAverageSpeed() { return String(this->average_speed); }
 }; 
 
 #endif

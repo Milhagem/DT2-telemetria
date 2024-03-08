@@ -1,4 +1,4 @@
-#include "../includes/gps.hpp"
+#include "gps.hpp"
 
 void GPS::setupGPS() {
   SerialMon.println("Place your board outside to catch satelite signal");

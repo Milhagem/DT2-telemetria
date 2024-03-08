@@ -1,4 +1,4 @@
-#include "../includes/encoder.hpp"
+#include "encoder.hpp"
 
 volatile byte pulsos;
 void contador() {
@@ -6,12 +6,15 @@ void contador() {
 }
 
 void Encoder::setupEncoder() {
-  attachInterrupt(digitalPinToInterrupt(MEASURE_PIN), contador, FALLING);
 
   // Variavels para calculo de velocidade e distancia
-  double speed            = 0;
-  double average_speed    = 0;
-  double distancia_total  = 0;
+  // double speed            = 0;
+  // double average_speed    = 0;
+  // double distancia_total  = 0;
+
+  this->speed = 0;           // km/h
+  this->average_speed = 0;   // km/h
+  this->distancia_total = 0;
 
   // Inicalizacao de variaveis de controle
   this->tempo_inicio      = 0;
@@ -22,24 +25,29 @@ void Encoder::setupEncoder() {
   this->speed_old         = 0;
   this->distancia_trecho  = 0;
   this->ja_andou          = false;
+
+  attachInterrupt(digitalPinToInterrupt(MEASURE_PIN), contador, FALLING);
 }
 
 
 volatile unsigned long last_pulse_time = 0;
-double Encoder::amostraVoltasSamples() {
-  int rpm = 0;
+volatile unsigned long tempo_atual = 0;
+volatile unsigned long intervalo_tempo = 0;
 
-  if (this->speed >= MINIMAL_SPEED) {
+/*double Encoder::amostraVoltasSamples() {
+  double rpm = 0;
+
+  //if (this->speed >= MINIMAL_SPEED) {
 
   // Calcula o intervalo de tempo desde o último pulso
   unsigned long intervalo_tempo = millis() - last_pulse_time;
 
-  // Atualiza a RPM somente se houver pelo 16 pulsos recebido
+  // Atualiza a RPM somente se houver pelo menos 16 pulsos recebido
   if (pulsos > SAMPLES) {
 
     // Desabilita interrupcao durante o calculo
     detachInterrupt(0);
-    rpm = (60 * 1000 / SAMPLES) / intervalo_tempo * pulsos;
+    rpm = ((60.0 * 1000.0 / SAMPLES) / intervalo_tempo )* pulsos;
 
     pulsos = 0; // Zera o contador de pulsos após calcular a RPM
 
@@ -48,30 +56,61 @@ double Encoder::amostraVoltasSamples() {
 
     attachInterrupt(0, contador, FALLING);
   }
-}
+//}
+  return rpm;
+}*/
+
+
+double Encoder::amostraVoltasSamples() {
+  double rpm = 0;
+
+
+  //if (this->speed >= MINIMAL_SPEED) {
+
+    // Calcula o intervalo de tempo desde o último pulso
+    
+
+    // Atualiza a RPM somente se houver pelo menos 16 pulsos recebido
+    if (pulsos > SAMPLES) {
+      tempo_atual = millis();
+      intervalo_tempo = tempo_atual - last_pulse_time;
+      last_pulse_time = tempo_atual;
+      // Desabilita interrupcao durante o calculo
+      detachInterrupt(0);
+      rpm = ((min_TO_ms / SAMPLES) / intervalo_tempo) * pulsos;
+
+      //Serial.print("RPM = ");
+      //Serial.println(rpm);
+
+      pulsos = 0; // Zera o contador de pulsos após calcular a RPM
+
+      attachInterrupt(0, contador, FALLING);
+    }
+//}
   return rpm;
 }
 
 
-unsigned long timeold = 0;
-double Encoder::amostraVoltasTimeInverval() {
- int rpm = 0;
+double Encoder::amostraVoltasTimeInterval() {
+ double rpm = 0;
 
  // Atualiza contador a cada segundo
- if (millis() - timeold >= 1000) {
+ tempo_atual = millis();
+ if (tempo_atual - last_pulse_time >= 100) {
     
     // Desabilita interrupcao durante o calculo
-   detachInterrupt(0);
-   rpm = (60 * 1000 / SAMPLES ) / (millis() - timeold) * pulsos; 
+    detachInterrupt(0);
+    rpm = ((min_TO_ms / SAMPLES ) / (tempo_atual - last_pulse_time)) * pulsos; 
 
-   timeold = millis();
-   pulsos = 0;
+    last_pulse_time = millis();
 
-   Serial.print("RPM = ");
-   Serial.println(rpm, DEC);
+    pulsos = 0;
+
+    Serial.print("RPM = ");
+    Serial.println(rpm, DEC);
     
-  // Habilita interrupcao
-   attachInterrupt(0, contador, FALLING);
+    // Habilita interrupcao
+    attachInterrupt(0, contador, FALLING);
  }
  return rpm;
 }

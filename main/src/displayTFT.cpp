@@ -1,8 +1,8 @@
-#include "../includes/displayTFT.hpp"
+#include "displayTFT.hpp"
 
 void DisplayTFT::setupDisplayTFT() {
   this->tft.init();  
-  this->tft.setRotation(2);       // display in portrait
+  this->tft.setRotation(0);       // display in portrait
   this->tft.fillScreen(BLACK); 
   this->tft.setCursor(165,300); 
   this->tft.setTextSize (1);
@@ -23,11 +23,11 @@ void DisplayTFT::mostraConsumo(float consumo) {
 void DisplayTFT::mostraVelocidadeMedia(double vel_media) {
   int xpos = 40, ypos = 265;                               //text position
   this->tft.setTextColor (WHITE,BLACK);
-  this->tft.setCursor (xpos-10,ypos); this->tft.setTextSize (2);   // units position relative to scale
-  this->tft.print ("Vel Med: ");
-  this->tft.setCursor (xpos+85,ypos); this->tft.setTextSize (2);   // units position relative to scale
-  this->tft.print (vel_media);  
-  this->tft.setCursor (xpos+125,ypos); this->tft.setTextSize (2);  // units position relative to scale
+  this->tft.setCursor (xpos-30,ypos); this->tft.setTextSize (2);   // units position relative to scale
+  this->tft.print ("Vel: ");
+  this->tft.setCursor (xpos+50,ypos); this->tft.setTextSize (2);   // units position relative to scale
+  this->tft.print (vel_media, 1);  
+  this->tft.setCursor (xpos+120,ypos); this->tft.setTextSize (2);  // units position relative to scale
   this->tft.print ("KM/H");  
 }
 

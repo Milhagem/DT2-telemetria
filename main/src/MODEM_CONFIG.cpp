@@ -1,4 +1,4 @@
-#include "../includes/MODEM_CONFIG.hpp"
+#include "MODEM_CONFIG.hpp"
 
 TinyGsm modem(SerialAT);
 

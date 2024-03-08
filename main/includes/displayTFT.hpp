@@ -22,26 +22,10 @@
 #define TFT_BACKLIGHT_ON HIGH  // Level to turn ON back-light (HIGH or LOW)
 #define TFT_RGB_ORDER TFT_BGR  // color order Blue-Green-Red - for this specific display  
 
+#include "setup_esp.hpp"
 #include <TFT_eSPI.h>
 #include <SPI.h>
 
-// Some principal color definitions
-// RGB 565 color picker at https://ee-programming-notepad.blogspot.com/2016/10/16-bit-color-generator-picker.html
-#define WHITE       0xFFFF
-#define BLACK       0x0000
-#define BLUE        0x001F
-#define RED         0xF800
-#define GREEN       0x07E0
-
-#define SCALE0      0xC655  // accent color for unused scale segments                                                     
-#define SCALE1      0x5DEE  // accent color for unused scale segments     
-
-#define BLUE2RED   1  // circular scale color scheme
-#define GREEN2BLUE 2  // circular scale color scheme
-
-#define GAUGEPOSITION_X  20  // govern the position of the square + gauge on the display
-#define GAUGEPOSITION_Y  20  // govern the position of the square + gauge on the display
-#define RADIUS           80  // upper ring radius
 
 class DisplayTFT {
 private:

@@ -3,15 +3,8 @@
 
 #include "FS.h"
 #include "SD_MMC.h"
+#include "setup_esp.hpp"
 
-#define SD_MISO 2 
-#define SD_CS   13
-#define SD_MOSI 15
-#define SD_SCLK 14
-#define PWR_PIN 4
-#define LED_PIN 12
-
-#define ONE_BIT_MODE  true
 
 class Datalogger {
 private:

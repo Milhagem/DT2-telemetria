@@ -1,4 +1,4 @@
-#include "../includes/lte_connection.hpp"
+#include "lte_connection.hpp"
 
 void LTE_Connection::modemPowerOn(){
     pinMode(PWR_PIN, OUTPUT);
@@ -150,7 +150,7 @@ void LTE_Connection::connectServer(const char* server, const char* resource, con
 // ---------------------------------------------------------------------------------------------------
 void LTE_Connection::postRequest(const char* server, const char* resource, String postData) {
   SerialMon.println("Performing HTTP POST request...");
-
+  
   client.print(String("POST ") + resource + " HTTP/1.1\r\n");
   client.print(String("Host: ") + server + "\r\n");
   client.print(String("Content-Type: application/x-www-form-urlencoded\r\n"));
@@ -158,16 +158,6 @@ void LTE_Connection::postRequest(const char* server, const char* resource, Strin
   client.print(postData);
   client.print(String("Connection: close\r\n\r\n"));
   client.println();
-  
-  //Antigo post request, gera bad request no servidor
-  /*client.print(String("POST ") + resource + " HTTP/1.1\r\n");
-  client.print(String("Host: ") + server + "\r\n");
-  client.print("Connection: close");
-  client.print("Content-Type: application/x-www-form-urlencoded");
-  client.print("Content-Length: ");
-  client.println(postData.length());
-  client.println();
-  client.print(postData);*/
   
   // Wait for the server's response
   uint32_t timeout = millis();
@@ -179,5 +169,5 @@ void LTE_Connection::postRequest(const char* server, const char* resource, Strin
       timeout = millis();
     }
   }
-  SerialMon.println();
+  //SerialMon.println("sucesso!!!");
 }
