@@ -42,14 +42,14 @@ public:
     void setupEncoder();
     /**
      * @brief Calcula voltas totais e voltas por MINUTO da roda
-     * @details A cada TIME_INTERVAL, calcula do conta o numero de pulsos e calcula a velocidade
+     * @details A cada TIME_INTERVAL, conta o numero de pulsos e calcula a velocidade
      * 
      * @return rpm
     */
     double amostraVoltasTimeInterval();
     /**
      * @brief Calcula voltas totais e voltas por MINUTO da roda
-     * @details A cada numero de SAMPLES, ve o intervalo de tempo gasto e calcula a velocidade
+     * @details A cada numero de SAMPLES, analisa o intervalo de tempo gasto e calcula a velocidade
      * 
      * @return rpm
     */
